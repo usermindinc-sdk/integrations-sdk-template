@@ -1,0 +1,42 @@
+## Default application configuration
+
+workerConfiguration:
+
+  test: hello
+
+  #The next line is for Swagger
+  resourcePackage: com.usermind.usermindsdk.dropwizard.urlhandlers
+
+#Hopefully soon we can tell Swagger not to scan every file -
+#https://github.com/swagger-api/swagger-core/issues/2631
+
+server:
+  applicationConnectors:
+    - type: http
+      port: 8089
+
+  adminConnectors:
+    - type: http
+      port: 8090
+
+logging:
+  level: DEBUG
+  loggers:
+    "com.usermind": DEBUG
+    "org.apache.http.wire" : INFO
+    "org.apache.http.headers" : INFO
+    "ch.ethz.ssh2" : "OFF"
+    "org.reflections" : INFO
+  appenders:
+    - type: console
+      target: stdout
+      timeZone: UTC
+      logFormat: "%-5p [%d{ISO8601, UTC}] [%thread] %c: %m%n%xEx"
+#    - type: file
+#      threshold: ALL
+#      currentLogFilename: /var/log/usermind/failure-analyser.log
+#      archivedLogFilenamePattern: /var/log/usermind/failure-analyser-%d.log
+#      archivedFileCount: 5
+#      timeZone: UTC
+#      logFormat: "%-5p [%d{ISO8601, UTC}] [%thread] %c: %m%n%xEx"
+      
