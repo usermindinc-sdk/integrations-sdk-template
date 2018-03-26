@@ -70,7 +70,7 @@ public class DropWizardService extends Application<DropWizardConfiguration> {
         dwAppContext.refresh();
         // provide dropwizard objects for dependency injection
         dwAppContext.getBeanFactory().registerSingleton("dwConfiguration", config);
-        dwAppContext.getBeanFactory().registerSingleton("appConfig", config.getWorkerConfiguration());  // actually it is ssHControllerConf hongwen.
+        dwAppContext.getBeanFactory().registerSingleton("appConfig", config.getWorkerConfiguration());
         dwAppContext.getBeanFactory().registerSingleton("dwEnvironment", environment);
         dwAppContext.getBeanFactory().registerSingleton("dwObjectMapperFactory", objectMapper);
         dwAppContext.registerShutdownHook();

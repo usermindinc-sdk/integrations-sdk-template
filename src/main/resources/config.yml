@@ -19,6 +19,15 @@ server:
     - type: http
       port: 8090
 
+metrics:
+  #Possible clientTypes: dataDogNonBlocking, noOp
+  clientType: 'dataDogNonBlocking'
+  tags:
+  - 'stack'
+  #Possible: datadog-staging.east.usermind.com, datadog-prod.west.usermind.com
+  host: 'datadog-staging.east.usermind.com'
+  port:  8125
+
 logging:
   level: DEBUG
   loggers:

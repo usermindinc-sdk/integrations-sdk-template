@@ -3,6 +3,7 @@ package com.usermind.usermindsdk.dropwizard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
+import com.usermind.usermindsdk.baselib.metrics.MetricsConfiguration;
 import io.dropwizard.Configuration;
 import io.swagger.jaxrs.config.BeanConfig;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -18,6 +19,15 @@ public class WorkerConfiguration extends Configuration {
     //Swagger starts//
     private String pageTitle;
     private String templateUrl;
+    private MetricsConfiguration metrics;
+
+    public MetricsConfiguration getMetrics() {
+        return metrics;
+    }
+
+    public void setMetrics(MetricsConfiguration metrics) {
+        this.metrics = metrics;
+    }
 
     @NotEmpty
     private String resourcePackage;
