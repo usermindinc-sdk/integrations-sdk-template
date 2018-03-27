@@ -16,10 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
 
 import javax.ws.rs.Path;
 import java.util.Map;
 
+@Configuration
 public class DropWizardService extends Application<DropWizardConfiguration> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DropWizardService.class);

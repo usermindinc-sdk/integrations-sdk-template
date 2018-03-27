@@ -4,8 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.timgroup.statsd.NoOpStatsDClient;
 import com.timgroup.statsd.NonBlockingStatsDClient;
 import com.timgroup.statsd.StatsDClient;
-import com.usermind.usermindsdk.common.config.InvalidConfigurationException;
-import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
+import com.usermind.usermindsdk.baselib.exceptions.InvalidConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;

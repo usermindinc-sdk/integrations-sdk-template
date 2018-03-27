@@ -21,12 +21,19 @@ server:
 
 metrics:
   #Possible clientTypes: dataDogNonBlocking, noOp
-  clientType: 'dataDogNonBlocking'
+  clientTypexx: "dataDogNonBlocking"
   tags:
-  - 'stack'
+  - "stack"
   #Possible: datadog-staging.east.usermind.com, datadog-prod.west.usermind.com
-  host: 'datadog-staging.east.usermind.com'
+  host: "datadog-staging.east.usermind.com"
   port:  8125
+
+kmsClient:
+  ec2Role: 'integrations_stack_config_all_serivces_role'
+  endpoint: 'https://kms.us-west-2.amazonaws.com'
+  socketTimeout: 60000
+  defaultKeyId: 'arn:aws:kms:us-west-2:022353409608:key/037d106d-ce09-4c47-9730-c8fb8f5374f0'
+
 
 logging:
   level: DEBUG

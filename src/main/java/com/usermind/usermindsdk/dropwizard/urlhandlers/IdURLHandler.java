@@ -1,6 +1,7 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
-import com.usermind.usermindsdk.dropwizard.urlhandlers.json.WorkerInfo;
+import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
+import com.usermind.usermindsdk.dropwizard.urlhandlers.json.TitoInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,11 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class IdURLHandler {
 
-    public IdURLHandler() {
-        //Empty Constructors are sometimes required by Spring ...
+    private WorkerInfo workerInfo;
+
+    @Autowired
+    public IdURLHandler(WorkerInfo workerInfo) {
+        this.workerInfo = workerInfo;
     }
 
     @GET
@@ -25,7 +29,7 @@ public class IdURLHandler {
             notes = "Get basic information in JSON format to identify this worker.",
             tags = "API")
     public WorkerInfo showRootPage() {
-        return new WorkerInfo();
+        return workerInfo;
     }
 
 }

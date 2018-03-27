@@ -1,20 +1,20 @@
 package com.usermind.usermindsdk.fetch;
 
 
-import com.usermind.usermindsdk.baselib.metrics.StatsDMetricsCollector;
-import com.usermind.usermindsdk.common.config.Configuration;
-import com.usermind.usermindsdk.common.config.DefaultConfigurationSource;
+import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
+import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
+import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
+import com.usermind.usermindsdk.baselib.metrics.IntegrationMetricsPathBuilder;
 import com.usermind.usermindsdk.baselib.metrics.MetricsCollectorClient;
+import com.usermind.usermindsdk.baselib.metrics.StatsDMetricsCollector;
 import com.usermind.usermindsdk.baselib.metrics.reporter.CommonLibMetricsReporter;
 import com.usermind.usermindsdk.baselib.metrics.reporter.MetricsReporter;
+import com.usermind.usermindsdk.baselib.writers.EntityWriter;
+import com.usermind.usermindsdk.baselib.writers.s3.EntityS3WriterBuilder;
+import com.usermind.usermindsdk.baselib.writers.s3.OnCloseNopConsumer;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
-import com.usermind.usermindsdk.dropwizard.urlhandlers.json.WorkerInfo;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
-import com.usermind.usermindsdk.worker.util.IntegrationMetricsPathBuilder;
-import com.usermind.usermindsdk.worker.writers.EntityWriter;
-import com.usermind.usermindsdk.worker.writers.s3.EntityS3Writer;
-import com.usermind.usermindsdk.worker.writers.s3.OnCloseNopConsumer;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,60 +25,33 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import sun.tools.jconsole.Worker;
 
 import javax.ws.rs.core.UriBuilder;
 import java.util.concurrent.TimeUnit;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 public class FullFetch {
     private static final Logger LOGGER = LoggerFactory.getLogger(FullFetch.class);
 
-    public static final String ORG_ID = "100";
-    public static final String LEGACY_ID = "101";
-    public static final String RUN_ID = "1020926111074";
-    public static final String CONNECTION_ID = "907c3155-0036-4d5e-a0f1-d0fab6d61d95";
-
-    private WorkerConfiguration workerConfiguration;
+    private final WorkerConfiguration workerConfiguration;
+    private final RunPoller runPoller;
+    private final WorkerInfo workerInfo;
 
     public static final String AUTHORIZATION = "Authorization";
     private final MetricsReporter<MetricsCollectorClient> metricsReporter;
-    private Credentials credentials = new Credentials("nM_bPyV4sfbVBz8Po28g", "ragi-test");
-    public static class Credentials {
-        private final String apiKey;
-        private final String accountName;
 
-
-        private Credentials(String apiKey, String accountName) {
-            checkArgument(isNotBlank(apiKey));
-            checkArgument(isNotBlank(accountName));
-            this.apiKey = apiKey;
-            this.accountName = accountName;
-        }
-
-        private String getApiKey() {
-            return apiKey;
-        }
-
-        private String getAccountName() {
-            return accountName;
-        }
-
-        private String getAuthorizationToken() {
-            return String.format("Token token=%s", apiKey);
-        }
-
-    }
     private RestTemplate restTemplate;
 
     @Autowired
-    public FullFetch(RestTemplate restTemplate, WorkerConfiguration workerConfiguration) {
+    public FullFetch(RestTemplate restTemplate, WorkerConfiguration workerConfiguration,
+                     RunPoller runPoller, WorkerInfo workerInfo) {
         this.restTemplate = restTemplate;
+        this.runPoller = runPoller;
+        this.workerInfo = workerInfo;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        metricsReporter = createMetricsReporter("FullFetch");
+        metricsReporter = createMetricsReporter("FullFetch", workerInfo);
         LOGGER.info("Setup took {} seconds", stopWatch.getTime(TimeUnit.SECONDS));
       //  Configuration usermindConfiguration = new DefaultConfigurationSource().load();
         this.workerConfiguration = workerConfiguration;
@@ -116,10 +89,10 @@ public class FullFetch {
     protected void getEvents() {
         UriBuilder singleFieldBuilder = UriBuilder
                 .fromPath("https://api.tito.io")
-                .path("/v2/ragi-test/events");
+                .path("/v2/" + runPoller.getAccountName() + "/events");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Token token=nM_bPyV4sfbVBz8Po28g");
+        headers.add("Authorization", "Token token=" + runPoller.getApiKey());
         headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<Events> response = restTemplate.exchange(singleFieldBuilder.build(), HttpMethod.GET, entity, Events.class);
@@ -142,7 +115,7 @@ public class FullFetch {
 
     private void getEventRegistrations(String url) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Token token=nM_bPyV4sfbVBz8Po28g");
+        headers.add("Authorization", "Token token=" + runPoller.getApiKey());
         headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<Registrations> response = restTemplate.exchange(url, HttpMethod.GET, entity, Registrations.class);
@@ -151,31 +124,32 @@ public class FullFetch {
     }
 
 
-//    EntityWriter createEntityS3Writer(//IntegrationApiConnector apiConnector,
-//                                      MetricsReporter<MetricsCollectorClient> metricsReporter) {
-//
-//        return EntityS3Writer.newBuilder()
-//                .setWriterConfigPath("integrationsWorker.s3Writer")
-//                .setMetricsReporter(metricsReporter)
-//              //  .setApiConnector(apiConnector)
-//                .setOnCloseCheckpointsConsumer(new OnCloseNopConsumer())
-//                .build();
-//    }
+    EntityWriter createEntityS3Writer(//IntegrationApiConnector apiConnector,
+                                      MetricsReporter<MetricsCollectorClient> metricsReporter) {
+
+        return EntityS3WriterBuilder.newBuilder()
+                .setMetricsReporter(metricsReporter)
+                .setRunPoller(runPoller)
+                .setWorkerInfo(workerInfo)
+                .setS3Config(workerConfiguration.getS3Config())
+                .setOnCloseCheckpointsConsumer(new OnCloseNopConsumer())
+                .build();
+    }
 
 
     private MetricsReporter<MetricsCollectorClient> createMetricsReporter(
-            /*IntegrationApiConnector apiConnector, */String actionName) {
+            /*IntegrationApiConnector apiConnector, */String actionName, WorkerInfo workerInfo) {
         //path prefix should be integrations.tito.v1_0.fetch
         String pathPrefix = new IntegrationMetricsPathBuilder()
                 .setFlowName(actionName)
-                .setIntegrationName(WorkerInfo.WORKER_TYPE)
-                .setIntegrationVersion(WorkerInfo.WORKER_VERSION)
+                .setIntegrationName(workerInfo.getWorkerType())
+                .setIntegrationVersion(workerInfo.getWorkerVersion())
                 .build();
-        MetricsCollectorClient metricsCollectorClient = new StatsDMetricsCollector(workerConfiguration.getMetrics());
+        MetricsCollectorClient metricsCollectorClient = new StatsDMetricsCollector(workerConfiguration.getIntegrationMetrics());
         return CommonLibMetricsReporter.newBuilder()
                 .setPathPrefix(pathPrefix)
-                .addDefaultTag("connection", CONNECTION_ID) //907c3155-0036-4d5e-a0f1-d0fab6d61d95
-                .addDefaultTag("run", RUN_ID) //557007ce-d629-47eb-8cf0-c8ad1d6d5608
+                .addDefaultTag("connection", runPoller.getConnectionId()) //907c3155-0036-4d5e-a0f1-d0fab6d61d95
+                .addDefaultTag("run", runPoller.getRunId()) //557007ce-d629-47eb-8cf0-c8ad1d6d5608
                 .build(metricsCollectorClient);
     }
 

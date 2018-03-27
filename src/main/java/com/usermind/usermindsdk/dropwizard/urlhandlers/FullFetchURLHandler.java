@@ -1,13 +1,11 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
-import com.usermind.usermindsdk.dropwizard.urlhandlers.json.WorkerInfo;
 import com.usermind.usermindsdk.fetch.FullFetch;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

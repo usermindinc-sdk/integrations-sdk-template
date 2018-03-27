@@ -3,7 +3,6 @@ package com.usermind.usermindsdk.baselib.metrics.reporter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
 import com.usermind.usermindsdk.baselib.metrics.MetricsCollectorClient;
-import com.usermind.usermindsdk.common.boot.CommonLib;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +13,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Common Lib metrics reporter. Uses {@code CommonLib.get().getMetrics()} client.
+ * Common Lib metrics reporter. Uses {@code CommonLib.get().getIntegrationMetrics()} client.
  */
 public class CommonLibMetricsReporter implements MetricsReporter<MetricsCollectorClient> {
 
@@ -427,7 +426,7 @@ public class CommonLibMetricsReporter implements MetricsReporter<MetricsCollecto
      */
     public CommonLibMetricsReporter build(MetricsCollectorClient metricsCollectorClient) {
       String[] defaultTagsArray = defaultTags.stream().map(Tag::toString).toArray(String[]::new);
-      //MetricsCollectorClient commonLibClient = CommonLib.get().getMetrics();
+      //MetricsCollectorClient commonLibClient = CommonLib.get().getIntegrationMetrics();
       return new CommonLibMetricsReporter(pathPrefix, defaultTagsArray,
           metricsCollectorClient);
     }
