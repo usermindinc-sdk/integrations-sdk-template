@@ -9,6 +9,20 @@ workerConfiguration:
 
 #Hopefully soon we can tell Swagger not to scan every file -
 #https://github.com/swagger-api/swagger-core/issues/2631
+  integrationMetrics:
+    #Possible clientTypes: dataDogNonBlocking, noOp
+    clientType: "dataDogNonBlocking"
+    tags:
+    - 'stack'
+    #Possible: datadog-staging.east.usermind.com, datadog-prod.west.usermind.com
+    host: 'datadog-staging.east.usermind.com'
+    port:  8125
+
+  kmsConfig:
+    ec2Role: 'integrations_stack_config_all_serivces_role'
+    endpoint: 'https://kms.us-west-2.amazonaws.com'
+    socketTimeout: 60000
+    defaultKeyId: 'arn:aws:kms:us-west-2:022353409608:key/037d106d-ce09-4c47-9730-c8fb8f5374f0'
 
 server:
   applicationConnectors:
@@ -19,20 +33,6 @@ server:
     - type: http
       port: 8090
 
-metrics:
-  #Possible clientTypes: dataDogNonBlocking, noOp
-  clientTypexx: "dataDogNonBlocking"
-  tags:
-  - "stack"
-  #Possible: datadog-staging.east.usermind.com, datadog-prod.west.usermind.com
-  host: "datadog-staging.east.usermind.com"
-  port:  8125
-
-kmsClient:
-  ec2Role: 'integrations_stack_config_all_serivces_role'
-  endpoint: 'https://kms.us-west-2.amazonaws.com'
-  socketTimeout: 60000
-  defaultKeyId: 'arn:aws:kms:us-west-2:022353409608:key/037d106d-ce09-4c47-9730-c8fb8f5374f0'
 
 
 logging:
