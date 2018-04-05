@@ -1,15 +1,10 @@
 package com.usermind.usermindsdk.fetch;
 
 
-import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
 import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
-import com.usermind.usermindsdk.baselib.metrics.IntegrationMetricsPathBuilder;
-import com.usermind.usermindsdk.baselib.metrics.MetricsCollectorClient;
-import com.usermind.usermindsdk.baselib.metrics.StatsDMetricsCollector;
-import com.usermind.usermindsdk.baselib.metrics.reporter.CommonLibMetricsReporter;
-import com.usermind.usermindsdk.baselib.metrics.reporter.MetricsReporter;
 import com.usermind.usermindsdk.baselib.writers.EntityWriter;
+import com.usermind.usermindsdk.baselib.writers.s3.EntityS3Writer;
 import com.usermind.usermindsdk.baselib.writers.s3.EntityS3WriterBuilder;
 import com.usermind.usermindsdk.baselib.writers.s3.OnCloseNopConsumer;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
@@ -25,7 +20,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import sun.tools.jconsole.Worker;
 
 import javax.ws.rs.core.UriBuilder;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +33,6 @@ public class FullFetch {
     private final WorkerInfo workerInfo;
 
     public static final String AUTHORIZATION = "Authorization";
-    private final MetricsReporter<MetricsCollectorClient> metricsReporter;
 
     private RestTemplate restTemplate;
 
@@ -51,7 +44,6 @@ public class FullFetch {
         this.workerInfo = workerInfo;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        metricsReporter = createMetricsReporter("FullFetch", workerInfo);
         LOGGER.info("Setup took {} seconds", stopWatch.getTime(TimeUnit.SECONDS));
       //  Configuration usermindConfiguration = new DefaultConfigurationSource().load();
         this.workerConfiguration = workerConfiguration;
@@ -97,9 +89,9 @@ public class FullFetch {
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<Events> response = restTemplate.exchange(singleFieldBuilder.build(), HttpMethod.GET, entity, Events.class);
 
-//        try (EntityWriter entityWriter = createEntityS3Writer(metricsReporter)) {
-//            entityWriter.writeMetadata(WorkerInfo.WORKER_TYPE, metadata);
-//        }
+        try (EntityWriter entityWriter = createEntityS3Writer()) {
+            entityWriter.writeFile("testMetaData", response.getBody().toString());
+        }
 
         getAllRegistrations(response.getBody());
 
@@ -124,11 +116,10 @@ public class FullFetch {
     }
 
 
-    EntityWriter createEntityS3Writer(//IntegrationApiConnector apiConnector,
-                                      MetricsReporter<MetricsCollectorClient> metricsReporter) {
+    EntityWriter createEntityS3Writer(//IntegrationApiConnector apiConnector
+                                       ) {
 
         return EntityS3WriterBuilder.newBuilder()
-                .setMetricsReporter(metricsReporter)
                 .setRunPoller(runPoller)
                 .setWorkerInfo(workerInfo)
                 .setS3Config(workerConfiguration.getS3Config())
@@ -137,20 +128,20 @@ public class FullFetch {
     }
 
 
-    private MetricsReporter<MetricsCollectorClient> createMetricsReporter(
-            /*IntegrationApiConnector apiConnector, */String actionName, WorkerInfo workerInfo) {
-        //path prefix should be integrations.tito.v1_0.fetch
-        String pathPrefix = new IntegrationMetricsPathBuilder()
-                .setFlowName(actionName)
-                .setIntegrationName(workerInfo.getWorkerType())
-                .setIntegrationVersion(workerInfo.getWorkerVersion())
-                .build();
-        MetricsCollectorClient metricsCollectorClient = new StatsDMetricsCollector(workerConfiguration.getIntegrationMetrics());
-        return CommonLibMetricsReporter.newBuilder()
-                .setPathPrefix(pathPrefix)
-                .addDefaultTag("connection", runPoller.getConnectionId()) //907c3155-0036-4d5e-a0f1-d0fab6d61d95
-                .addDefaultTag("run", runPoller.getRunId()) //557007ce-d629-47eb-8cf0-c8ad1d6d5608
-                .build(metricsCollectorClient);
-    }
+//    private MetricsReporter<MetricsCollectorClient> createMetricsReporter(
+//            /*IntegrationApiConnector apiConnector, */String actionName, WorkerInfo workerInfo) {
+//        //path prefix should be integrations.tito.v1_0.fetch
+//        String pathPrefix = new IntegrationMetricsPathBuilder()
+//                .setFlowName(actionName)
+//                .setIntegrationName(workerInfo.getWorkerType())
+//                .setIntegrationVersion(workerInfo.getWorkerVersion())
+//                .build();
+//        MetricsCollectorClient metricsCollectorClient = new StatsDMetricsCollector(workerConfiguration.getIntegrationMetrics());
+//        return CommonLibMetricsReporter.newBuilder()
+//                .setPathPrefix(pathPrefix)
+//                .addDefaultTag("connection", runPoller.getConnectionId()) //907c3155-0036-4d5e-a0f1-d0fab6d61d95
+//                .addDefaultTag("run", runPoller.getRunId()) //557007ce-d629-47eb-8cf0-c8ad1d6d5608
+//                .build(metricsCollectorClient);
+//    }
 
 }

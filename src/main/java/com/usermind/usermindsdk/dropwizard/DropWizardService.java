@@ -1,6 +1,8 @@
 package com.usermind.usermindsdk.dropwizard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.usermind.usermindsdk.helpers.JsonSerialization;
 import com.usermind.usermindsdk.spring.SpringConfiguration;
 import com.usermind.usermindsdk.swagger.SwaggerBundle;
@@ -17,8 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.AbstractResource;
+
 
 import javax.ws.rs.Path;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -80,6 +85,21 @@ public class DropWizardService extends Application<DropWizardConfiguration> {
 
         // the primary Spring ApplicationContext
         initSpring(dwAppContext, environment);
+
+        //testing
+        final ImmutableList.Builder<Class<?>> builder = ImmutableList.builder();
+        for (Object o : environment.jersey().getResourceConfig().getSingletons()) {
+            if (o.getClass().isAnnotationPresent(Path.class)) {
+                builder.add(o.getClass());
+            }
+        }
+        for (Class<?> klass : environment.jersey().getResourceConfig().getClasses()) {
+            if (klass.isAnnotationPresent(Path.class)) {
+                builder.add(klass);
+            }
+        }
+
+        return;
     }
 
     private ApplicationContext initSpring(ApplicationContext parent, Environment environment) {

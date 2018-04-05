@@ -26,7 +26,7 @@ public class RootURLHandler {
     @GET
     @ApiOperation(value = "Worker Home Page",
             notes = "Useful for displaying worker information.",
-            tags = "Miscellaneous")
+            tags = "internal")
     public RootView showRootPage() {
         return rootView;
     }

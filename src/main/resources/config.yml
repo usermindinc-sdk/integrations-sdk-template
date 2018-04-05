@@ -41,8 +41,7 @@ logging:
     "com.usermind": DEBUG
     "org.apache.http.wire" : INFO
     "org.apache.http.headers" : INFO
-    "ch.ethz.ssh2" : "OFF"
-    "org.reflections" : INFO
+   # "org.reflections" : INFO
   appenders:
     - type: console
       target: stdout

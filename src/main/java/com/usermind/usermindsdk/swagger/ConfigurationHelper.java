@@ -19,6 +19,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.server.DefaultServerFactory;
 import io.dropwizard.server.ServerFactory;
 import io.dropwizard.server.SimpleServerFactory;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class ConfigurationHelper {
     public String getJerseyRootPath() {
         // if the user explicitly defined a path to prefix requests use it
         // instead of derive it
-        if (swaggerBundleConfiguration.getUriPrefix() != null) {
+        if (!StringUtils.isEmpty(swaggerBundleConfiguration.getUriPrefix())) {
             return swaggerBundleConfiguration.getUriPrefix();
         }
 
@@ -67,7 +68,7 @@ public class ConfigurationHelper {
     public String getUrlPattern() {
         // if the user explicitly defined a path to prefix requests use it
         // instead of derive it
-        if (swaggerBundleConfiguration.getUriPrefix() != null) {
+        if (!StringUtils.isEmpty(swaggerBundleConfiguration.getUriPrefix())) {
             return swaggerBundleConfiguration.getUriPrefix();
         }
 

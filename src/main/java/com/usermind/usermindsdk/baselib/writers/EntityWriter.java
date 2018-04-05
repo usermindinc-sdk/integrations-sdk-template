@@ -1,14 +1,9 @@
 package com.usermind.usermindsdk.baselib.writers;
 
-import com.usermind.usermindsdk.baselib.metrics.MetricsCollectorClient;
-import com.usermind.usermindsdk.baselib.metrics.reporter.MetricsReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Base entity writer - defines both API and some re-usable behavior.
@@ -17,17 +12,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public abstract class EntityWriter implements Closeable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityWriter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(EntityWriter.class);
 
-  private final MetricsReporter<MetricsCollectorClient> metricsReporter;
 
 //  protected final EntityMetadataMerger metadataMerger;
 
-  protected EntityWriter(MetricsReporter<MetricsCollectorClient> metricsReporter) {
-    this.metricsReporter = checkNotNull(metricsReporter);
-//    this.metadataMerger = checkNotNull(metadataMerger);
+  protected EntityWriter() {
+    //    this.metadataMerger = checkNotNull(metadataMerger);
   }
-//
+
+  public abstract void writeFile(String fileName, String fileContents);
+
+  //
 //  /**
 //   * Writes a single entity.
 //   * @param entity entity
@@ -60,11 +56,5 @@ public abstract class EntityWriter implements Closeable {
   @Override
   public abstract void close();
 
-  /**
-   * Metrics reporter for internal usage.
-   * @return metrics reporter
-   */
-  protected MetricsReporter<MetricsCollectorClient> getMetricsReporter() {
-    return metricsReporter;
-  }
+
 }

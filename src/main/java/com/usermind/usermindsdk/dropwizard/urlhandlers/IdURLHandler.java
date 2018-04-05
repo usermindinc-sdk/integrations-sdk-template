@@ -27,7 +27,7 @@ public class IdURLHandler {
     @GET
     @ApiOperation(value = "Get identification information",
             notes = "Get basic information in JSON format to identify this worker.",
-            tags = "API")
+            tags = "informational")
     public WorkerInfo showRootPage() {
         return workerInfo;
     }

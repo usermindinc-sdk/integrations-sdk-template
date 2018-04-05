@@ -28,7 +28,7 @@ public class FullFetchURLHandler {
     @ApiOperation(value = "Perform a full fetch",
             notes = "Run a full fetch against a worker, retrieve all data, and write it to S3.",
             tags = "API")
-    public void showRootPage() {
+    public void runFullFetch() {
         fullFetch.runFullFetch();
 
         //Needs to know -

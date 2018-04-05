@@ -6,9 +6,6 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerConfiguration;
 import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
 import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
-import com.usermind.usermindsdk.baselib.metrics.MetricsCollectorClient;
-import com.usermind.usermindsdk.baselib.metrics.reporter.MetricsReporter;
-import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +21,6 @@ public class EntityS3WriterBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityS3WriterBuilder.class);
 
-    private MetricsReporter<MetricsCollectorClient> metricsReporter;
     private RunPoller runPoller;
     private WorkerInfo workerInfo;
     private Optional<TransferManager> transferManager = Optional.empty();
@@ -34,16 +30,6 @@ public class EntityS3WriterBuilder {
 
     public static EntityS3WriterBuilder newBuilder() {
         return new EntityS3WriterBuilder();
-    }
-
-    /**
-     * Metrics reporter.
-     * @param metricsReporter metrics reporter
-     * @return this
-     */
-    public EntityS3WriterBuilder setMetricsReporter(MetricsReporter<MetricsCollectorClient> metricsReporter) {
-        this.metricsReporter = checkNotNull(metricsReporter);
-        return this;
     }
 
     /**
@@ -119,7 +105,7 @@ public class EntityS3WriterBuilder {
         TransferManager resolvedTransferManager = transferManager.orElseGet(() ->
                 createTransferManager(s3Config));
 
-        return new EntityS3Writer(workerInfo, resolvedTransferManager, runPoller, metricsReporter,
+        return new EntityS3Writer(workerInfo, resolvedTransferManager, runPoller,
                 s3Config, checkpoints, onCloseCheckpointsConsumer);
     }
 

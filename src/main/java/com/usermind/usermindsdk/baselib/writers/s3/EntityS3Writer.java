@@ -14,11 +14,8 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Sets;
 import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
 import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
-import com.usermind.usermindsdk.baselib.metrics.MetricsCollectorClient;
-import com.usermind.usermindsdk.baselib.metrics.reporter.MetricsReporter;
 import com.usermind.usermindsdk.baselib.writers.EntityWriter;
 import com.usermind.usermindsdk.baselib.writers.exception.EntityWriterException;
-import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,16 +68,14 @@ public class EntityS3Writer extends EntityWriter {
 
   public EntityS3Writer(WorkerInfo workerInfo,
                         TransferManager transferManager, RunPoller runPoller,
-                        MetricsReporter<MetricsCollectorClient> metricsReporter, S3Config s3Config,
+                        S3Config s3Config,
                         Map<String, Map<ChunkType, Integer>> checkpoints,
                         Consumer<Map<String, Map<ChunkType, Integer>>> onCloseCheckpointsConsumer) {
 
-    super(metricsReporter);
 
     checkNotNull(workerInfo);
     checkNotNull(transferManager);
     checkNotNull(runPoller);
-    checkNotNull(metricsReporter);
     checkNotNull(s3Config);
     checkNotNull(checkpoints);
     checkNotNull(onCloseCheckpointsConsumer);
@@ -99,6 +94,10 @@ public class EntityS3Writer extends EntityWriter {
     this.failedUploads = Sets.newConcurrentHashSet();
 
     this.closed = false;
+  }
+
+  public void writeFile(String fileName, String fileContents) {
+    resolveLocalChunk(fileName, ChunkType.RAW).add(fileContents);
   }
 
   @Override
@@ -178,8 +177,6 @@ public class EntityS3Writer extends EntityWriter {
 
     Stopwatch uploadTimeWatch = Stopwatch.createStarted();
     LOGGER.info("Uploading the local chunk: {}", localChunk);
-    MetricsReporter<MetricsCollectorClient> metricsReporter = getMetricsReporter();
-    metricsReporter.increment("writer.s3.uploadStarted", "bucket", s3Config.getBucket());
 
     String entityName = localChunk.getEntityName();
     ChunkType chunkType = localChunk.getChunkType();
@@ -246,16 +243,16 @@ public class EntityS3Writer extends EntityWriter {
       }
 
       private void completeEvent(ProgressEventType eventType) {
-        metricsReporter.histogram("writer.s3.uploadedChunkSizeBytes",
-                localChunk.getBytesCount(), "entity", entityName, "type", chunkType,
-                "bucket", s3Config.getBucket());
-        metricsReporter.histogram("writer.s3.uploadedChunkRecordsCount",
-                localChunk.getRecordsCount(), "entity", entityName, "type", chunkType, "bucket",
-                s3Config.getBucket());
+//        metricsReporter.histogram("writer.s3.uploadedChunkSizeBytes",
+//                localChunk.getBytesCount(), "entity", entityName, "type", chunkType,
+//                "bucket", s3Config.getBucket());
+//        metricsReporter.histogram("writer.s3.uploadedChunkRecordsCount",
+//                localChunk.getRecordsCount(), "entity", entityName, "type", chunkType, "bucket",
+//                s3Config.getBucket());
 
         long uploadTimeMillis = uploadTimeWatch.elapsed(TimeUnit.MILLISECONDS);
-        metricsReporter.histogram("writer.s3.uploadTimeMillis", uploadTimeMillis, "entity",
-                entityName, "type", chunkType, "bucket", s3Config.getBucket());
+//        metricsReporter.histogram("writer.s3.uploadTimeMillis", uploadTimeMillis, "entity",
+//                entityName, "type", chunkType, "bucket", s3Config.getBucket());
         LOGGER.debug("'{}' upload took {} millis", upload.getDescription(), uploadTimeMillis);
         cleanupEvent(eventType);
       }
@@ -276,15 +273,15 @@ public class EntityS3Writer extends EntityWriter {
 
         LOGGER.info("Got transfer event '{}' for upload: {}", eventType,
                 upload.getDescription());
-        metricsReporter.increment("writer.s3.transferEvent", "event", eventType);
+//        metricsReporter.increment("writer.s3.transferEvent", "event", eventType);
       }
     });
 
     // Logging active uploads count
     int activeUploadsCount = activeUploads.size();
     LOGGER.debug("{} active uploads", activeUploadsCount);
-    metricsReporter.histogram("writer.s3.activeUploads", activeUploadsCount, "bucket", s3Config.getBucket(),
-            "integration", workerInfo.getWorkerType());
+//    metricsReporter.histogram("writer.s3.activeUploads", activeUploadsCount, "bucket", s3Config.getBucket(),
+//            "integration", workerInfo.getWorkerType());
   }
 
   //TODO - use string instead of chunktype? Or stick with chunktype and the writer knowing about the different data types?
@@ -371,8 +368,8 @@ public class EntityS3Writer extends EntityWriter {
     }
 
     long closeTimeMillis = closeTimeWatch.elapsed(TimeUnit.MILLISECONDS);
-    getMetricsReporter().histogram("writer.s3.closeTimeMillis", closeTimeMillis,
-            "bucket", s3Config.getBucket());
+//    getMetricsReporter().histogram("writer.s3.closeTimeMillis", closeTimeMillis,
+//            "bucket", s3Config.getBucket());
     LOGGER.debug("It took {} millis to close the writer", closeTimeMillis);
 
     closed = true;
