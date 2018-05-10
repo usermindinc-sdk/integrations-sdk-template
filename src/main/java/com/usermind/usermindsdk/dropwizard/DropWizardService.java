@@ -2,7 +2,6 @@ package com.usermind.usermindsdk.dropwizard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.usermind.usermindsdk.helpers.JsonSerialization;
 import com.usermind.usermindsdk.spring.SpringConfiguration;
 import com.usermind.usermindsdk.swagger.SwaggerBundle;
@@ -19,11 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.AbstractResource;
-
 
 import javax.ws.rs.Path;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -61,6 +57,10 @@ public class DropWizardService extends Application<DropWizardConfiguration> {
         LOGGER.info("Run Server");
 
         environment.jersey().register(RolesAllowedDynamicFeature.class);
+
+        //Set up error handlers
+        environment.jersey().register(new GenericExceptionMapper());
+        environment.jersey().register(new RuntimeExceptionMapper());
 
         final ErrorPageErrorHandler epeh = new ErrorPageErrorHandler();
         // 400 - Bad Request, leave alone
