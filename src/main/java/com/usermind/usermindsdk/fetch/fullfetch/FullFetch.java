@@ -1,15 +1,15 @@
-package com.usermind.usermindsdk.fetch;
+package com.usermind.usermindsdk.fetch.fullfetch;
 
 
 import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
 import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
 import com.usermind.usermindsdk.baselib.writers.EntityWriter;
-import com.usermind.usermindsdk.baselib.writers.s3.EntityS3Writer;
 import com.usermind.usermindsdk.baselib.writers.s3.EntityS3WriterBuilder;
 import com.usermind.usermindsdk.baselib.writers.s3.OnCloseNopConsumer;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +31,7 @@ public class FullFetch {
     private final WorkerConfiguration workerConfiguration;
     private final RunPoller runPoller;
     private final WorkerInfo workerInfo;
+    private final MetadataFetch metadataFetch;
 
     public static final String AUTHORIZATION = "Authorization";
 
@@ -38,10 +39,11 @@ public class FullFetch {
 
     @Autowired
     public FullFetch(RestTemplate restTemplate, WorkerConfiguration workerConfiguration,
-                     RunPoller runPoller, WorkerInfo workerInfo) {
+                     RunPoller runPoller, WorkerInfo workerInfo, MetadataFetch metadataFetch) {
         this.restTemplate = restTemplate;
         this.runPoller = runPoller;
         this.workerInfo = workerInfo;
+        this.metadataFetch = metadataFetch;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         LOGGER.info("Setup took {} seconds", stopWatch.getTime(TimeUnit.SECONDS));
@@ -79,22 +81,8 @@ public class FullFetch {
 
 
     protected void getEvents() {
-        UriBuilder singleFieldBuilder = UriBuilder
-                .fromPath("https://api.tito.io")
-                .path("/v2/" + runPoller.getAccountName() + "/events");
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Token token=" + runPoller.getApiKey());
-        headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        ResponseEntity<Events> response = restTemplate.exchange(singleFieldBuilder.build(), HttpMethod.GET, entity, Events.class);
-
-        try (EntityWriter entityWriter = createEntityS3Writer()) {
-            entityWriter.writeFile("testMetaData", response.getBody().toString());
-        }
-
-        getAllRegistrations(response.getBody());
-
+        Events events = metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
+        getAllRegistrations(events);
         return;
     }
 

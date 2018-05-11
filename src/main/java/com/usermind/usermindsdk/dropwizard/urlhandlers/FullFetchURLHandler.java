@@ -1,6 +1,6 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
-import com.usermind.usermindsdk.fetch.FullFetch;
+import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
