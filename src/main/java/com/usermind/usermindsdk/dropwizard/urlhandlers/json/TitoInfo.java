@@ -1,6 +1,6 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers.json;
 
-import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
+import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,9 +1,6 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.Authenticator;
-import com.usermind.usermindsdk.authentication.entities.Input;
-import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleFetch;
 import io.swagger.annotations.Api;
@@ -11,12 +8,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 
 @Component
 @Path("/v1/samplefetch")

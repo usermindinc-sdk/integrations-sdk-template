@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.baselib.dataReaders;
+package com.usermind.usermindsdk.baselib.datareaders;
 
 public class KmsClient {
 }

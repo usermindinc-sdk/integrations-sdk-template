@@ -21,6 +21,7 @@ public class Authenticator {
     }
 
     public Events authenticate(String accountName, String apiKey) {
+        LOGGER.info("Authenticator called");
         return metadataFetch.runMetadataFetch(accountName, apiKey);
     }
 

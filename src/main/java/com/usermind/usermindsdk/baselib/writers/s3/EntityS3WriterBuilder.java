@@ -4,8 +4,8 @@ import com.amazonaws.retry.RetryPolicy;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerConfiguration;
-import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
-import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
+import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

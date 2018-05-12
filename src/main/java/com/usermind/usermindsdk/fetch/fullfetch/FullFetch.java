@@ -1,11 +1,8 @@
 package com.usermind.usermindsdk.fetch.fullfetch;
 
 
-import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
-import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
-import com.usermind.usermindsdk.baselib.writers.EntityWriter;
-import com.usermind.usermindsdk.baselib.writers.s3.EntityS3WriterBuilder;
-import com.usermind.usermindsdk.baselib.writers.s3.OnCloseNopConsumer;
+import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
@@ -21,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.ws.rs.core.UriBuilder;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -34,6 +30,7 @@ public class FullFetch {
     private final MetadataFetch metadataFetch;
 
     public static final String AUTHORIZATION = "Authorization";
+    public static final String TOKEN_STRING = "Token token=";
 
     private RestTemplate restTemplate;
 
@@ -87,7 +84,7 @@ public class FullFetch {
 
     private void getEventRegistrations(String url) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Token token=" + runPoller.getApiKey());
+        headers.add(AUTHORIZATION, TOKEN_STRING + runPoller.getApiKey());
         headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<Registrations> response = restTemplate.exchange(url, HttpMethod.GET, entity, Registrations.class);

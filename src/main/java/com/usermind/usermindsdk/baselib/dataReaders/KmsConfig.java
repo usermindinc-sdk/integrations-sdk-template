@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.baselib.dataReaders;
+package com.usermind.usermindsdk.baselib.datareaders;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

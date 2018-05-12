@@ -1,8 +1,8 @@
 package com.usermind.usermindsdk.fetch;
 
 import com.usermind.usermindsdk.TestBase;
-import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
-import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
+import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.dropwizard.urlhandlers.json.TitoInfo;
 import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;

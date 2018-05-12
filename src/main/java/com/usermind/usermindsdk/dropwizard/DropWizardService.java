@@ -29,7 +29,8 @@ public class DropWizardService extends Application<DropWizardConfiguration> {
     private ObjectMapper objectMapper = null;
     public static final String GENERAL_ERROR_PAGE = "/error/general-error";
 
-    public static final Class[] SPRING_CONFIG_CLASSES = new Class[]{
+    //Sonar wants this to be protected, but it needs to be public for testbase to set itself up properly
+    public static final Class[] SPRING_CONFIG_CLASSES = new Class[]{  //NOSONAR
             SpringConfiguration.class
     };
 

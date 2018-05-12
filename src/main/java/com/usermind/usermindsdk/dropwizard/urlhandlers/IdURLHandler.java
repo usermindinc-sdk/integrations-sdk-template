@@ -1,7 +1,6 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
-import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
-import com.usermind.usermindsdk.dropwizard.urlhandlers.json.TitoInfo;
+import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

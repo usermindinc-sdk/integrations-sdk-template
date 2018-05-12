@@ -1,8 +1,6 @@
-package com.usermind.usermindsdk.baselib.dataReaders;
+package com.usermind.usermindsdk.baselib.datareaders;
 
 import org.springframework.stereotype.Component;
-
-import java.time.ZoneOffset;
 
 @Component
 public class RunPoller {

@@ -1,14 +1,13 @@
 package com.usermind.usermindsdk.fetch.samplefetch;
 
 
-import com.usermind.usermindsdk.baselib.dataReaders.RunPoller;
-import com.usermind.usermindsdk.baselib.dataReaders.WorkerInfo;
+import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
-import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class SampleFetch {

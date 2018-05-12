@@ -3,7 +3,7 @@ package com.usermind.usermindsdk.dropwizard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
-import com.usermind.usermindsdk.baselib.dataReaders.KmsConfig;
+import com.usermind.usermindsdk.baselib.datareaders.KmsConfig;
 import com.usermind.usermindsdk.baselib.metrics.MetricsConfiguration;
 import com.usermind.usermindsdk.baselib.writers.s3.S3Config;
 import io.dropwizard.Configuration;

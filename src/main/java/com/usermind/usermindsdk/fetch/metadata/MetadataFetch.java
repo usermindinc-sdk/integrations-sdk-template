@@ -29,6 +29,8 @@ public class MetadataFetch {
     public Events runMetadataFetch(String accountName, String apiKey) {
         //For Tito - this is hard coded. Fetch the registrations:
         //https://api.tito.io/timeline
+        LOGGER.debug("Running metadata fetch");
+
         UriBuilder singleFieldBuilder = UriBuilder
                 .fromPath("https://api.tito.io")
                 .path("/v2/" + accountName + "/events");
