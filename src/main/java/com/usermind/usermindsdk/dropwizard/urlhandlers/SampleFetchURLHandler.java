@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.Authenticator;
 import com.usermind.usermindsdk.authentication.entities.Input;
 import com.usermind.usermindsdk.fetch.json.events.Events;
+import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
+import com.usermind.usermindsdk.fetch.samplefetch.SampleFetch;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +19,17 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
 @Component
-@Path("/v1/authenticate")
-@Api(value = "Authenticator API")
+@Path("/v1/samplefetch")
+@Api(value = "Sample Fetch API")
 @Produces(MediaType.APPLICATION_JSON)
-public class AuthenticatorURLHandler {
+public class SampleFetchURLHandler {
 
-    private Authenticator authenticator;
+    private SampleFetch sampleFetch;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public AuthenticatorURLHandler(Authenticator authenticator, ObjectMapper objectMapper) {
-        this.authenticator = authenticator;
+    public SampleFetchURLHandler(SampleFetch sampleFetch, ObjectMapper objectMapper) {
+        this.sampleFetch = sampleFetch;
         this.objectMapper = objectMapper;
     }
 
@@ -48,14 +50,11 @@ public class AuthenticatorURLHandler {
 }
      */
     @POST
-    @ApiOperation(value = "Authenticate credentials",
-            notes = "Run a metadata fetch against a worker to test out the supplied credentials.",
-            tags = "API")
-    public Events authenticate(@FormParam("connectionData") String connectionDataStr) throws IOException {
-        Input input = objectMapper.readValue(connectionDataStr, Input.class);
-        return authenticator.authenticate(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
-                input.getConnectionData().getEncrypted().getCredentials().getClientSecret());
-//        return authenticator.authenticate("ragi-test", "nM_bPyV4sfbVBz8Po28g");
+    @ApiOperation(value = "Perform Sample Fetch",
+            notes = "Run a sample fetch for a customer to return some example data.",
+            tags = {"API", "Fetch"})
+    public SampleData runSampleFetch() {
+        return sampleFetch.runSampleFetch();
     }
 
 }

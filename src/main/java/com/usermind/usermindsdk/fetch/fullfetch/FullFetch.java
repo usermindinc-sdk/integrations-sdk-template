@@ -44,14 +44,7 @@ public class FullFetch {
         this.runPoller = runPoller;
         this.workerInfo = workerInfo;
         this.metadataFetch = metadataFetch;
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        LOGGER.info("Setup took {} seconds", stopWatch.getTime(TimeUnit.SECONDS));
-      //  Configuration usermindConfiguration = new DefaultConfigurationSource().load();
         this.workerConfiguration = workerConfiguration;
-        stopWatch.stop();
-
-        LOGGER.info("Setup took {} seconds", stopWatch.getTime(TimeUnit.SECONDS));
         return;
     }
     //Takes 8 to 9 minutes in the old code
@@ -90,7 +83,6 @@ public class FullFetch {
         events.getData().stream()
                 .map(event -> event.getLinks().getSelf() + "/registrations")
                 .forEach(url -> getEventRegistrations(url));
-
     }
 
     private void getEventRegistrations(String url) {
@@ -104,16 +96,16 @@ public class FullFetch {
     }
 
 
-    EntityWriter createEntityS3Writer(//IntegrationApiConnector apiConnector
-                                       ) {
-
-        return EntityS3WriterBuilder.newBuilder()
-                .setRunPoller(runPoller)
-                .setWorkerInfo(workerInfo)
-                .setS3Config(workerConfiguration.getS3Config())
-                .setOnCloseCheckpointsConsumer(new OnCloseNopConsumer())
-                .build();
-    }
+//    EntityWriter createEntityS3Writer(//IntegrationApiConnector apiConnector
+//                                       ) {
+//
+//        return EntityS3WriterBuilder.newBuilder()
+//                .setRunPoller(runPoller)
+//                .setWorkerInfo(workerInfo)
+//                .setS3Config(workerConfiguration.getS3Config())
+//                .setOnCloseCheckpointsConsumer(new OnCloseNopConsumer())
+//                .build();
+//    }
 
 
 //    private MetricsReporter<MetricsCollectorClient> createMetricsReporter(
