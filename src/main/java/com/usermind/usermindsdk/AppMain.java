@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 
 public class AppMain {
 
-    //TODO - move arguments to code so it runs with no arguments
-    //TODO - search for config file - same directory, /etc/usermind
-
     //TODO - integrate with SignalFX for metrics https://app.signalfx.com/#/dashboard/DZUNGRxAYAA
     public static void main(String[] args) throws Exception {
 

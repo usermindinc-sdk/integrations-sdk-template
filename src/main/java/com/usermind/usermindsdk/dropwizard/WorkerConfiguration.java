@@ -3,14 +3,9 @@ package com.usermind.usermindsdk.dropwizard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
-import com.usermind.usermindsdk.baselib.datareaders.KmsConfig;
-import com.usermind.usermindsdk.baselib.metrics.MetricsConfiguration;
-import com.usermind.usermindsdk.baselib.writers.s3.S3Config;
 import io.dropwizard.Configuration;
 import io.swagger.jaxrs.config.BeanConfig;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 public class WorkerConfiguration extends Configuration {
 
     private static final String DEFAULT_TITLE = "Usermindsdk project";
@@ -22,26 +17,6 @@ public class WorkerConfiguration extends Configuration {
     //Swagger starts//
     private String pageTitle;
     private String templateUrl;
-
-    private MetricsConfiguration integrationMetrics = new MetricsConfiguration();
-    private KmsConfig kmsConfig = new KmsConfig();
-    private S3Config s3Config = new S3Config();
-
-    public MetricsConfiguration getIntegrationMetrics() {
-        return integrationMetrics;
-    }
-
-    public void setIntegrationMetrics(MetricsConfiguration integrationMetrics) {
-        this.integrationMetrics = checkNotNull(integrationMetrics);
-    }
-
-    public S3Config getS3Config() {
-        return s3Config;
-    }
-
-    public void setS3Config(S3Config s3Config) {
-        this.s3Config = checkNotNull(s3Config);
-    }
 
     @NotEmpty
     private String resourcePackage;
@@ -63,14 +38,6 @@ public class WorkerConfiguration extends Configuration {
     public WorkerConfiguration() {
         this.pageTitle = DEFAULT_TITLE;
         this.templateUrl = DEFAULT_TEMPLATE;
-    }
-
-    public KmsConfig getKmsConfig() {
-        return kmsConfig;
-    }
-
-    public void setKmsConfig(KmsConfig kmsConfig) {
-        this.kmsConfig = checkNotNull(kmsConfig);
     }
 
     public String getTest() {

@@ -9,14 +9,6 @@ workerConfiguration:
 
 #Hopefully soon we can tell Swagger not to scan every file -
 #https://github.com/swagger-api/swagger-core/issues/2631
-  integrationMetrics:
-    #Possible clientTypes: dataDogNonBlocking, noOp
-    clientType: "dataDogNonBlocking"
-    tags:
-    - 'stack'
-    #Possible: datadog-staging.east.usermind.com, datadog-prod.west.usermind.com
-    host: 'datadog-staging.east.usermind.com'
-    port:  8125
 
   kmsConfig:
     ec2Role: 'integrations_stack_config_all_serivces_role'
@@ -32,8 +24,6 @@ server:
   adminConnectors:
     - type: http
       port: 8090
-
-
 
 logging:
   level: DEBUG
