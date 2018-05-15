@@ -7,8 +7,9 @@ import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.mockito.Mock;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SampleFetchTest extends TestBase {
 
@@ -28,17 +29,17 @@ class SampleFetchTest extends TestBase {
 
     @BeforeEach
     void setUp() {
-        sampleFetch = new SampleFetch(restTemplate, workerConfiguration, runPoller, workerInfo, metadataFetch) ;
+        sampleFetch = new SampleFetch(restTemplate, runPoller, metadataFetch) ;
     }
 
     @Test
     void testStepSize() {
-        assertEquals(1, sampleFetch.findStepSize(-4));
-        assertEquals(1, sampleFetch.findStepSize(0));
-        assertEquals(1, sampleFetch.findStepSize(4));
-        assertEquals(1, sampleFetch.findStepSize(22));
-        assertEquals(2, sampleFetch.findStepSize(41));
-        assertEquals(6, sampleFetch.findStepSize(124));
-        assertEquals(2291, sampleFetch.findStepSize(45832));
+        assertThat(1).isEqualTo(sampleFetch.findStepSize(-4));
+        assertThat(1).isEqualTo(sampleFetch.findStepSize(0));
+        assertThat(1).isEqualTo(sampleFetch.findStepSize(4));
+        assertThat(1).isEqualTo(sampleFetch.findStepSize(22));
+        assertThat(2).isEqualTo(sampleFetch.findStepSize(41));
+        assertThat(6).isEqualTo(sampleFetch.findStepSize(124));
+        assertThat(2291).isEqualTo(sampleFetch.findStepSize(45832));
     }
 }

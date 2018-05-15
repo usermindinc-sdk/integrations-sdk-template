@@ -1,0 +1,96 @@
+{
+  "data": [
+    {
+      "id": "pbdxWRVkkv86hMU7s56YzSg",
+      "type": "registrations",
+      "attributes": {
+        "billing-address": {
+          "company-name": "Usermind"
+        },
+        "completed-at": "2017-08-30T09:30:23.000Z",
+        "discount-code": null,
+        "email": "sai@usermind.com",
+        "expires-at": "2017-08-30T09:45:23.000Z",
+        "ip-address": "183.82.33.179",
+        "name": "Sai K",
+        "paid": true,
+        "payment": {
+          "reference": null,
+          "type": "manual"
+        },
+        "phone-number": null,
+        "reference": "XIAR",
+        "refunded": false,
+        "registration-type": "manual",
+        "state": "confirmed",
+        "test-mode": false,
+        "total": "16.00"
+      },
+      "links": {
+        "self": "https://api.tito.io/v2/ragi-test/2016-edition/registrations/pbdxWRVkkv86hMU7s56YzSg"
+      },
+      "relationships": {
+        "receipt": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2016-edition/receipts/pezooEJ4U0SKEDIk3OOUsmQ"
+          }
+        },
+        "refunds": {},
+        "tickets": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2016-edition/tickets?filter[registration]=pbdxWRVkkv86hMU7s56YzSg"
+          }
+        }
+      },
+      "meta": {
+        "link": "https://ti.to/registrations/pbdxWRVkkv86hMU7s56YzSg"
+      }
+    },
+    {
+      "id": "p3xdyE6AlFgXGdsBFar3E2w",
+      "type": "registrations",
+      "attributes": {
+        "billing-address": {
+          "company-name": "Usermind"
+        },
+        "completed-at": "2017-08-30T09:29:32.000Z",
+        "discount-code": null,
+        "email": "lohith@usermind.com",
+        "expires-at": "2017-08-30T09:44:31.000Z",
+        "ip-address": "183.82.33.179",
+        "name": "Lohith N",
+        "paid": true,
+        "payment": {
+          "reference": null,
+          "type": "manual"
+        },
+        "phone-number": null,
+        "reference": "SWAY",
+        "refunded": false,
+        "registration-type": "manual",
+        "state": "confirmed",
+        "test-mode": false,
+        "total": "15.00"
+      },
+      "links": {
+        "self": "https://api.tito.io/v2/ragi-test/2016-edition/registrations/p3xdyE6AlFgXGdsBFar3E2w"
+      },
+      "relationships": {
+        "receipt": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2016-edition/receipts/p3FXi4uh1ObGbCtDkekA47Q"
+          }
+        },
+        "refunds": {},
+        "tickets": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2016-edition/tickets?filter[registration]=p3xdyE6AlFgXGdsBFar3E2w"
+          }
+        }
+      },
+      "meta": {
+        "link": "https://ti.to/registrations/p3xdyE6AlFgXGdsBFar3E2w"
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@ package com.usermind.usermindsdk.fetch.samplefetch;
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
 import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
+import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;
 import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
@@ -24,23 +25,16 @@ import java.util.List;
 public class SampleFetch {
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleFetch.class);
 
-    private final WorkerConfiguration workerConfiguration;
     private final RunPoller runPoller;
-    private final WorkerInfo workerInfo;
     private final MetadataFetch metadataFetch;
-
-    public static final String AUTHORIZATION = "Authorization";
 
     private RestTemplate restTemplate;
 
     @Autowired
-    public SampleFetch(RestTemplate restTemplate, WorkerConfiguration workerConfiguration,
-                       RunPoller runPoller, WorkerInfo workerInfo, MetadataFetch metadataFetch) {
+    public SampleFetch(RestTemplate restTemplate, RunPoller runPoller, MetadataFetch metadataFetch) {
         this.restTemplate = restTemplate;
         this.runPoller = runPoller;
-        this.workerInfo = workerInfo;
         this.metadataFetch = metadataFetch;
-        this.workerConfiguration = workerConfiguration;
         return;
     }
     //Takes 8 to 9 minutes in the old code
@@ -58,6 +52,7 @@ public class SampleFetch {
         //https://api.tito.io/v2/ragi-test/2016-edition/registrations
         //https://api.tito.io/v2/ragi-test/2017-edition/registrations
 
+        LOGGER.info("Running sample fetch");
         Events events = metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
         return getSomeRegistrations(events);
     }
@@ -73,7 +68,7 @@ public class SampleFetch {
 
         for (int i = 0; i < events.getData().size(); i += stepsize ) {
             DataItem dataItem = items.get(i);
-            Registrations registrations = getEventRegistrations(dataItem, sampleData);
+            Registrations registrations = getEventRegistrations(dataItem);
             if (registrations != null) {
                 sampleData.addItem(dataItem, registrations);
             }
@@ -89,9 +84,9 @@ public class SampleFetch {
         return stepSize;
     }
 
-    private Registrations getEventRegistrations(DataItem dataItem, SampleData sampleData) {
+    private Registrations getEventRegistrations(DataItem dataItem) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Token token=" + runPoller.getApiKey());
+        headers.add(FullFetch.AUTHORIZATION, FullFetch.TOKEN_STRING + runPoller.getApiKey());
         headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 

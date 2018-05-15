@@ -11,47 +11,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-
-//import org.junit.After;
-//import org.junit.Before;
-
-//import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TestBase {
 
     protected static AnnotationConfigApplicationContext ctx;
     public static RestTemplate restTemplate = null;
     public static ObjectMapper objectMapper;
-
-//    public static RestTemplate setupRestTemplate() {
-//
-//        if (restTemplate == null) {
-//            restTemplate = new RestTemplate();
-//            List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-//            MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
-//            jsonMessageConverter.setObjectMapper(objectMapper);
-//            messageConverters.add(jsonMessageConverter);
-//
-//            StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
-//            stringConverter.setSupportedMediaTypes(Arrays.asList(MediaType.TEXT_PLAIN, MediaType.APPLICATION_OCTET_STREAM));
-//            messageConverters.add(stringConverter);
-//
-//            restTemplate.setMessageConverters(messageConverters);
-//        }
-//        return restTemplate;
-//    }
 
     public static ObjectMapper setupObjectMapper() {
 

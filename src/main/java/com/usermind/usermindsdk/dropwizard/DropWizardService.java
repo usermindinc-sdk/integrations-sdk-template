@@ -61,7 +61,7 @@ public class DropWizardService extends Application<DropWizardConfiguration> {
 
         //Set up error handlers
         environment.jersey().register(new GenericExceptionMapper());
-        environment.jersey().register(new RuntimeExceptionMapper());
+        environment.jersey().register(new NoSuchMethodExceptionMapper());
 
         final ErrorPageErrorHandler epeh = new ErrorPageErrorHandler();
         // 400 - Bad Request, leave alone

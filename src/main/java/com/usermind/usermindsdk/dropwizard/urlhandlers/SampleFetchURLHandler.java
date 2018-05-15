@@ -20,12 +20,9 @@ import javax.ws.rs.core.MediaType;
 public class SampleFetchURLHandler {
 
     private SampleFetch sampleFetch;
-    private final ObjectMapper objectMapper;
-
     @Autowired
-    public SampleFetchURLHandler(SampleFetch sampleFetch, ObjectMapper objectMapper) {
+    public SampleFetchURLHandler(SampleFetch sampleFetch) {
         this.sampleFetch = sampleFetch;
-        this.objectMapper = objectMapper;
     }
 
     /*

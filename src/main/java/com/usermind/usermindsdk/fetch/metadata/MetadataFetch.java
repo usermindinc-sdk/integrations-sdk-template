@@ -1,6 +1,6 @@
 package com.usermind.usermindsdk.fetch.metadata;
 
-
+import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class MetadataFetch {
                 .path("/v2/" + accountName + "/events");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Token token=" + apiKey);
+        headers.add(FullFetch.AUTHORIZATION, FullFetch.TOKEN_STRING + apiKey);
         headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Events> response = restTemplate.exchange(singleFieldBuilder.build(), HttpMethod.GET, entity, Events.class);

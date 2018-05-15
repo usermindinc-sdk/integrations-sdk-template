@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.fetch;
+package com.usermind.usermindsdk.fetch.fullfetch;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
@@ -9,6 +9,7 @@ import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class FullFetchIT extends TestBase {
 
@@ -24,7 +25,7 @@ class FullFetchIT extends TestBase {
         runPoller = new RunPoller();
         workerInfo = new TitoInfo();
         metadataFetch = new MetadataFetch(restTemplate);
-        fullFetch = new FullFetch(restTemplate, workerConfiguration, runPoller, workerInfo, metadataFetch) ;
+        fullFetch = new FullFetch(restTemplate, runPoller, metadataFetch) ;
     }
 
     @Test

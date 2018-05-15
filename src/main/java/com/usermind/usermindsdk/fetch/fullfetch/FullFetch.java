@@ -1,9 +1,6 @@
 package com.usermind.usermindsdk.fetch.fullfetch;
 
-
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
-import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
-import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
@@ -24,9 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class FullFetch {
     private static final Logger LOGGER = LoggerFactory.getLogger(FullFetch.class);
 
-    private final WorkerConfiguration workerConfiguration;
     private final RunPoller runPoller;
-    private final WorkerInfo workerInfo;
     private final MetadataFetch metadataFetch;
 
     public static final String AUTHORIZATION = "Authorization";
@@ -35,13 +30,10 @@ public class FullFetch {
     private RestTemplate restTemplate;
 
     @Autowired
-    public FullFetch(RestTemplate restTemplate, WorkerConfiguration workerConfiguration,
-                     RunPoller runPoller, WorkerInfo workerInfo, MetadataFetch metadataFetch) {
+    public FullFetch(RestTemplate restTemplate, RunPoller runPoller, MetadataFetch metadataFetch) {
         this.restTemplate = restTemplate;
         this.runPoller = runPoller;
-        this.workerInfo = workerInfo;
         this.metadataFetch = metadataFetch;
-        this.workerConfiguration = workerConfiguration;
         return;
     }
     //Takes 8 to 9 minutes in the old code
