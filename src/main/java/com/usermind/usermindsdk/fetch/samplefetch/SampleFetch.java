@@ -4,6 +4,7 @@ package com.usermind.usermindsdk.fetch.samplefetch;
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
 import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
+import com.usermind.usermindsdk.fetch.FetchedData;
 import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;
 import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.events.Events;
@@ -38,7 +39,7 @@ public class SampleFetch extends SampleFetchBase {
     //Creating the metrics class and reading the configuration data - also 15 seconds
     //Took 7 to set up metrics, 8 to read the config file
 
-    public SampleData performSampleFetch() throws NoSuchMethodException {
+    public FetchedData performSampleFetch() throws NoSuchMethodException {
         //For Tito - this is hard coded. Fetch the registrations:
         //https://api.tito.io/timeline
         //Then for each registration, fetch the attendees:
@@ -46,11 +47,11 @@ public class SampleFetch extends SampleFetchBase {
         //https://api.tito.io/v2/ragi-test/2017-edition/registrations
 
         LOGGER.info("Running sample fetch");
-        Events events = metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
+        Events events = (Events) metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
         return getSomeRegistrations(events);
     }
 
-    protected SampleData getSomeRegistrations(Events events) {
+    protected FetchedData getSomeRegistrations(Events events) {
 
         SampleData sampleData = new SampleData();
 

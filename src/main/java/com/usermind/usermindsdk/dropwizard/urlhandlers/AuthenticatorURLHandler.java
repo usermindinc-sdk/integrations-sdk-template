@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.Authenticator;
 import com.usermind.usermindsdk.authentication.entities.Input;
 import com.usermind.usermindsdk.fetch.json.events.Events;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ SHOULD BE:
     @ApiOperation(value = "Authenticate credentials",
             notes = "Run a metadata fetch against a worker to test out the supplied credentials.",
             tags = "API")
-    public Events authenticate(@FormParam("connectionData") String connectionDataStr) throws IOException, NoSuchMethodException {
+    public MetadataFetchData authenticate(@FormParam("connectionData") String connectionDataStr) throws IOException, NoSuchMethodException {
         Input input = objectMapper.readValue(connectionDataStr, Input.class);
         return authenticator.performAuthentication(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
                 input.getConnectionData().getEncrypted().getCredentials().getClientSecret());

@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.authentication;
 
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class Authenticator {
         this.metadataFetch = metadataFetch;
     }
 
-    public Events performAuthentication(String accountName, String apiKey) throws NoSuchMethodException {
+    public MetadataFetchData performAuthentication(String accountName, String apiKey) throws NoSuchMethodException {
         LOGGER.info("Authenticator called");
         return metadataFetch.runMetadataFetch(accountName, apiKey);
     }

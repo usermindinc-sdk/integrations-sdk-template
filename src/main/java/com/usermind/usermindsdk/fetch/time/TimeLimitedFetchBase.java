@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.fetch.time;
 
 
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.fetch.FetchedData;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public abstract class TimeLimitedFetchBase {
         this.metadataFetch = metadataFetch;
     }
 
-    public SampleData runSampleFetch() throws NoSuchMethodException {
+    public FetchedData runSampleFetch() throws NoSuchMethodException {
         //This is here so that we can catch the error in a base class and
         //transform it to a desired return error
         //TODO - catch and transform errors
@@ -33,6 +34,6 @@ public abstract class TimeLimitedFetchBase {
         return performTimeLimitedFetch();
      }
 
-    abstract protected SampleData performTimeLimitedFetch() throws NoSuchMethodException;
+    abstract protected FetchedData performTimeLimitedFetch() throws NoSuchMethodException;
 
 }

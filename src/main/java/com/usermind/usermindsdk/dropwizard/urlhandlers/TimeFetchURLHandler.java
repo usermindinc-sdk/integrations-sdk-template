@@ -1,5 +1,6 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
+import com.usermind.usermindsdk.fetch.FetchedData;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
 import com.usermind.usermindsdk.fetch.time.TimeLimitedFetch;
 import io.swagger.annotations.Api;
@@ -30,7 +31,7 @@ public class TimeFetchURLHandler {
     @ApiOperation(value = "Perform Time Based Fetch",
             notes = "Run a time limited fetch for a customer to return changes made in that timeframe.",
             tags = {"API", "Fetch"})
-    public SampleData runTimeFetch(@FormParam("startTime") Long startTime, @FormParam("endTime") Long endTime) throws NoSuchMethodException {
+    public FetchedData runTimeFetch(@FormParam("startTime") Long startTime, @FormParam("endTime") Long endTime) throws NoSuchMethodException {
         return timeLimitedFetch.performTimeLimitedFetch();
     }
 

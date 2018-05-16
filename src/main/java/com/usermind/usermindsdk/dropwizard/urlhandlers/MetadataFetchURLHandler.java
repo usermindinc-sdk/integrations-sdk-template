@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.entities.Input;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleFetch;
 import io.swagger.annotations.Api;
@@ -53,7 +54,7 @@ public class MetadataFetchURLHandler {
     @ApiOperation(value = "Perform Metadata Fetch",
             notes = "Run a metadata fetch for a customer.",
             tags = {"API", "Fetch"})
-    public Events runMetaDataFetch(@FormParam("connectionData") String connectionDataStr) throws IOException, NoSuchMethodException {
+    public MetadataFetchData runMetaDataFetch(@FormParam("connectionData") String connectionDataStr) throws IOException, NoSuchMethodException {
         Input input = objectMapper.readValue(connectionDataStr, Input.class);
         return metadataFetch.runMetadataFetch(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
                 input.getConnectionData().getEncrypted().getCredentials().getClientSecret());

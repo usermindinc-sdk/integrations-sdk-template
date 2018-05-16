@@ -35,7 +35,7 @@ public class FullFetch extends FullFetchBase {
     //Took 7 to set up metrics, 8 to read the config file
 
     protected void performFullFetch() throws NoSuchMethodException {
-        Events events = metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
+        Events events = (Events) metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
         getAllRegistrations(events);
         return;
     }

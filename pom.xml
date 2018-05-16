@@ -16,7 +16,7 @@
         <jackson.version>2.9.4</jackson.version>
         <org.springframework-version>5.0.4.RELEASE</org.springframework-version>
         <dropwizard.version>1.2.4</dropwizard.version>
-        <mockito.version>2.15.0</mockito.version>
+        <mockito.version>2.18.3</mockito.version>
         <jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
 
         <jdk-version>1.8</jdk-version>
@@ -178,16 +178,28 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.1.0</version>
+            <version>5.2.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.junit.platform</groupId>-->
+            <!--<artifactId>junit-platform-engine</artifactId>-->
+            <!--<version>1.2.0</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.mockito</groupId>
@@ -197,10 +209,17 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>2.18.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <!-- use 2.9.1 for Java 7 projects -->
-            <version>3.9.1</version>
+            <version>3.10.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -432,7 +451,7 @@
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.1.0-RC1</version>
+                        <version>5.2.0</version>
                     </dependency>
                 </dependencies>
                 <configuration>

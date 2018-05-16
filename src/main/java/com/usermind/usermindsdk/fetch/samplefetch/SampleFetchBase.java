@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.fetch.samplefetch;
 
 
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.fetch.FetchedData;
 import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;
 import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.events.Events;
@@ -34,7 +35,7 @@ public abstract class SampleFetchBase {
         this.metadataFetch = metadataFetch;
     }
 
-    public SampleData runSampleFetch() throws NoSuchMethodException {
+    public FetchedData runSampleFetch() throws NoSuchMethodException {
         //This is here so that we can catch the error in a base class and
         //transform it to a desired return error
         //TODO - catch and transform errors
@@ -42,7 +43,7 @@ public abstract class SampleFetchBase {
         return performSampleFetch();
      }
 
-    abstract protected SampleData performSampleFetch() throws NoSuchMethodException;
+    abstract protected FetchedData performSampleFetch() throws NoSuchMethodException;
 
 
 

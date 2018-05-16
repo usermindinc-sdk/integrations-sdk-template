@@ -5,29 +5,37 @@ import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.Mockito.*;
+
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+@ExtendWith(MockitoExtension.class)
 class FullFetchTest extends TestBase {
 
     private FullFetch fullFetch;
 
     private MockRestServiceServer mockServer;
 
-    @Mock
-    private RunPoller runPoller;
+    private RunPoller runPoller = new RunPoller();
 
     @Mock
-    private MetadataFetch metadataFetch;
+    private MetadataFetch metadataFetch;// = mock(MetadataFetch.class);
 
     @BeforeEach
     void setUp() throws IOException {
@@ -70,15 +78,23 @@ class FullFetchTest extends TestBase {
 
     @Test
     void testFullFetch() throws IOException, NoSuchMethodException {
-        String eventStr = loadFileFixtureAsString("Events.json");
+        String eventStr = loadFileFixtureAsString("TwoEvents.json");
+        String firstReg = loadFileFixtureAsString("FirstRegistrations.json");
+        String secondReg = loadFileFixtureAsString("SecondRegistrations.json");
         Events events = objectMapper.readValue(eventStr, Events.class);
-        when(metadataFetch.runMetadataFetch(anyString(), anyString())).thenReturn(events);
+//        when(metadataFetch.runMetadataFetch(anyString(), anyString())).thenReturn(events);
+        when(metadataFetch.runMetadataFetch(ArgumentMatchers.eq("ragi-test"), ArgumentMatchers.eq("nM_bPyV4sfbVBz8Po28g"))).thenReturn(events);
 
-//        mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/events")))
-//                .andExpect(method(HttpMethod.GET))
-//                .andRespond(withSuccess(eventsString, MediaType.APPLICATION_JSON));
-//
-//
+        mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/2016-edition/registrations")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(firstReg, MediaType.APPLICATION_JSON));
+
+        mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/2017-edition/registrations")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(firstReg, MediaType.APPLICATION_JSON));
+
         fullFetch.performFullFetch();
+
+        mockServer.verify();
     }
 }

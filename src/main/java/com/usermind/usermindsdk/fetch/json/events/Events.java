@@ -2,10 +2,12 @@ package com.usermind.usermindsdk.fetch.json.events;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
+
 import javax.annotation.Generated;
 
 @Generated("com.robohorse.robopojogenerator")
-public class Events{
+public class Events implements MetadataFetchData {
 
 	@JsonProperty("data")
 	private List<DataItem> data;

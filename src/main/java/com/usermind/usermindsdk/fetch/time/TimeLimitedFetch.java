@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.fetch.time;
 
 
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.fetch.FetchedData;
 import com.usermind.usermindsdk.fetch.fullfetch.FullFetch;
 import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.events.Events;
@@ -31,7 +32,7 @@ public class TimeLimitedFetch extends TimeLimitedFetchBase {
         return;
     }
 
-    public SampleData performTimeLimitedFetch() throws NoSuchMethodException {
+    public FetchedData performTimeLimitedFetch() throws NoSuchMethodException {
         LOGGER.info("Running time limited fetch");
         throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
     }

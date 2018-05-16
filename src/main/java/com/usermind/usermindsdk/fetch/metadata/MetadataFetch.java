@@ -23,7 +23,7 @@ public class MetadataFetch extends MetadataFetchBase {
         super(restTemplate);
     }
 
-    protected Events performMetadataFetch(String accountName, String apiKey) {
+    protected MetadataFetchData performMetadataFetch(String accountName, String apiKey) {
         //For Tito - this is hard coded. Fetch the registrations:
         //https://api.tito.io/timeline
         LOGGER.debug("Running metadata fetch");

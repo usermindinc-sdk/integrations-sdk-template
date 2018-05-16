@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -83,7 +84,7 @@ public class TestBase {
     protected String loadFileFixtureAsString(String resourceName) throws IOException {
         return loadFileFixture(resourceName, input -> {
             try {
-                return IOUtils.toString(input);
+                return IOUtils.toString(input, Charset.defaultCharset());
             } catch (IOException e) {
                 throw new RuntimeException("read file to string failed", e);
             }

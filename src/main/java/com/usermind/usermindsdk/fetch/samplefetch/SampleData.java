@@ -1,5 +1,6 @@
 package com.usermind.usermindsdk.fetch.samplefetch;
 
+import com.usermind.usermindsdk.fetch.FetchedData;
 import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 
@@ -8,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SampleData {
+public class SampleData implements FetchedData {
     private ConcurrentLinkedQueue<SampleDataItem> sampleDataItems = new ConcurrentLinkedQueue<>();
 
     public void addItem(DataItem dataItem, Registrations registrations) {

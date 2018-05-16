@@ -1,0 +1,96 @@
+{
+  "data": [
+    {
+      "id": "pM5HZmfQebogp5hXrSOU0Jg",
+      "type": "registrations",
+      "attributes": {
+        "billing-address": {
+          "company-name": "Usermind"
+        },
+        "completed-at": "2017-08-30T09:25:23.000Z",
+        "discount-code": null,
+        "email": "sai@usermind.com",
+        "expires-at": "2017-08-30T09:40:23.000Z",
+        "ip-address": "183.82.33.179",
+        "name": "K Sai",
+        "paid": true,
+        "payment": {
+          "reference": null,
+          "type": "manual"
+        },
+        "phone-number": null,
+        "reference": "VX7E",
+        "refunded": false,
+        "registration-type": "manual",
+        "state": "confirmed",
+        "test-mode": false,
+        "total": "200.00"
+      },
+      "links": {
+        "self": "https://api.tito.io/v2/ragi-test/2017-edition/registrations/pM5HZmfQebogp5hXrSOU0Jg"
+      },
+      "relationships": {
+        "receipt": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2017-edition/receipts/phLXIw38LfCUW1st1cQd3UQ"
+          }
+        },
+        "refunds": {},
+        "tickets": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2017-edition/tickets?filter[registration]=pM5HZmfQebogp5hXrSOU0Jg"
+          }
+        }
+      },
+      "meta": {
+        "link": "https://ti.to/registrations/pM5HZmfQebogp5hXrSOU0Jg"
+      }
+    },
+    {
+      "id": "pdP79CyURfMfhiWJme2wUqA",
+      "type": "registrations",
+      "attributes": {
+        "billing-address": {
+          "company-name": "usermind"
+        },
+        "completed-at": "2017-08-21T07:17:31.000Z",
+        "discount-code": null,
+        "email": "ragi@gmail.com",
+        "expires-at": "2017-08-21T07:32:30.000Z",
+        "ip-address": "27.59.118.41",
+        "name": "R Daya",
+        "paid": true,
+        "payment": {
+          "reference": null,
+          "type": "manual"
+        },
+        "phone-number": null,
+        "reference": "EKJN",
+        "refunded": false,
+        "registration-type": "manual",
+        "state": "confirmed",
+        "test-mode": false,
+        "total": "300.00"
+      },
+      "links": {
+        "self": "https://api.tito.io/v2/ragi-test/2017-edition/registrations/pdP79CyURfMfhiWJme2wUqA"
+      },
+      "relationships": {
+        "receipt": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2017-edition/receipts/poVz70H44eadsHXS8HAD55w"
+          }
+        },
+        "refunds": {},
+        "tickets": {
+          "links": {
+            "related": "https://api.tito.io/v2/ragi-test/2017-edition/tickets?filter[registration]=pdP79CyURfMfhiWJme2wUqA"
+          }
+        }
+      },
+      "meta": {
+        "link": "https://ti.to/registrations/pdP79CyURfMfhiWJme2wUqA"
+      }
+    }
+  ]
+}

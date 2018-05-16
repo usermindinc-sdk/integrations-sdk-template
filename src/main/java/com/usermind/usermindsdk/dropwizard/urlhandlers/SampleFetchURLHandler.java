@@ -1,6 +1,7 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.usermind.usermindsdk.fetch.FetchedData;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleFetch;
 import io.swagger.annotations.Api;
@@ -46,7 +47,7 @@ public class SampleFetchURLHandler {
     @ApiOperation(value = "Perform Sample Fetch",
             notes = "Run a sample fetch for a customer to return some example data.",
             tags = {"API", "Fetch"})
-    public SampleData runSampleFetch() throws NoSuchMethodException {
+    public FetchedData runSampleFetch() throws NoSuchMethodException {
         return sampleFetch.runSampleFetch();
     }
 

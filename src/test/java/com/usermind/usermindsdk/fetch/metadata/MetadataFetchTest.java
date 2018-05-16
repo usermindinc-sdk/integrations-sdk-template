@@ -48,7 +48,7 @@ class MetadataFetchTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(eventsString, MediaType.APPLICATION_JSON));
 
-        Events events = metadataFetch.runMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
+        Events events = (Events) metadataFetch.runMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
         assertThat(events.getData().size()).isGreaterThan(5);
 
         mockServer.verify();
@@ -62,7 +62,7 @@ class MetadataFetchTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Events events = metadataFetch.runMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
+        Events events = (Events) metadataFetch.runMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
         assertThat(events.getData().size()).isEqualTo(0);
 
         mockServer.verify();
