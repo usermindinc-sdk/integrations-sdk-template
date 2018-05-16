@@ -29,7 +29,7 @@ class FullFetchIT extends TestBase {
     }
 
     @Test
-    void testFullFetch() {
+    void testFullFetch() throws NoSuchMethodException {
         fullFetch.runFullFetch();
     }
 }

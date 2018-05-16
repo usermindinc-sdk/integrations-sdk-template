@@ -20,9 +20,10 @@ public class Authenticator {
         this.metadataFetch = metadataFetch;
     }
 
-    public Events authenticate(String accountName, String apiKey) {
+    public Events performAuthentication(String accountName, String apiKey) throws NoSuchMethodException {
         LOGGER.info("Authenticator called");
         return metadataFetch.runMetadataFetch(accountName, apiKey);
     }
+
 
 }

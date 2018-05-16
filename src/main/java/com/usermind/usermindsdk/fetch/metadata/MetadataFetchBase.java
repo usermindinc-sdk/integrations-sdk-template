@@ -14,14 +14,15 @@ public abstract class MetadataFetchBase {
         this.restTemplate = restTemplate;
     }
 
-    public Events runMetadataFetch(String accountName, String apiKey) {
+    public Events runMetadataFetch(String accountName, String apiKey) throws NoSuchMethodException {
         //This is here so that we can catch the error in a base class and
         //transform it to a desired return error
         //TODO - catch and transform errors
+        LOGGER.info("Running metadata fetch");
         return performMetadataFetch(accountName, apiKey);
     }
 
-    abstract Events performMetadataFetch(String accountName, String apiKey);
+    abstract Events performMetadataFetch(String accountName, String apiKey) throws NoSuchMethodException;
 
 
 }

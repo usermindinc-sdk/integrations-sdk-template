@@ -46,14 +46,17 @@ public class AuthenticatorURLHandler {
     }
   }
 }
+
+SHOULD BE:
+{accountName: "name", token: "key"}
      */
     @POST
     @ApiOperation(value = "Authenticate credentials",
             notes = "Run a metadata fetch against a worker to test out the supplied credentials.",
             tags = "API")
-    public Events authenticate(@FormParam("connectionData") String connectionDataStr) throws IOException {
+    public Events authenticate(@FormParam("connectionData") String connectionDataStr) throws IOException, NoSuchMethodException {
         Input input = objectMapper.readValue(connectionDataStr, Input.class);
-        return authenticator.authenticate(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
+        return authenticator.performAuthentication(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
                 input.getConnectionData().getEncrypted().getCredentials().getClientSecret());
     }
 

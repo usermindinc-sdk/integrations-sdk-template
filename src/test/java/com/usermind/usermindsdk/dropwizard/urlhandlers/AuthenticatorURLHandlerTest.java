@@ -36,7 +36,7 @@ class AuthenticatorURLHandlerTest extends TestBase {
     }
 
     @Test
-    void testDeserialization() throws IOException {
+    void testDeserialization() throws IOException, NoSuchMethodException {
             authenticatorURLHandler.authenticate(validJson);
     }
 }

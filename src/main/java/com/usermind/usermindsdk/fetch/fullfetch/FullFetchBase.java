@@ -31,7 +31,7 @@ public abstract class FullFetchBase {
     //Creating the metrics class and reading the configuration data - also 15 seconds
     //Took 7 to set up metrics, 8 to read the config file
 
-    public void runFullFetch() {
+    public void runFullFetch() throws NoSuchMethodException {
         //This is here so that we can catch the error in a base class and
         //transform it to a desired return error
         //TODO - catch and transform errors
@@ -42,6 +42,7 @@ public abstract class FullFetchBase {
         //https://api.tito.io/v2/ragi-test/2016-edition/registrations
         //https://api.tito.io/v2/ragi-test/2017-edition/registrations
 
+        LOGGER.info("Running full fetch");
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         performFullFetch();
@@ -52,6 +53,6 @@ public abstract class FullFetchBase {
         return;
     }
 
-    abstract void performFullFetch();
+    abstract void performFullFetch() throws NoSuchMethodException;
 
 }

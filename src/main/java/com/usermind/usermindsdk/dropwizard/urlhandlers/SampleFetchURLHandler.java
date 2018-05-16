@@ -20,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 public class SampleFetchURLHandler {
 
     private SampleFetch sampleFetch;
+
     @Autowired
     public SampleFetchURLHandler(SampleFetch sampleFetch) {
         this.sampleFetch = sampleFetch;
@@ -45,7 +46,7 @@ public class SampleFetchURLHandler {
     @ApiOperation(value = "Perform Sample Fetch",
             notes = "Run a sample fetch for a customer to return some example data.",
             tags = {"API", "Fetch"})
-    public SampleData runSampleFetch() {
+    public SampleData runSampleFetch() throws NoSuchMethodException {
         return sampleFetch.runSampleFetch();
     }
 

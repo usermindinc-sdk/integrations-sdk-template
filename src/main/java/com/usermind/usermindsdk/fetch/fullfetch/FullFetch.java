@@ -34,14 +34,14 @@ public class FullFetch extends FullFetchBase {
     //Creating the metrics class and reading the configuration data - also 15 seconds
     //Took 7 to set up metrics, 8 to read the config file
 
-    protected void performFullFetch() {
+    protected void performFullFetch() throws NoSuchMethodException {
         Events events = metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
         getAllRegistrations(events);
         return;
     }
 
     protected void getAllRegistrations(Events events) {
-        events.getData().stream()
+        events.getData().parallelStream()
                 .map(event -> event.getLinks().getSelf() + "/registrations")
                 .forEach(url -> getEventRegistrations(url));
     }

@@ -6,6 +6,7 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ class MetadataFetchTest extends TestBase {
     }
 
     @Test
-    void basicTest() {
+    void basicTest() throws NoSuchMethodException{
 
         mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/events")))
                 .andExpect(method(HttpMethod.GET))
@@ -53,10 +54,10 @@ class MetadataFetchTest extends TestBase {
         mockServer.verify();
     }
 
-    //Ignore this test until the runs are in a wrapper call that can catch errors´
-    @Ignore
+    //Ignore this test until the runs are in a wrapper call that can catch errors
+    @Disabled
     @Test
-    void testError() {
+    void testError() throws NoSuchMethodException {
         mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/events")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));

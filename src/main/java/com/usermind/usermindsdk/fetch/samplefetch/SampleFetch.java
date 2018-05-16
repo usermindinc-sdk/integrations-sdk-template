@@ -38,7 +38,7 @@ public class SampleFetch extends SampleFetchBase {
     //Creating the metrics class and reading the configuration data - also 15 seconds
     //Took 7 to set up metrics, 8 to read the config file
 
-    public SampleData performSampleFetch() {
+    public SampleData performSampleFetch() throws NoSuchMethodException {
         //For Tito - this is hard coded. Fetch the registrations:
         //https://api.tito.io/timeline
         //Then for each registration, fetch the attendees:

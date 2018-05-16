@@ -34,14 +34,15 @@ public abstract class SampleFetchBase {
         this.metadataFetch = metadataFetch;
     }
 
-    public SampleData runSampleFetch() {
+    public SampleData runSampleFetch() throws NoSuchMethodException {
         //This is here so that we can catch the error in a base class and
         //transform it to a desired return error
         //TODO - catch and transform errors
+        LOGGER.info("Running sample fetch");
         return performSampleFetch();
      }
 
-    abstract protected SampleData performSampleFetch();
+    abstract protected SampleData performSampleFetch() throws NoSuchMethodException;
 
 
 

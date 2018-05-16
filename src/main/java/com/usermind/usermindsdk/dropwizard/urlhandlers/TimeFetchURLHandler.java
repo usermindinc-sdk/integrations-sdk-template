@@ -1,7 +1,10 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
+import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
+import com.usermind.usermindsdk.fetch.time.TimeLimitedFetch;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.FormParam;
@@ -16,12 +19,19 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class TimeFetchURLHandler {
 
+    TimeLimitedFetch timeLimitedFetch;
+
+    @Autowired
+    public TimeFetchURLHandler(TimeLimitedFetch timeLimitedFetch) {
+        this.timeLimitedFetch = timeLimitedFetch;
+    }
+
     @POST
     @ApiOperation(value = "Perform Time Based Fetch",
             notes = "Run a time limited fetch for a customer to return changes made in that timeframe.",
             tags = {"API", "Fetch"})
-    public void runTimeFetch(@FormParam("startTime") Long startTime, @FormParam("endTime") Long endTime) throws NoSuchMethodException {
-        throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
+    public SampleData runTimeFetch(@FormParam("startTime") Long startTime, @FormParam("endTime") Long endTime) throws NoSuchMethodException {
+        return timeLimitedFetch.performTimeLimitedFetch();
     }
 
 }

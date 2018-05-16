@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.dropwizard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import com.usermind.usermindsdk.healthchecks.AppRunningHealthCheck;
 import com.usermind.usermindsdk.helpers.JsonSerialization;
 import com.usermind.usermindsdk.spring.SpringConfiguration;
 import com.usermind.usermindsdk.swagger.SwaggerBundle;
@@ -72,6 +73,9 @@ public class DropWizardService extends Application<DropWizardConfiguration> {
         epeh.addErrorPage(405, 499, GENERAL_ERROR_PAGE);
         epeh.addErrorPage(500, 599, GENERAL_ERROR_PAGE);
         environment.getApplicationContext().setErrorHandler(epeh);
+
+
+        environment.healthChecks().register("AppRunningHealthCheck", new AppRunningHealthCheck());
 
         //before we init the app context, create a parent context with any DW config objects to provide the child context
         final AnnotationConfigApplicationContext dwAppContext = new AnnotationConfigApplicationContext();

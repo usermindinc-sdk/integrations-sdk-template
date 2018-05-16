@@ -53,7 +53,7 @@ public class MetadataFetchURLHandler {
     @ApiOperation(value = "Perform Metadata Fetch",
             notes = "Run a metadata fetch for a customer.",
             tags = {"API", "Fetch"})
-    public Events runMetaDataFetch(@FormParam("connectionData") String connectionDataStr) throws IOException {
+    public Events runMetaDataFetch(@FormParam("connectionData") String connectionDataStr) throws IOException, NoSuchMethodException {
         Input input = objectMapper.readValue(connectionDataStr, Input.class);
         return metadataFetch.runMetadataFetch(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
                 input.getConnectionData().getEncrypted().getCredentials().getClientSecret());
