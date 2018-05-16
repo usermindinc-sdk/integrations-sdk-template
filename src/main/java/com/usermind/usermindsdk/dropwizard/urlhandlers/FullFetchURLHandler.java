@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Component
-@Path("/fullfetch")
+@Path("/v1/fullfetch")
 @Api(value = "Full Fetch API")
 @Produces(MediaType.APPLICATION_JSON)
 public class FullFetchURLHandler {
@@ -29,6 +29,7 @@ public class FullFetchURLHandler {
             notes = "Run a full fetch against a worker, retrieve all data, and write it to S3.",
             tags = {"API", "Fetch"})
     public void runFullFetch() {
+        //TODO - somewhere in here this needs to get threaded off and managed
         fullFetch.runFullFetch();
 
         //Needs to know -

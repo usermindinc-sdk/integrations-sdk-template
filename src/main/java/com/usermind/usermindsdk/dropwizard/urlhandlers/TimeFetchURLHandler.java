@@ -20,7 +20,7 @@ public class TimeFetchURLHandler {
     @ApiOperation(value = "Perform Time Based Fetch",
             notes = "Run a time limited fetch for a customer to return changes made in that timeframe.",
             tags = {"API", "Fetch"})
-    public void runSampleFetch(@FormParam("startTime") Long startTime, @FormParam("endTime") Long endTime) throws NoSuchMethodException {
+    public void runTimeFetch(@FormParam("startTime") Long startTime, @FormParam("endTime") Long endTime) throws NoSuchMethodException {
         throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
     }
 

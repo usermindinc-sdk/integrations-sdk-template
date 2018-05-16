@@ -1,9 +1,11 @@
 package com.usermind.usermindsdk.dropwizard.urlhandlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.Authenticator;
 import com.usermind.usermindsdk.authentication.entities.Input;
 import com.usermind.usermindsdk.fetch.json.events.Events;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
+import com.usermind.usermindsdk.fetch.samplefetch.SampleData;
+import com.usermind.usermindsdk.fetch.samplefetch.SampleFetch;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +19,17 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
 @Component
-@Path("/v1/authenticate")
-@Api(value = "Authenticator API")
+@Path("/v1/metadatafetch")
+@Api(value = "Metadata Fetch API")
 @Produces(MediaType.APPLICATION_JSON)
-public class AuthenticatorURLHandler {
+public class MetadataFetchURLHandler {
 
-    private Authenticator authenticator;
+    private MetadataFetch metadataFetch;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public AuthenticatorURLHandler(Authenticator authenticator, ObjectMapper objectMapper) {
-        this.authenticator = authenticator;
+    public MetadataFetchURLHandler(MetadataFetch metadataFetch, ObjectMapper objectMapper) {
+        this.metadataFetch = metadataFetch;
         this.objectMapper = objectMapper;
     }
 
@@ -48,12 +50,12 @@ public class AuthenticatorURLHandler {
 }
      */
     @POST
-    @ApiOperation(value = "Authenticate credentials",
-            notes = "Run a metadata fetch against a worker to test out the supplied credentials.",
-            tags = "API")
-    public Events authenticate(@FormParam("connectionData") String connectionDataStr) throws IOException {
+    @ApiOperation(value = "Perform Metadata Fetch",
+            notes = "Run a metadata fetch for a customer.",
+            tags = {"API", "Fetch"})
+    public Events runMetaDataFetch(@FormParam("connectionData") String connectionDataStr) throws IOException {
         Input input = objectMapper.readValue(connectionDataStr, Input.class);
-        return authenticator.authenticate(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
+        return metadataFetch.runMetadataFetch(input.getConnectionData().getEncrypted().getCredentials().getClientId(),
                 input.getConnectionData().getEncrypted().getCredentials().getClientSecret());
     }
 

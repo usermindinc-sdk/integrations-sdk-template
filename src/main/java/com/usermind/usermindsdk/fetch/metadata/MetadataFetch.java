@@ -15,18 +15,15 @@ import org.springframework.web.client.RestTemplate;
 import javax.ws.rs.core.UriBuilder;
 
 @Component
-public class MetadataFetch {
+public class MetadataFetch extends MetadataFetchBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataFetch.class);
-
-    private RestTemplate restTemplate;
 
     @Autowired
     public MetadataFetch(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-        return;
+        super(restTemplate);
     }
 
-    public Events runMetadataFetch(String accountName, String apiKey) {
+    protected Events performMetadataFetch(String accountName, String apiKey) {
         //For Tito - this is hard coded. Fetch the registrations:
         //https://api.tito.io/timeline
         LOGGER.debug("Running metadata fetch");

@@ -4,7 +4,6 @@ import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
-import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +14,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.concurrent.TimeUnit;
-
 @Component
-public class FullFetch {
+public class FullFetch extends FullFetchBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(FullFetch.class);
 
-    private final RunPoller runPoller;
-    private final MetadataFetch metadataFetch;
 
     public static final String AUTHORIZATION = "Authorization";
     public static final String TOKEN_STRING = "Token token=";
 
-    private RestTemplate restTemplate;
-
     @Autowired
     public FullFetch(RestTemplate restTemplate, RunPoller runPoller, MetadataFetch metadataFetch) {
-        this.restTemplate = restTemplate;
-        this.runPoller = runPoller;
-        this.metadataFetch = metadataFetch;
-        return;
+        super(restTemplate, runPoller, metadataFetch);
     }
     //Takes 8 to 9 minutes in the old code
     //New code:
@@ -44,25 +34,7 @@ public class FullFetch {
     //Creating the metrics class and reading the configuration data - also 15 seconds
     //Took 7 to set up metrics, 8 to read the config file
 
-    public void runFullFetch() {
-        //For Tito - this is hard coded. Fetch the registrations:
-        //https://api.tito.io/timeline
-        //Then for each registration, fetch the attendees:
-        //https://api.tito.io/v2/ragi-test/2016-edition/registrations
-        //https://api.tito.io/v2/ragi-test/2017-edition/registrations
-
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        getEvents();
-
-        stopWatch.stop();
-
-        LOGGER.info("Full fetch took {} seconds", stopWatch.getTime(TimeUnit.SECONDS));
-        return;
-    }
-
-
-    protected void getEvents() {
+    protected void performFullFetch() {
         Events events = metadataFetch.runMetadataFetch(runPoller.getAccountName(), runPoller.getApiKey());
         getAllRegistrations(events);
         return;

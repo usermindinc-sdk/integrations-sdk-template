@@ -22,19 +22,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Component
-public class SampleFetch {
+public class SampleFetch extends SampleFetchBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleFetch.class);
-
-    private final RunPoller runPoller;
-    private final MetadataFetch metadataFetch;
-
-    private RestTemplate restTemplate;
 
     @Autowired
     public SampleFetch(RestTemplate restTemplate, RunPoller runPoller, MetadataFetch metadataFetch) {
-        this.restTemplate = restTemplate;
-        this.runPoller = runPoller;
-        this.metadataFetch = metadataFetch;
+        super(restTemplate, runPoller, metadataFetch);
         return;
     }
     //Takes 8 to 9 minutes in the old code
@@ -45,7 +38,7 @@ public class SampleFetch {
     //Creating the metrics class and reading the configuration data - also 15 seconds
     //Took 7 to set up metrics, 8 to read the config file
 
-    public SampleData runSampleFetch() {
+    public SampleData performSampleFetch() {
         //For Tito - this is hard coded. Fetch the registrations:
         //https://api.tito.io/timeline
         //Then for each registration, fetch the attendees:
