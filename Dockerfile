@@ -19,7 +19,7 @@ ADD target/${JAR_FILE} ${JAR_FILE}
 COPY docker/start start
 
 
-COPY config.yml /app/config.yml
+COPY src/main/resources/config.yml /app/config.yml
 
 ENTRYPOINT ["/app/start", "server", "/app/config.yml"]
 
