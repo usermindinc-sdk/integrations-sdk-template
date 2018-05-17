@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: integrations-tito
+  namespace: integrations
+  labels:
+    deployment: production
+  annotations:
+    # BUILD_URL and PRODUCT_VERSION are provided by Jenkins
+    jenkinsBuildURL: ${BUILD_URL}
+    prodVersion: ${PRODUCT_VERSION}
+    kubernetes.io/change-cause: ${PRODUCT_VERSION}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: integrations-tito
+#      deployment: production
+  template:
+    metadata:
+      labels:
+        app: integrations-tito
+        deployment: production
+    spec:
+      containers:
+        - name: integrations-tito
+          image: usermindinc/integrations-tito:${PRODUCT_VERSION}
+
+      # How we talk to docker hub to get our private containers.
+      imagePullSecrets:
+        - name: regsecret 
+      

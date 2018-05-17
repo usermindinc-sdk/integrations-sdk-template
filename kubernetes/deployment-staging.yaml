@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: integrations-tito
+  namespace: integrations
+  labels:
+    deployment: staging
+  annotations:
+    # BUILD_URL and PRODUCT_VERSION are provided by Jenkins
+    jenkinsBuildURL: ${BUILD_URL}
+    prodVersion: ${PRODUCT_VERSION}
+    kubernetes.io/change-cause: ${PRODUCT_VERSION}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: integrations-tito
+#      deployment: staging
+  template:
+    metadata:
+      annotations:
+        iam.amazonaws.com/role: crucible_staging_role
+      labels:
+        app: integrations-tito
+        deployment: staging
+    spec:
+      containers:
+        - name: integrations-tito
+          image: usermindinc/integrations-tito:${PRODUCT_VERSION}
+          env:
+           - name: CLUSTER
+             value: staging
+           - name: PGPASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: fa-prod-db
+                 key: fa_lc39pass
+
+      # How we talk to docker hub to get our private containers.
+      imagePullSecrets:
+        - name: regsecret
+

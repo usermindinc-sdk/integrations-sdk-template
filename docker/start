@@ -1,0 +1,26 @@
+#!/bin/bash
+#set -e
+
+#export CONTAINER_ID=$(hostname)
+
+echo -e "\n\nStarting server...\n\n"
+
+#SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#BASE_DIR="$( dirname ${SCRIPT_DIR} )"
+# Change to suspend=y if you need to set a breakpoint in the debugger before the program starts
+#JVM_ARGS="-server -Duser.timezone=UTC -Xmx1500M -Xms1500M  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+
+#If your Kubernetes image won't start and you need to ssh into it to see why - run this command instead of your Java program.
+#Then it will come up and do nothing, and you can see what was created in the image.
+#exec sleep 1d
+if [ "$CLUSTER" = "production" ]; then
+    exec java \
+    -jar /app/${JAR_FILE} \
+    server \
+    /app/config.yml;
+else
+    exec java \
+    -jar /app/${JAR_FILE} \
+    server \
+    /app/config.yml;
+fi
