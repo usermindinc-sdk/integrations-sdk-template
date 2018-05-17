@@ -14,7 +14,7 @@
     pushDockerImage:    false
     javaVersion:        'oraclejdk8'
     mavenVersion:       'Maven_3.5.2'
-    kubeCluster:        'develop'
+    kubeCluster:        'staging'
     kubeDeploymentFile: 'kubernetes/deployment-staging.yaml'
   default: # this block gets used if no branch-specific one is supplied
     << : *common # this pulls in everything from 'common'
