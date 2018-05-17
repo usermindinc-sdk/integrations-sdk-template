@@ -25,7 +25,7 @@ logging:
     "com.usermind": DEBUG
     "org.apache.http.wire" : INFO
     "org.apache.http.headers" : INFO
-   # "org.reflections" : INFO
+    "org.reflections" : ERROR
   appenders:
     - type: console
       target: stdout
