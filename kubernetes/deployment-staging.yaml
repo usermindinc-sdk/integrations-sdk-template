@@ -18,8 +18,6 @@ spec:
 #      deployment: staging
   template:
     metadata:
-      annotations:
-        iam.amazonaws.com/role: crucible_staging_role
       labels:
         app: integrations-tito
         deployment: staging
@@ -30,11 +28,6 @@ spec:
           env:
            - name: CLUSTER
              value: staging
-           - name: PGPASSWORD
-             valueFrom:
-               secretKeyRef:
-                 name: fa-prod-db
-                 key: fa_lc39pass
 
       # How we talk to docker hub to get our private containers.
       imagePullSecrets:

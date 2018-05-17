@@ -25,6 +25,9 @@ spec:
       containers:
         - name: integrations-tito
           image: usermindinc/integrations-tito:${PRODUCT_VERSION}
+          env:
+           - name: CLUSTER
+             value: production
 
       # How we talk to docker hub to get our private containers.
       imagePullSecrets:
