@@ -29,6 +29,8 @@
   master:  # Configuration for master branch
     << : *common # this pulls in everything from 'common'
     pushDockerImage:    true
+    autoDeploy:         true
+    requireApproval:    false
     kubeDeploymentFile: 'kubernetes/deployment-prod.yaml'
     kubeCluster:        'production'
     deploymentSlackRoom: deploy-prod
