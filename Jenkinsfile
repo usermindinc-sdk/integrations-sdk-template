@@ -19,7 +19,7 @@ node {
             // Remember that you need '@' (for direct messages) or '#' (for channels) on the front of the slackMessageDestination value.
             slackMessageDestination = "@${util.committerSlackName()}"
             //More complex example:
-            if(util.isPullRequest() || env.BRANCH_NAME == 'staging' || env.BRANCH_NAME == 'master') {
+            if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
                 slackMessageDestination = "#discovery"
             }
             gitCommit = util.commitSha()
@@ -27,7 +27,7 @@ node {
         }
         stage('build') {
             // Let people know a build has begun
-            if(env.BRANCH_NAME == 'staging' || env.BRANCH_NAME == 'master') {
+            if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
                 util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
                 sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar.usermind.com:9000'
@@ -63,6 +63,7 @@ node {
                     util.sendSlackMessage(build_config.deploymentSlackRoom, ":jenkins_general: Starting deployment of ${pom.artifactId} ${pom.version}. \n ${changeLogMessage}")
                 }
                 withEnv(["PRODUCT_VERSION=${pom.version}"]) {
+                    echo
                     kubernetesDeploy(
                             kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
                             configs: build_config.kubeDeploymentFile,
