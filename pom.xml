@@ -7,6 +7,12 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <!--<parent>-->
+        <!--<groupId>com.usermind</groupId>-->
+        <!--<artifactId>integrations-base-pom</artifactId>-->
+        <!--<version>1.0.0</version>-->
+    <!--</parent>-->
+
     <name>integrations-tito</name>
     <description>Integration for Tito</description>
 
