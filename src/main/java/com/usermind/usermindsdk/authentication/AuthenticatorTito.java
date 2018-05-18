@@ -1,29 +1,27 @@
 package com.usermind.usermindsdk.authentication;
 
-import com.usermind.usermindsdk.fetch.json.events.Events;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 @Component
-public class Authenticator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Authenticator.class);
+public class AuthenticatorTito implements Authenticator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatorTito.class);
 
-    private MetadataFetch metadataFetch;
+    private MetadataFetchTito metadataFetch;
 
     @Autowired
-    public Authenticator(MetadataFetch metadataFetch) {
+    public AuthenticatorTito(MetadataFetchTito metadataFetch) {
         this.metadataFetch = metadataFetch;
     }
 
+    @Override
     public MetadataFetchData performAuthentication(String accountName, String apiKey) throws NoSuchMethodException {
         LOGGER.info("Authenticator called");
-        return metadataFetch.runMetadataFetch(accountName, apiKey);
+        return metadataFetch.performMetadataFetch(accountName, apiKey);
     }
 
 

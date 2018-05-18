@@ -4,7 +4,7 @@ import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetch;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,20 +26,18 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @ExtendWith(MockitoExtension.class)
-class FullFetchTest extends TestBase {
+class FullFetchTitoTest extends TestBase {
 
-    private FullFetch fullFetch;
+    private FullFetchTito fullFetch;
 
     private MockRestServiceServer mockServer;
 
-    private RunPoller runPoller = new RunPoller();
-
     @Mock
-    private MetadataFetch metadataFetch;// = mock(MetadataFetch.class);
+    private MetadataFetchTito metadataFetch;// = mock(MetadataFetch.class);
 
     @BeforeEach
     void setUp() throws IOException {
-        fullFetch = new FullFetch(restTemplate, runPoller, metadataFetch);
+        fullFetch = new FullFetchTito(restTemplate, metadataFetch);
 
         //eventsString = loadFileFixtureAsString("events.json");
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
@@ -83,7 +81,7 @@ class FullFetchTest extends TestBase {
         String secondReg = loadFileFixtureAsString("SecondRegistrations.json");
         Events events = objectMapper.readValue(eventStr, Events.class);
 //        when(metadataFetch.runMetadataFetch(anyString(), anyString())).thenReturn(events);
-        when(metadataFetch.runMetadataFetch(ArgumentMatchers.eq("ragi-test"), ArgumentMatchers.eq("nM_bPyV4sfbVBz8Po28g"))).thenReturn(events);
+        when(metadataFetch.performMetadataFetch(ArgumentMatchers.eq("ragi-test"), ArgumentMatchers.eq("nM_bPyV4sfbVBz8Po28g"))).thenReturn(events);
 
         mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/2016-edition/registrations")))
                 .andExpect(method(HttpMethod.GET))
@@ -93,7 +91,7 @@ class FullFetchTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(firstReg, MediaType.APPLICATION_JSON));
 
-        fullFetch.performFullFetch();
+        fullFetch.performFullFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
 
         mockServer.verify();
     }
