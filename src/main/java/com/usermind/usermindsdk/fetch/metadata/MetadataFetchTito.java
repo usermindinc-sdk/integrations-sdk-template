@@ -2,6 +2,8 @@ package com.usermind.usermindsdk.fetch.metadata;
 
 import com.usermind.usermindsdk.fetch.fullfetch.FullFetchTito;
 import com.usermind.usermindsdk.fetch.json.events.Events;
+import com.usermind.usermindsdk.helpers.TitoCredentialDeserializer;
+import com.usermind.usermindsdk.helpers.TitoCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +28,19 @@ public class MetadataFetchTito implements MetadataFetch {
     }
 
     @Override
-    public MetadataFetchData performMetadataFetch(String accountName, String apiKey) {
+    public MetadataFetchData performMetadataFetch(String incomingCredentials) {
         //For Tito - this is hard coded. Fetch the registrations:
         //https://api.tito.io/timeline
         LOGGER.debug("Running metadata fetch");
 
+        TitoCredentials credentials = TitoCredentialDeserializer.deserialize(incomingCredentials);
+
         UriBuilder singleFieldBuilder = UriBuilder
                 .fromPath("https://api.tito.io")
-                .path("/v2/" + accountName + "/events");
+                .path("/v2/" + credentials.getAccountName() + "/events");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(FullFetchTito.AUTHORIZATION, FullFetchTito.TOKEN_STRING + apiKey);
+        headers.add(FullFetchTito.AUTHORIZATION, FullFetchTito.TOKEN_STRING + credentials.getToken());
         headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Events> response = restTemplate.exchange(singleFieldBuilder.build(), HttpMethod.GET, entity, Events.class);

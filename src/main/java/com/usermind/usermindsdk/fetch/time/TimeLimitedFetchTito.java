@@ -11,7 +11,7 @@ public class TimeLimitedFetchTito implements TimeLimitedFetch {
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeLimitedFetchTito.class);
 
     @Override
-    public FetchedData performTimeLimitedFetch(String accountName, String apiKey) throws NoSuchMethodException {
+    public FetchedData performTimeLimitedFetch(String incomingCredentials, Long startTime, Long endTime) throws NoSuchMethodException {
         LOGGER.info("Running time limited fetch");
         throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
     }

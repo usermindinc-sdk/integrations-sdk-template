@@ -1,9 +1,6 @@
 package com.usermind.usermindsdk.fetch.samplefetch;
 
 import com.usermind.usermindsdk.TestBase;
-import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
-import com.usermind.usermindsdk.baselib.datareaders.WorkerInfo;
-import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

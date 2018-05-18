@@ -1,9 +1,10 @@
 package com.usermind.usermindsdk.fetch.fullfetch;
 
-import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
+import com.usermind.usermindsdk.helpers.TitoCredentialDeserializer;
+import com.usermind.usermindsdk.helpers.TitoCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,11 @@ public class FullFetchTito implements FullFetch {
     //Took 7 to set up metrics, 8 to read the config file
 
     @Override
-    public void performFullFetch(String accountName, String apiKey) throws NoSuchMethodException {
-        Events events = (Events) metadataFetchTito.performMetadataFetch(accountName, apiKey);
-        getAllRegistrations(events, apiKey);
+    public void performFullFetch(String incomingCredentials) throws NoSuchMethodException {
+        Events events = (Events) metadataFetchTito.performMetadataFetch(incomingCredentials);
+
+        TitoCredentials credentials = TitoCredentialDeserializer.deserialize(incomingCredentials);
+        getAllRegistrations(events, credentials.getToken());
         return;
     }
 
@@ -59,34 +62,5 @@ public class FullFetchTito implements FullFetch {
 
         response.getBody();
     }
-
-
-//    EntityWriter createEntityS3Writer(//IntegrationApiConnector apiConnector
-//                                       ) {
-//
-//        return EntityS3WriterBuilder.newBuilder()
-//                .setRunPoller(runPoller)
-//                .setWorkerInfo(workerInfo)
-//                .setS3Config(workerConfiguration.getS3Config())
-//                .setOnCloseCheckpointsConsumer(new OnCloseNopConsumer())
-//                .build();
-//    }
-
-
-//    private MetricsReporter<MetricsCollectorClient> createMetricsReporter(
-//            /*IntegrationApiConnector apiConnector, */String actionName, WorkerInfo workerInfo) {
-//        //path prefix should be integrations.tito.v1_0.fetch
-//        String pathPrefix = new IntegrationMetricsPathBuilder()
-//                .setFlowName(actionName)
-//                .setIntegrationName(workerInfo.getWorkerType())
-//                .setIntegrationVersion(workerInfo.getWorkerVersion())
-//                .build();
-//        MetricsCollectorClient metricsCollectorClient = new StatsDMetricsCollector(workerConfiguration.getIntegrationMetrics());
-//        return CommonLibMetricsReporter.newBuilder()
-//                .setPathPrefix(pathPrefix)
-//                .addDefaultTag("connection", runPoller.getConnectionId()) //907c3155-0036-4d5e-a0f1-d0fab6d61d95
-//                .addDefaultTag("run", runPoller.getRunId()) //557007ce-d629-47eb-8cf0-c8ad1d6d5608
-//                .build(metricsCollectorClient);
-//    }
 
 }

@@ -7,6 +7,8 @@ import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
+import com.usermind.usermindsdk.helpers.TitoCredentialDeserializer;
+import com.usermind.usermindsdk.helpers.TitoCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,12 @@ public class SampleFetchTito implements SampleFetch {
     }
 
     @Override
-    public FetchedData performSampleFetch(String accountName, String apiKey) throws NoSuchMethodException {
+    public FetchedData performSampleFetch(String incomingCredentials) throws NoSuchMethodException {
         LOGGER.info("Running sample fetch");
-        Events events = (Events) metadataFetchTito.performMetadataFetch(accountName, apiKey);
-        return getSomeRegistrations(events, apiKey);
+        Events events = (Events) metadataFetchTito.performMetadataFetch(incomingCredentials);
+
+        TitoCredentials credentials = TitoCredentialDeserializer.deserialize(incomingCredentials);
+        return getSomeRegistrations(events, credentials.getToken());
     }
 
     protected FetchedData getSomeRegistrations(Events events, String apiKey) {

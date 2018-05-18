@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.authentication;
 
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,11 @@ public class AuthenticatorTito implements Authenticator {
     }
 
     @Override
-    public MetadataFetchData performAuthentication(String accountName, String apiKey) throws NoSuchMethodException {
+    public MetadataFetchData performAuthentication(String incomingCredentials) throws NoSuchMethodException {
         LOGGER.info("Authenticator called");
-        return metadataFetch.performMetadataFetch(accountName, apiKey);
+        return metadataFetch.performMetadataFetch(incomingCredentials);
     }
-
+//{accountName: "name", token: "key"}
+//objectMapper.readValue(connectionDataStr, Input.class);
 
 }

@@ -1,6 +1,7 @@
 package com.usermind.usermindsdk.fetch.metadata;
 
 import com.usermind.usermindsdk.TestBase;
+import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ class MetadataFetchTitoTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(eventsString, MediaType.APPLICATION_JSON));
 
-        Events events = (Events) metadataFetch.performMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
+        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getTitoCredentialString());
         assertThat(events.getData().size()).isGreaterThan(5);
 
         mockServer.verify();
@@ -58,7 +59,7 @@ class MetadataFetchTitoTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Events events = (Events) metadataFetch.performMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
+        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getTitoCredentialString());
         assertThat(events.getData().size()).isEqualTo(0);
 
         mockServer.verify();

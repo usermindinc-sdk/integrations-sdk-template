@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.fetch.fullfetch;
 
 import com.usermind.usermindsdk.TestBase;
-import com.usermind.usermindsdk.baselib.datareaders.RunPoller;
+import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
@@ -9,8 +9,6 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.*;
-
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,7 +18,8 @@ import org.springframework.test.web.client.MockRestServiceServer;
 
 import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -81,7 +80,7 @@ class FullFetchTitoTest extends TestBase {
         String secondReg = loadFileFixtureAsString("SecondRegistrations.json");
         Events events = objectMapper.readValue(eventStr, Events.class);
 //        when(metadataFetch.runMetadataFetch(anyString(), anyString())).thenReturn(events);
-        when(metadataFetch.performMetadataFetch(ArgumentMatchers.eq("ragi-test"), ArgumentMatchers.eq("nM_bPyV4sfbVBz8Po28g"))).thenReturn(events);
+        when(metadataFetch.performMetadataFetch(ArgumentMatchers.eq(TestClassFactory.getTitoCredentialString()))).thenReturn(events);
 
         mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/2016-edition/registrations")))
                 .andExpect(method(HttpMethod.GET))
@@ -91,7 +90,7 @@ class FullFetchTitoTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(firstReg, MediaType.APPLICATION_JSON));
 
-        fullFetch.performFullFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
+        fullFetch.performFullFetch(TestClassFactory.getTitoCredentialString());
 
         mockServer.verify();
     }
