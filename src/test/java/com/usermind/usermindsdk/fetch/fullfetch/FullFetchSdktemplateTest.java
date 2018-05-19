@@ -4,7 +4,7 @@ import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,18 +25,18 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @ExtendWith(MockitoExtension.class)
-class FullFetchTitoTest extends TestBase {
+class FullFetchSdktemplateTest extends TestBase {
 
-    private FullFetchTito fullFetch;
+    private FullFetchSdktemplate fullFetch;
 
     private MockRestServiceServer mockServer;
 
     @Mock
-    private MetadataFetchTito metadataFetch;// = mock(MetadataFetch.class);
+    private MetadataFetchSdktemplate metadataFetch;// = mock(MetadataFetch.class);
 
     @BeforeEach
     void setUp() throws IOException {
-        fullFetch = new FullFetchTito(restTemplate, metadataFetch);
+        fullFetch = new FullFetchSdktemplate(restTemplate, metadataFetch);
 
         //eventsString = loadFileFixtureAsString("events.json");
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
@@ -80,7 +80,7 @@ class FullFetchTitoTest extends TestBase {
         String secondReg = loadFileFixtureAsString("SecondRegistrations.json");
         Events events = objectMapper.readValue(eventStr, Events.class);
 //        when(metadataFetch.runMetadataFetch(anyString(), anyString())).thenReturn(events);
-        when(metadataFetch.performMetadataFetch(ArgumentMatchers.eq(TestClassFactory.getTitoCredentialString()))).thenReturn(events);
+        when(metadataFetch.performMetadataFetch(ArgumentMatchers.eq(TestClassFactory.getSdktemplateCredentialString()))).thenReturn(events);
 
         mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/2016-edition/registrations")))
                 .andExpect(method(HttpMethod.GET))
@@ -90,7 +90,7 @@ class FullFetchTitoTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(firstReg, MediaType.APPLICATION_JSON));
 
-        fullFetch.performFullFetch(TestClassFactory.getTitoCredentialString());
+        fullFetch.performFullFetch(TestClassFactory.getSdktemplateCredentialString());
 
         mockServer.verify();
     }

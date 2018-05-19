@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TimeLimitedFetchTito implements TimeLimitedFetch {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeLimitedFetchTito.class);
+public class TimeLimitedFetchSdktemplate implements TimeLimitedFetch {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeLimitedFetchSdktemplate.class);
 
     @Override
     public FetchedData performTimeLimitedFetch(String incomingCredentials, Long startTime, Long endTime) throws NoSuchMethodException {

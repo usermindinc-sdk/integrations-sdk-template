@@ -23,9 +23,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 
-class MetadataFetchTitoTest extends TestBase {
+class MetadataFetchSdktemplateTest extends TestBase {
 
-    private MetadataFetchTito metadataFetch;
+    private MetadataFetchSdktemplate metadataFetch;
     private MockRestServiceServer mockServer;
 
     private String eventsString;
@@ -35,7 +35,7 @@ class MetadataFetchTitoTest extends TestBase {
         eventsString = loadFileFixtureAsString("events.json");
         //mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
-        metadataFetch = new MetadataFetchTito(restTemplate);
+        metadataFetch = new MetadataFetchSdktemplate(restTemplate);
     }
 
     @Test
@@ -45,7 +45,7 @@ class MetadataFetchTitoTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(eventsString, MediaType.APPLICATION_JSON));
 
-        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getTitoCredentialString());
+        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getSdktemplateCredentialString());
         assertThat(events.getData().size()).isGreaterThan(5);
 
         mockServer.verify();
@@ -59,7 +59,7 @@ class MetadataFetchTitoTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getTitoCredentialString());
+        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getSdktemplateCredentialString());
         assertThat(events.getData().size()).isEqualTo(0);
 
         mockServer.verify();

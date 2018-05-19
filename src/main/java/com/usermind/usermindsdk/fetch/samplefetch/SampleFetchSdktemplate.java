@@ -2,13 +2,13 @@ package com.usermind.usermindsdk.fetch.samplefetch;
 
 
 import com.usermind.usermindsdk.fetch.FetchedData;
-import com.usermind.usermindsdk.fetch.fullfetch.FullFetchTito;
+import com.usermind.usermindsdk.fetch.fullfetch.FullFetchSdktemplate;
 import com.usermind.usermindsdk.fetch.json.events.DataItem;
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
-import com.usermind.usermindsdk.helpers.TitoCredentialDeserializer;
-import com.usermind.usermindsdk.helpers.TitoCredentials;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
+import com.usermind.usermindsdk.helpers.SdktemplateCredentialDeserializer;
+import com.usermind.usermindsdk.helpers.SdktemplateCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +22,24 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Component
-public class SampleFetchTito implements SampleFetch {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SampleFetchTito.class);
+public class SampleFetchSdktemplate implements SampleFetch {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SampleFetchSdktemplate.class);
 
-    private final MetadataFetchTito metadataFetchTito;
+    private final MetadataFetchSdktemplate metadataFetchSdktemplate;
     private final RestTemplate restTemplate;
 
     @Autowired
-    public SampleFetchTito(RestTemplate restTemplate, MetadataFetchTito metadataFetchTito) {
+    public SampleFetchSdktemplate(RestTemplate restTemplate, MetadataFetchSdktemplate metadataFetchSdktemplate) {
         this.restTemplate = restTemplate;
-        this.metadataFetchTito = metadataFetchTito;
+        this.metadataFetchSdktemplate = metadataFetchSdktemplate;
     }
 
     @Override
     public FetchedData performSampleFetch(String incomingCredentials) throws NoSuchMethodException {
         LOGGER.info("Running sample fetch");
-        Events events = (Events) metadataFetchTito.performMetadataFetch(incomingCredentials);
+        Events events = (Events) metadataFetchSdktemplate.performMetadataFetch(incomingCredentials);
 
-        TitoCredentials credentials = TitoCredentialDeserializer.deserialize(incomingCredentials);
+        SdktemplateCredentials credentials = SdktemplateCredentialDeserializer.deserialize(incomingCredentials);
         return getSomeRegistrations(events, credentials.getToken());
     }
 
@@ -72,7 +72,7 @@ public class SampleFetchTito implements SampleFetch {
 
     private Registrations getEventRegistrations(DataItem dataItem, String apiKey) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(FullFetchTito.AUTHORIZATION, FullFetchTito.TOKEN_STRING + apiKey);
+        headers.add(FullFetchSdktemplate.AUTHORIZATION, FullFetchSdktemplate.TOKEN_STRING + apiKey);
         headers.add(org.apache.http.HttpHeaders.ACCEPT, "application/vnd.api+json");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 

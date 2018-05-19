@@ -2,9 +2,9 @@ package com.usermind.usermindsdk.fetch.fullfetch;
 
 import com.usermind.usermindsdk.fetch.json.events.Events;
 import com.usermind.usermindsdk.fetch.json.registrations.Registrations;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
-import com.usermind.usermindsdk.helpers.TitoCredentialDeserializer;
-import com.usermind.usermindsdk.helpers.TitoCredentials;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
+import com.usermind.usermindsdk.helpers.SdktemplateCredentialDeserializer;
+import com.usermind.usermindsdk.helpers.SdktemplateCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,33 +16,26 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FullFetchTito implements FullFetch {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FullFetchTito.class);
+public class FullFetchSdktemplate implements FullFetch {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FullFetchSdktemplate.class);
 
     private final RestTemplate restTemplate;
-    private final MetadataFetchTito metadataFetchTito;
+    private final MetadataFetchSdktemplate metadataFetchSdktemplate;
 
     public static final String AUTHORIZATION = "Authorization";
     public static final String TOKEN_STRING = "Token token=";
 
     @Autowired
-    public FullFetchTito(RestTemplate restTemplate, MetadataFetchTito metadataFetchTito) {
+    public FullFetchSdktemplate(RestTemplate restTemplate, MetadataFetchSdktemplate metadataFetchSdktemplate) {
         this.restTemplate = restTemplate;
-        this.metadataFetchTito = metadataFetchTito;
+        this.metadataFetchSdktemplate = metadataFetchSdktemplate;
     }
-    //Takes 8 to 9 minutes in the old code
-    //New code:
-    //Just getting data from Tito: 27 seconds
-    //Parallel threads: 15 seconds
-
-    //Creating the metrics class and reading the configuration data - also 15 seconds
-    //Took 7 to set up metrics, 8 to read the config file
 
     @Override
     public void performFullFetch(String incomingCredentials) throws NoSuchMethodException {
-        Events events = (Events) metadataFetchTito.performMetadataFetch(incomingCredentials);
+        Events events = (Events) metadataFetchSdktemplate.performMetadataFetch(incomingCredentials);
 
-        TitoCredentials credentials = TitoCredentialDeserializer.deserialize(incomingCredentials);
+        SdktemplateCredentials credentials = SdktemplateCredentialDeserializer.deserialize(incomingCredentials);
         getAllRegistrations(events, credentials.getToken());
         return;
     }

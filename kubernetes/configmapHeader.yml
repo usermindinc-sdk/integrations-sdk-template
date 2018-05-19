@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: integrations-tito
-  namespace: integrations
-data:

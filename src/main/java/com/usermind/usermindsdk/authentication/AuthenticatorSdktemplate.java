@@ -1,20 +1,20 @@
 package com.usermind.usermindsdk.authentication;
 
 import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthenticatorTito implements Authenticator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatorTito.class);
+public class AuthenticatorSdktemplate implements Authenticator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatorSdktemplate.class);
 
-    private MetadataFetchTito metadataFetch;
+    private MetadataFetchSdktemplate metadataFetch;
 
     @Autowired
-    public AuthenticatorTito(MetadataFetchTito metadataFetch) {
+    public AuthenticatorSdktemplate(MetadataFetchSdktemplate metadataFetch) {
         this.metadataFetch = metadataFetch;
     }
 

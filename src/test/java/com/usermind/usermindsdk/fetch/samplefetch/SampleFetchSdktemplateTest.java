@@ -1,23 +1,23 @@
 package com.usermind.usermindsdk.fetch.samplefetch;
 
 import com.usermind.usermindsdk.TestBase;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchTito;
+import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SampleFetchTitoTest extends TestBase {
+class SampleFetchSdktemplateTest extends TestBase {
 
-    private SampleFetchTito sampleFetch;
+    private SampleFetchSdktemplate sampleFetch;
 
     @Mock
-    private MetadataFetchTito metadataFetch;
+    private MetadataFetchSdktemplate metadataFetch;
 
     @BeforeEach
     void setUp() {
-        sampleFetch = new SampleFetchTito(restTemplate, metadataFetch) ;
+        sampleFetch = new SampleFetchSdktemplate(restTemplate, metadataFetch) ;
     }
 
     @Test

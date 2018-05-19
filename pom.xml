@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.usermind</groupId>
-    <artifactId>integrations-tito</artifactId>
+    <artifactId>integrations-sdktemplate</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>integrations-tito</name>
-    <description>Integration for Tito</description>
+    <name>integrations-sdktemplate</name>
+    <description>Integration for Sdktemplate</description>
 
     <properties>
         <!-- project versioning -->

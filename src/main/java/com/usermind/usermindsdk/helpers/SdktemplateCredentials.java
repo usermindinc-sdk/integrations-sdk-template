@@ -2,7 +2,7 @@ package com.usermind.usermindsdk.helpers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class TitoCredentials {
+public class SdktemplateCredentials {
 
     private String accountName = "";
     private String token = "";

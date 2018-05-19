@@ -11,23 +11,23 @@ import java.io.IOException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Component
-public class TitoCredentialDeserializer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TitoCredentialDeserializer.class);
+public class SdktemplateCredentialDeserializer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateCredentialDeserializer.class);
 
     private static ObjectMapper objectMapper;
 
     @Autowired
-    public TitoCredentialDeserializer(ObjectMapper objectMapper) {
+    public SdktemplateCredentialDeserializer(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
-    public static TitoCredentials deserialize(String incomingCredentials) {
+    public static SdktemplateCredentials deserialize(String incomingCredentials) {
         checkNotNull(incomingCredentials);
         checkNotNull(objectMapper);
         try {
-            return objectMapper.readValue(incomingCredentials, TitoCredentials.class);
+            return objectMapper.readValue(incomingCredentials, SdktemplateCredentials.class);
         } catch (IOException e) {
-            LOGGER.error("Unable to deserialize Tito credential string {}", incomingCredentials);
+            LOGGER.error("Unable to deserialize Sdktemplate credential string {}", incomingCredentials);
         }
         return null;
     }
