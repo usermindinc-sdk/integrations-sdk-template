@@ -1,10 +1,8 @@
 package com.usermind.usermindsdk.fetch.metadata;
 
 import com.usermind.usermindsdk.TestBase;
-import com.usermind.usermindsdk.fetch.json.events.Events;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import com.usermind.usermindsdk.TestClassFactory;
 import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -18,17 +16,15 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.equalTo;
 
-class MetadataFetchTest extends TestBase {
+class MetadataFetchSdktemplateTest extends TestBase {
 
-    private MetadataFetch metadataFetch;
+    private MetadataFetchSdktemplate metadataFetch;
     private MockRestServiceServer mockServer;
 
     private String eventsString;
@@ -38,9 +34,10 @@ class MetadataFetchTest extends TestBase {
         eventsString = loadFileFixtureAsString("events.json");
         //mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
-        metadataFetch = new MetadataFetch(restTemplate);
+        metadataFetch = new MetadataFetchSdktemplate(restTemplate);
     }
 
+    @Disabled
     @Test
     void basicTest() throws NoSuchMethodException{
 
@@ -48,24 +45,9 @@ class MetadataFetchTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(eventsString, MediaType.APPLICATION_JSON));
 
-        Events events = (Events) metadataFetch.runMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
-        assertThat(events.getData().size()).isGreaterThan(5);
+       //Some tests here
 
         mockServer.verify();
     }
 
-    //Ignore this test until the runs are in a wrapper call that can catch errors
-    @Disabled
-    @Test
-    void testError() throws NoSuchMethodException {
-        mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/events")))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.NOT_FOUND));
-
-        Events events = (Events) metadataFetch.runMetadataFetch("ragi-test", "nM_bPyV4sfbVBz8Po28g");
-        assertThat(events.getData().size()).isEqualTo(0);
-
-        mockServer.verify();
-
-    }
 }

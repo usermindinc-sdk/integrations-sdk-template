@@ -63,7 +63,6 @@ node {
                     util.sendSlackMessage(build_config.deploymentSlackRoom, ":jenkins_general: Starting deployment of ${pom.artifactId} ${pom.version}. \n ${changeLogMessage}")
                 }
                 withEnv(["PRODUCT_VERSION=${pom.version}"]) {
-                    echo
                     kubernetesDeploy(
                             kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
                             configs: build_config.kubeDeploymentFile,

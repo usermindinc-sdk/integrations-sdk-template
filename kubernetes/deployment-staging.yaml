@@ -14,17 +14,17 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: integrations-tito
+      app: integrations-sdktemplate
 #      deployment: staging
   template:
     metadata:
       labels:
-        app: integrations-tito
+        app: integrations-sdktemplate
         deployment: staging
     spec:
       containers:
-        - name: integrations-tito
-          image: usermindinc/integrations-tito:${PRODUCT_VERSION}
+        - name: integrations-sdktemplate
+          image: usermindinc/integrations-sdktemplate:${PRODUCT_VERSION}
           env:
            - name: CLUSTER
              value: staging
