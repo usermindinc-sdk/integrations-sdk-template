@@ -20,10 +20,9 @@ public class AuthenticatorSdktemplate implements Authenticator {
 
     @Override
     public MetadataFetchData performAuthentication(String incomingCredentials) throws NoSuchMethodException {
-        LOGGER.info("Authenticator called");
-        return metadataFetch.performMetadataFetch(incomingCredentials);
+        //TODO - implement
+        throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
     }
 //{accountName: "name", token: "key"}
-//objectMapper.readValue(connectionDataStr, Input.class);
 
 }

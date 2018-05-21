@@ -2,7 +2,6 @@ package com.usermind.usermindsdk.fetch.metadata;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.fetch.json.events.Events;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -38,6 +37,7 @@ class MetadataFetchSdktemplateTest extends TestBase {
         metadataFetch = new MetadataFetchSdktemplate(restTemplate);
     }
 
+    @Disabled
     @Test
     void basicTest() throws NoSuchMethodException{
 
@@ -45,24 +45,9 @@ class MetadataFetchSdktemplateTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(eventsString, MediaType.APPLICATION_JSON));
 
-        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getSdktemplateCredentialString());
-        assertThat(events.getData().size()).isGreaterThan(5);
+       //Some tests here
 
         mockServer.verify();
     }
 
-    //Ignore this test until the runs are in a wrapper call that can catch errors
-    @Disabled
-    @Test
-    void testError() throws NoSuchMethodException {
-        mockServer.expect(requestTo(CoreMatchers.equalTo("https://api.tito.io/v2/ragi-test/events")))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.NOT_FOUND));
-
-        Events events = (Events) metadataFetch.performMetadataFetch(TestClassFactory.getSdktemplateCredentialString());
-        assertThat(events.getData().size()).isEqualTo(0);
-
-        mockServer.verify();
-
-    }
 }
