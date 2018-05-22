@@ -19,7 +19,7 @@ public class MetadataFetchSdktemplate implements MetadataFetch {
 
     @Override
     public MetadataFetchData performMetadataFetch(String incomingCredentials) throws NoSuchMethodException {
-         LOGGER.debug("Running metadata fetch");
+         LOGGER.info("Running metadata fetch");
         //TODO - implement
         throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
     }

@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 public class AuthenticatorSdktemplate implements Authenticator {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatorSdktemplate.class);
 
-    private MetadataFetchSdktemplate metadataFetch;
-
     @Autowired
     public AuthenticatorSdktemplate(MetadataFetchSdktemplate metadataFetch) {
         this.metadataFetch = metadataFetch;
@@ -20,6 +18,7 @@ public class AuthenticatorSdktemplate implements Authenticator {
 
     @Override
     public MetadataFetchData performAuthentication(String incomingCredentials) throws NoSuchMethodException {
+        LOGGER.info("About to perform a full fetch.");
         //TODO - implement
         throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
     }
