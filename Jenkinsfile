@@ -20,7 +20,7 @@ node {
             slackMessageDestination = "@${util.committerSlackName()}"
             //More complex example:
             if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
-                slackMessageDestination = "#discovery"
+                slackMessageDestination = "#integration-build"
             }
             gitCommit = util.commitSha()
 
