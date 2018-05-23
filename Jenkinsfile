@@ -4,6 +4,7 @@ node {
     try {
 
         stage('checkout') {
+            deleteDir()
             checkout scm
             changeLogMessage = changeLogs()
         }
@@ -14,7 +15,7 @@ node {
             util.useMavenVersion(build_config.mavenVersion)
             pom = readMavenPom file: 'pom.xml'
 
-            // for you/your team to do this. For example, Skylab has a slack channel just for this. If you just want the messages
+            // For you/your team to do: Choose a slack channel. For example, Skylab has a slack channel just for builds. If you just want the messages
             // to go to the author of the latest git commit, leave this as is (and delete the if block).
             // Remember that you need '@' (for direct messages) or '#' (for channels) on the front of the slackMessageDestination value.
             slackMessageDestination = "@${util.committerSlackName()}"
@@ -23,8 +24,8 @@ node {
                 slackMessageDestination = "#integration-build"
             }
             gitCommit = util.commitSha()
-
         }
+
         stage('build') {
             // Let people know a build has begun
             if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
@@ -34,6 +35,13 @@ node {
             } else {
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
             }
+        }
+
+        //If this is a pull request - then stop here.
+        if( util.isPullRequest() ) {
+            util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull")
+            currentBuild.result = 'SUCCESS'
+            return
         }
 
         stage('Publish docker image') {
@@ -64,9 +72,9 @@ node {
                 }
                 withEnv(["PRODUCT_VERSION=${pom.version}"]) {
                     kubernetesDeploy(
-                            kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
-                            configs: build_config.kubeDeploymentFile,
-                            dockerCredentials: [[credentialsId: 'dockerhub-userminddeployer']])
+                        kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
+                        configs: build_config.kubeDeploymentFile,
+                        dockerCredentials: [[credentialsId: 'dockerhub-userminddeployer']])
                 }
 
                 //See if the deployment succeeded, and notify if not
@@ -94,7 +102,6 @@ node {
 
 }
 
-//Temporary until this is accepted to the main jenkins util file
 @NonCPS
 def commitInfo(commit) {
     return commit != null ? "`${commit.commitId.take(7)}`  *${commit.msg}*  _by ${commit.author}_ \n" : ""
