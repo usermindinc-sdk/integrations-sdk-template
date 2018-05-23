@@ -13,8 +13,8 @@
     <!--<version>1.0.0</version>-->
     <!--</parent>-->
 
-    <name>integrations-base</name>
-    <description>Integration Base Library</description>
+    <name>integrations-sdk-sdktemplate</name>
+    <description>Integration for Sdktemplate</description>
 
     <properties>
         <!-- assembly properties -->
