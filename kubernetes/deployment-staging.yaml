@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: integrations-tito
+  name: integrations-sdktemplate
   namespace: integrations
   labels:
     deployment: staging
@@ -28,8 +28,15 @@ spec:
           env:
            - name: CLUSTER
              value: staging
+#          volumeMounts:
+#            - name: integrations-sdk-sdktemplate
+#              mountPath: /appconfig
+#              readOnly: true
 
       # How we talk to docker hub to get our private containers.
       imagePullSecrets:
         - name: regsecret
-
+#      volumes:
+#      - name: integrations-sdk-sdktemplate
+#        configMap:
+#          name: sdktemplate-configmap

@@ -28,8 +28,16 @@ spec:
           env:
            - name: CLUSTER
              value: production
+#          volumeMounts:
+#            - name: integrations-sdk-sdktemplate
+#              mountPath: /appconfig
+#              readOnly: true
 
       # How we talk to docker hub to get our private containers.
       imagePullSecrets:
         - name: regsecret 
-      
+#      volumes:
+#      - name: integrations-sdk-sdktemplate
+#        configMap:
+#           name: sdktemplate-configmap
+

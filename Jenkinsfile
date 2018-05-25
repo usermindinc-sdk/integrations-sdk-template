@@ -57,6 +57,20 @@ node {
             }
         }
 
+        //TO USE: UNCOMMENT THE CONFIG LINE IN THE NEXT STAGE AS WELL AS THIS STAGE, AND THE VOLUME MOUNTS IN THE DEPLOYMENT FILES
+        //If you want to create a configmap dynamically from the configuration files, this will do it.
+        //It appends the specified configuration file into kubernetes/configmapheader.yaml, and then loads that into Kubenetes.
+        //You can use this to load in different files for staging and production by breaking the if statement up.
+        //This will then keep the configmap in sync with whatever the base configuration file is.
+        //You can put in multiple configuration files, as well, just make sure you end up creating a valid configmap file.
+        // stage('Create configmap for Kubernetes') {
+        //     if (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
+        //         sh 'sed \'s/"/\\\\"/g\' src/main/resources/config.yml | awk \'{printf "%s\\\\n", $0}\' >> kubernetes/configmapheader.yaml'
+        //         sh 'echo \\\" >> kubernetes/configmapheader.yaml'
+        //     }
+        // }
+
+
         stage('Deploy docker image to Kubernetes') {
             if(build_config.autoDeploy == true) {
                 echo "Configured for kube cluster: ${build_config.kubeCluster}"
@@ -73,6 +87,8 @@ node {
                 withEnv(["PRODUCT_VERSION=${pom.version}"]) {
                     kubernetesDeploy(
                         kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
+// If you are using configmaps, use this config line instead.
+//                        configs: "${build_config.kubeDeploymentFile}, kubernetes/configmapheader.yaml",
                         configs: build_config.kubeDeploymentFile,
                         dockerCredentials: [[credentialsId: 'dockerhub-userminddeployer']])
                 }
