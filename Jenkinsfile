@@ -16,7 +16,7 @@ node {
             util.useMavenVersion(build_config.mavenVersion)
             pom = readMavenPom file: 'pom.xml'
 
-            // for you/your team to do this. For example, Skylab has a slack channel just for this. If you just want the messages
+            // For you/your team to do: Choose a slack channel. For example, Skylab has a slack channel just for builds. If you just want the messages
             // to go to the author of the latest git commit, leave this as is (and delete the if block).
             // Remember that you need '@' (for direct messages) or '#' (for channels) on the front of the slackMessageDestination value.
             slackMessageDestination = "@${util.committerSlackName()}"
@@ -26,7 +26,6 @@ node {
                 slackTeamMessageDestination = "#integration-build"
             }
             gitCommit = util.commitSha()
-
         }
 
         stage('build') {
