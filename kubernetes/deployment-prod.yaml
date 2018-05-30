@@ -28,8 +28,6 @@ spec:
         - name: integrations-sdktemplate
           image: usermindinc/integrations-sdktemplate:${PRODUCT_VERSION}
           env:
-           - name: CLUSTER
-             value: production
           # You will need one of these for each environement variable your app needs.
           # - name: ENV_VAR_NAME
           # specify value instead if it is not a secured value which should go in secrets.
