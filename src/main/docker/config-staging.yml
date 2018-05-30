@@ -1,0 +1,78 @@
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      threshold: INFO
+      timeZone: "UTC"
+      logFormat: "[%d{YYYY-MM-dd'T'HH:mm:ss.SSS'Z'}] [%thread] %-5level %logger{36}: %msg%n"
+
+server:
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 9180
+
+  requestLog:
+    appenders: []
+
+metrics:
+  reporters:
+    - type: datadog
+      transport:
+        type: udp
+        statsdHost: datadog-staging.east.usermind.com
+        port: 8125
+      prefix: crucible
+      tags:
+        - name:rules-store-application
+        - env:staging
+        - container:${CONTAINER_ID}
+
+database:
+  driverClass: org.postgresql.Driver
+  url: jdbc:postgresql://stagingdb.usermind.com:5432/lc39_staging?ApplicationName=rules-store
+  user: rules_store
+  password: ${LC39_PASSWORD}
+  # a large initial pool slows startup
+  initialSize: 2
+  minSize: 2
+  maxSize: 10
+  properties:
+    ssl: true
+    # the aws ssl certs are weird, they use the internal dns name, not the external
+    # we could import the cert into a local keystore, but this is easier for now
+    sslfactory: org.postgresql.ssl.NonValidatingFactory
+
+integrations:
+  baseUrl: https://stage-atc-integrations.usermind.com/v1
+  username: ${INTEGRATIONS_API_KEY}
+  password: ""
+
+validateRules: false
+
+s3:
+  endpoint: https://s3-us-west-2.amazonaws.com
+  pathStyle: true
+
+workflowBucket: um-rules-store-staging
+
+fetchRecordBucket: usermind-staging-data
+
+dataExplorer:
+  baseUrl: http://explorer.staging.usermind.com/api/
+
+swagger:
+  resourcePackage: com.usermind.rules.bundle
+
+picklists:
+  servers:
+    - general-es.staging.usermind.com:9300
+  clusterName: elasticsearch
+  version: 5.2.2
+  numberOfShards: 1
+  refreshInterval: 5s
+  https: false
+  enabled: true
+  

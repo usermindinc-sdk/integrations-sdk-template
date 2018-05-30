@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: smelter-config
+  namespace: smelter
+data:
+  config-staging.yml: |

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This is used to run the given docker image locally.
+# -e for declaring environment variables.
+# -v used for vloume mounting
+# -p expose port
+# -it allocates a tty
+
+docker run -it \
+  -e ENV_VAR="$ENV_VAR" \
+  -v $PWD:/app \
+  -p 5121:5121 \
+  usermindinc/<serivce>:<image version number>

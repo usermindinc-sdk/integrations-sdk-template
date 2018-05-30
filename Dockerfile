@@ -1,8 +1,8 @@
 FROM usermindinc/java:oraclejdk-8
 
-
-RUN apt-get update
-RUN apt-get install jq
+#Stack commands to reduce layer creation
+RUN apt-get update \
+    && apt-get install jq
 
 #ARG variables are only available during the build
 #ARG JAR_FILE=$JAR_FILE
@@ -19,9 +19,9 @@ ADD target/${JAR_FILE} ${JAR_FILE}
 COPY docker/start start
 
 
-COPY src/main/resources/config.yml /app/config.yml
+COPY src/main/resources/config.yaml /app/config.yaml
 
-ENTRYPOINT ["/app/start", "server", "/app/config.yml"]
+ENTRYPOINT ["/app/start", "server", "/app/config.yaml"]
 
-
-EXPOSE 8089:8089
+#This should be the port appropriate to the service
+EXPOSE 8089

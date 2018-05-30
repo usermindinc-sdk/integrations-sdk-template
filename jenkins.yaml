@@ -21,9 +21,11 @@
 
   develop: # Configuration for develop branch
     << : *common # this pulls in everything from 'common'
-    pushDockerImage:    true
     autoDeploy:         true
-    requireApproval:    false
+    requireApproval:    true
+    pushDockerImage:    false
+    configMap: 'staging'
+    # This will be the team that owns the repo
     deploymentSlackRoom: integration-build
 
   master:  # Configuration for master branch
@@ -31,7 +33,8 @@
     autoDeploy:         true
     requireApproval:    true
     pushDockerImage:    true
+    configMap: 'prod'
     kubeDeploymentFile: 'kubernetes/deployment-prod.yaml'
     kubeCluster:        'production'
+    # This will be the team that owns the repo
     deploymentSlackRoom: integration-build
-
