@@ -23,7 +23,7 @@ node {
             // More complex example:
             if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
                 // Change out for the appropriate team channel
-                slackTeamMessageDestination = "#<Team that owns this service slack channel>"
+                slackTeamMessageDestination = "#integration-build"
             }
             gitCommit = util.commitSha()
 
@@ -38,14 +38,16 @@ node {
                 }
                 // Ensure that the application name is appropriate may need to include -application after artifactid
                 util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
-                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0'
+                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
+                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
                 sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar.usermind.com:9000'
             } else {
                 // Ensure that the application name is appropriate may need to include -application after artifactid
                 if(slackMessageDestination != "@Jenkins") {
                     util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
                 }
-                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0'
+                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
+                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
             }
         }
 
@@ -66,7 +68,8 @@ node {
                     dockerImage = docker.image("usermindinc/${pom.artifactId}:${pom.version}")
                     echo "Trying to push usermindinc/${pom.artifactId}:${pom.version}"
                     dockerImage.push("${pom.version}")
-                    dockerImage.push("latest")
+                    // Use this if you are not doing so in your pom.
+                    // dockerImage.push("latest")
                 }
             } else {
                 echo "Not pushing docker image per configuration."
@@ -74,8 +77,11 @@ node {
         }
 
         stage('Create configmap for Kubernetes') {
+            // Update the Configmaps on kubernetes.
             if (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
-                sh "sed 's/^/    /' path/to/config/files/config-${build_config.configMap}.yaml >> kubernetes/config-${build_config.configMap}.yaml"
+                // Append this to config in both instances if you have prod and staging configs:
+                // -${build_config.configMap}
+                sh "sed 's/^/    /' src/main/resources/config.yaml >> kubernetes/config-${build_config.configMap}.yaml"
             }
         }
 

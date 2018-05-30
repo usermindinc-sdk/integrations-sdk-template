@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Remember to make this file executable with a chmod u+x
 # This is used to run the given docker image locally.
 # -e for declaring environment variables.
 # -v used for vloume mounting
@@ -7,7 +8,6 @@
 # -it allocates a tty
 
 docker run -it \
-  -e ENV_VAR="$ENV_VAR" \
   -v $PWD:/app \
-  -p 5121:5121 \
-  usermindinc/<serivce>:<image version number>
+  -p 8089:8089 \
+  usermindinc/integrations-sdktemplate:1.0.0-SNAPSHOT

@@ -4,4 +4,4 @@ metadata:
   name: smelter-config
   namespace: smelter
 data:
-  config-prod.yml: |
+  config-prod.yaml: |

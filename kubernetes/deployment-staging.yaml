@@ -31,16 +31,16 @@ spec:
            - name: CLUSTER
              value: staging
           # You will need one of these for each environement variable your app needs.
-          - name: ENV_VAR_NAME
+          # - name: ENV_VAR_NAME
           # specify value instead if it is not a secured value which should go in secrets.
-          valueFrom:
-            secretKeyRef:
-              name: <namespace>-secrets
+          # valueFrom:
+            # secretKeyRef:
+              # name: <namespace>-secrets
               # This value can be anything it is simply the link between the secrets file and this file for the value
-              key: <key_for_env_var>
+              # key: <key_for_env_var>
           volumeMounts:
           # This is for use with a config map where your configs differ between staging and prod, this is the mounth path.
-          - name: <namespace>
+          - name: integrations
             mountPath: /app/
             subpath: config.yml
 
@@ -50,9 +50,9 @@ spec:
 
       # Configmap setup
       volumes:
-      - name: <namespace>
+      - name: integrations
         configMap:
-           name: <namespace>-config
+           name: integrations-sdktemplate-config
            items:
-           - key: <file you want eg. config-staging.yaml>
-             path: <file it will be eg. config.yaml>
+           - key: config-staging.yaml
+             path: config.yaml

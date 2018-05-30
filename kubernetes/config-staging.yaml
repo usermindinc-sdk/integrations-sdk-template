@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: smelter-config
-  namespace: smelter
+  name: integrations-sdktemplate-config
+  namespace: integrations
 data:
-  config-staging.yml: |
+  config-staging.yaml: |
