@@ -25,6 +25,7 @@ public class FullFetchSdktemplate implements FullFetch {
 
     @Override
     public void performFullFetch(String incomingCredentials) throws NoSuchMethodException {
+        LOGGER.info("About to perform a full fetch.");
         //TODO - implement
         throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
 
