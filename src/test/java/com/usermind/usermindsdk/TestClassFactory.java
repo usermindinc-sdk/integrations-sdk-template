@@ -11,7 +11,20 @@ public class TestClassFactory {
         return credentials;
     }
 
-    public static String getSdktemplateCredentialString() {
-        return "{\"accountName\": \"ragi-test\", \"token\": \"nM_bPyV4sfbVBz8Po28g\"}";
-    }
+    //Some sample code left in place ...
+
+//    public static String getSdktemplateCredentialString() {
+//        return "{\"accountName\": \"ragi-test\", \"token\": \"nM_bPyV4sfbVBz8Po28g\"}";
+//    }
+//
+//    public static Events getEvents() throws IOException {
+//        TestClassFactoryFileReader fileReader = new TestClassFactoryFileReader();
+//        return fileReader.getEvents();
+//    }
+//
+//    public static String getEventString() throws IOException {
+//        TestClassFactoryFileReader fileReader = new TestClassFactoryFileReader();
+//        return fileReader.getEventString();
+//    }
+
 }

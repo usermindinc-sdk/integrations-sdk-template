@@ -13,14 +13,7 @@ echo -e "\n\nStarting server...\n\n"
 #If your Kubernetes image won't start and you need to ssh into it to see why - run this command instead of your Java program.
 #Then it will come up and do nothing, and you can see what was created in the image.
 #exec sleep 1d
-if [ "$CLUSTER" = "production" ]; then
-    exec java \
-    -jar /app/${JAR_FILE} \
-    server \
-    /app/config.yml;
-else
-    exec java \
-    -jar /app/${JAR_FILE} \
-    server \
-    /app/config.yml;
-fi
+exec java \
+-jar /app/${JAR_FILE} \
+server \
+/app/config/config.yaml;

@@ -1,11 +1,13 @@
 #!/usr/bin/env groovy
 
 node {
+
     try {
 
         stage('checkout') {
+            deleteDir()
             checkout scm
-            changeLogMessage = changeLogs()
+            changeLogMessage = util.changeLogs()
         }
 
         stage('Configure environment') {
@@ -14,38 +16,71 @@ node {
             util.useMavenVersion(build_config.mavenVersion)
             pom = readMavenPom file: 'pom.xml'
 
-            // for you/your team to do this. For example, Skylab has a slack channel just for this. If you just want the messages
+            // For you/your team to do: Choose a slack channel. For example, Skylab has a slack channel just for builds. If you just want the messages
             // to go to the author of the latest git commit, leave this as is (and delete the if block).
             // Remember that you need '@' (for direct messages) or '#' (for channels) on the front of the slackMessageDestination value.
             slackMessageDestination = "@${util.committerSlackName()}"
-            //More complex example:
+            // More complex example:
             if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
-                slackMessageDestination = "#integration-build"
+                // Change out for the appropriate team channel
+                slackTeamMessageDestination = "#integration-build"
             }
             gitCommit = util.commitSha()
-
         }
+
         stage('build') {
             // Let people know a build has begun
             if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
-                util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+                // Ensure that the application name is appropriate may need to include -application after artifactid
+                if(slackMessageDestination != "@Jenkins") {
+                    util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+                }
+                // Ensure that the application name is appropriate may need to include -application after artifactid
+                util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
                 sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar.usermind.com:9000'
             } else {
+                // Ensure that the application name is appropriate may need to include -application after artifactid
+                if(slackMessageDestination != "@Jenkins") {
+                    util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+                }
+                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
             }
+        }
+
+        //If this is a pull request - then stop here. Failsafe to keep from going though the docker and kubernetes steps on PRs.
+        if( util.isPullRequest() ) {
+            if(slackMessageDestination != "@Jenkins") {
+                util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId}-application ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull")
+            }
+            currentBuild.result = 'SUCCESS'
+            return
         }
 
         stage('Publish docker image') {
             //Push the image to docker hub only if config says to.
             if (build_config.pushDockerImage) {
                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-userminddeployer') {
+                    // Ensure that the application name is appropriate may need to include -application after artifactid
                     dockerImage = docker.image("usermindinc/${pom.artifactId}:${pom.version}")
                     echo "Trying to push usermindinc/${pom.artifactId}:${pom.version}"
                     dockerImage.push("${pom.version}")
+                    // Use this if you are not doing so in your pom.
+                    // dockerImage.push("latest")
                 }
             } else {
                 echo "Not pushing docker image per configuration."
+            }
+        }
+
+        stage('Create configmap for Kubernetes') {
+            // Update the Configmaps on kubernetes.
+            if (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
+                // Append this to config in both instances if you have prod and staging configs:
+                // -${build_config.configMap}
+                sh "sed 's/^/    /' src/main/resources/config.yaml >> kubernetes/config-${build_config.configMap}.yaml"
             }
         }
 
@@ -57,15 +92,23 @@ node {
                 if(build_config.requireApproval == true) {
                     util.sendSlackMessage(build_config.deploymentSlackRoom, ":shipit: ${pom.artifactId} ${pom.version} ready for deployment! Approve here: ${env.BUILD_URL}" + "input \n ${changeLogMessage}")
                     // Wait for user input before proceeding
-                    approver = util.promptUserForDeployment("Deploy Failure Analyzer to the ${build_config.kubeCluster} kubernetes cluster with ${build_config.kubeDeploymentFile}?")
+                    approver = util.promptUserForDeployment("Deploy ${pom.artifactId} to the ${build_config.kubeCluster} kubernetes cluster with ${build_config.kubeDeploymentFile}?", "${build_config.deploymentSlackRoom}", slackTeamMessageDestination)
                     util.sendSlackMessage(build_config.deploymentSlackRoom, ":jenkins_ninja: :approved: Deployment approved by ${approver}! Starting deployment.")
+                    util.sendSlackMessage(slackTeamMessageDestination, ":jenkins_ninja: :approved: Deployment of ${pom.artifactId} approved by ${approver}! Starting deployment.")
+                    if(slackMessageDestination != "@Jenkins") {
+                        util.sendSlackMessage(slackMessageDestination, ":jenkins_ninja: :approved: Deployment of ${pom.artifactId} approved by ${approver}! Starting deployment.")
+                    }
                 } else {
-                    util.sendSlackMessage(build_config.deploymentSlackRoom, ":jenkins_general: Starting deployment of ${pom.artifactId} ${pom.version}. \n ${changeLogMessage}")
+                    util.sendSlackMessage(build_config.deploymentSlackRoom, ":jenkins_general: Starting deployment of ${pom.artifactId}-application ${pom.version}. \n ${changeLogMessage}")
+                    util.sendSlackMessage(slackTeamMessageDestination, ":jenkins_general: Starting deployment of ${pom.artifactId}-application ${pom.version}. \n ${changeLogMessage}")
+                    if(slackMessageDestination != "@Jenkins") {
+                       util.sendSlackMessage(slackMessageDestination, ":jenkins_general: Starting deployment of ${pom.artifactId}-application ${pom.version}. \n ${changeLogMessage}")
+                    }
                 }
                 withEnv(["PRODUCT_VERSION=${pom.version}"]) {
                     kubernetesDeploy(
                             kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
-                            configs: build_config.kubeDeploymentFile,
+                            configs: "${build_config.kubeDeploymentFiles.join(',')}",
                             dockerCredentials: [[credentialsId: 'dockerhub-userminddeployer']])
                 }
 
@@ -75,9 +118,13 @@ node {
                     slackMessage = ":jenkins_general_rage: Deployment of ${pom.artifactId} ${pom.version} FAILED! Error is here: ${env.BUILD_URL}" + "consoleFull"
                 }
                 //Send the message to a team related room or DM
-                util.sendSlackMessage(slackMessageDestination, slackMessage)
+                util.sendSlackMessage(slackTeamMessageDestination, slackMessage)
                 //Send the message to an environment related room.
                 util.sendSlackMessage(build_config.deploymentSlackRoom, slackMessage)
+                //Send the message to the person who created the PR.
+                if(slackMessageDestination != "@Jenkins") {
+                    util.sendSlackMessage(slackMessageDestination, slackMessage)
+                }
 
             } else {
                 echo "Not deploying to kubernetes per autoDeploy configuration."
@@ -87,39 +134,11 @@ node {
 
     catch (buildError) {
         currentBuild.result = 'FAILURE'
-        util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: ${pom.artifactId} ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull", "danger")
-        util.sendFailureEmail(util.commitAuthorEmail())
+        if(slackMessageDestination != "@Jenkins") {
+            util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: ${pom.artifactId} ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull", "danger")
+            util.sendFailureEmail(util.commitAuthorEmail())
+        }
         throw buildError
     }
 
-}
-
-//Temporary until this is accepted to the main jenkins util file
-@NonCPS
-def commitInfo(commit) {
-    return commit != null ? "`${commit.commitId.take(7)}`  *${commit.msg}*  _by ${commit.author}_ \n" : ""
-}
-
-@NonCPS
-def changeLogs() {
-    String changeLog = ""
-    def changeLogSets = currentBuild.changeSets
-    for (int i = 0; i < changeLogSets.size(); i++) {
-        def entries = changeLogSets[i].items
-        for (int j = 0; j < entries.length; j++) {
-            def entry = entries[j]
-            changeLog = changeLog + "${commitInfo(entry)}"
-        }
-    }
-
-    if (changeLog) {
-        changeLog = "Changes on *${env.BRANCH_NAME}* branch detected\n" + changeLog
-    } else {
-        commitHash = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
-        commitText = sh(returnStdout: true, script: 'git show -s --format=format:"*%s*  _by %an_" HEAD').trim()
-        changeLog = "No changes on *${env.BRANCH_NAME}* branch detected\n"
-        changeLog = changeLog + "Building for commit: \n`${commitHash}` ${commitText}"
-    }
-
-    return changeLog
 }
