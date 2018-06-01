@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: integrations-sdktemplate
+  # Your namespace goes in here
   namespace: integrations
   labels:
     deployment: production
@@ -19,6 +20,7 @@ spec:
   template:
     metadata:
       labels:
+        # Your app
         app: integrations-sdktemplate
         deployment: production
     spec:
@@ -26,18 +28,29 @@ spec:
         - name: integrations-sdktemplate
           image: usermindinc/integrations-sdktemplate:${PRODUCT_VERSION}
           env:
-           - name: CLUSTER
-             value: production
-#          volumeMounts:
-#            - name: integrations-sdk-sdktemplate
-#              mountPath: /appconfig
-#              readOnly: true
+          # You will need one of these for each environement variable your app needs.
+          # - name: ENV_VAR_NAME
+          # specify value instead if it is not a secured value which should go in secrets.
+          # valueFrom:
+            # secretKeyRef:
+              # name: <namespace>-secrets
+              # This value can be anything it is simply the link between the secrets file and this file for the value
+              # key: <key_for_env_var>
+          volumeMounts:
+          # This is for use with a config map where your configs differ between staging and prod, this is the mounth path.
+          - name: integrations
+            mountPath: /app/config/
+            subpath: config.yml
 
       # How we talk to docker hub to get our private containers.
       imagePullSecrets:
-        - name: regsecret 
-#      volumes:
-#      - name: integrations-sdk-sdktemplate
-#        configMap:
-#           name: sdktemplate-configmap
+        - name: regsecret
 
+      # Configmap setup
+      volumes:
+      - name: integrations
+        configMap:
+           name: integrations-sdktemplate-config
+           items:
+           - key: config-prod.yaml
+             path: config.yaml

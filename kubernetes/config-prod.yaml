@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sdktemplate-configmap
+  name: integrations-sdktemplate-config
   namespace: integrations
 data:
-  config.yml: "
+  config-prod.yaml: |

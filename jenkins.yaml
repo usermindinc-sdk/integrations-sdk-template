@@ -15,7 +15,9 @@
     javaVersion:        'oraclejdk8'
     mavenVersion:       'Maven_3.5.2'
     kubeCluster:        'staging'
-    kubeDeploymentFile: 'kubernetes/deployment-staging.yaml'
+    kubeDeploymentFiles: 
+        - kubernetes/deployment-staging.yaml
+        - kubernetes/config-staging.yaml
   default: # this block gets used if no branch-specific one is supplied
     << : *common # this pulls in everything from 'common'
 
@@ -24,14 +26,18 @@
     pushDockerImage:    true
     autoDeploy:         true
     requireApproval:    false
-    deploymentSlackRoom: integration-build
+    configMap: 'staging'
+    deploymentSlackRoom: staging
 
   master:  # Configuration for master branch
     << : *common # this pulls in everything from 'common'
     autoDeploy:         true
     requireApproval:    true
     pushDockerImage:    true
-    kubeDeploymentFile: 'kubernetes/deployment-prod.yaml'
+    configMap: 'prod'
+    kubeDeploymentFiles: 
+        - kubernetes/deployment-prod.yaml
+        - kubernetes/config-prod.yaml
     kubeCluster:        'production'
-    deploymentSlackRoom: integration-build
+    deploymentSlackRoom: deploy-prod
 
