@@ -82,7 +82,7 @@
                     </a>
                 </td>
                 <td>
-                    <p><font face="verdana" color="green">Welcome to the Usermindsdk Project!</font></p>
+                    <p><font face="verdana" color="green">Integrations SDK implementation for Sdktemplate APIs</font></p>
                 </td>
             </tr>
             <table>

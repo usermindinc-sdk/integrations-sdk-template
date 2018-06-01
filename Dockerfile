@@ -18,10 +18,9 @@ WORKDIR /app
 ADD target/${JAR_FILE} ${JAR_FILE}
 COPY docker/start start
 
+COPY src/main/resources/config.yaml /app/config/config.yaml
 
-COPY src/main/resources/config.yaml /app/config.yaml
-
-ENTRYPOINT ["/app/start", "server", "/app/config.yaml"]
+ENTRYPOINT ["/app/start"]
 
 #This should be the port appropriate to the service
 EXPOSE 8089

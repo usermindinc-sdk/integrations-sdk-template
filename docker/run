@@ -7,7 +7,8 @@
 # -p expose port
 # -it allocates a tty
 
+#  -v $PWD:/app \ was removed as it caused Integrations to not work
+
 docker run -it \
-  -v $PWD:/app \
   -p 8089:8089 \
   usermindinc/integrations-sdktemplate:1.0.0-SNAPSHOT

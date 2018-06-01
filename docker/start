@@ -16,4 +16,4 @@ echo -e "\n\nStarting server...\n\n"
 exec java \
 -jar /app/${JAR_FILE} \
 server \
-/app/config.yaml;
+/app/config/config.yaml;
