@@ -20,9 +20,9 @@ server:
       port: 8090
 
 logging:
-  level: DEBUG
+  level: ERROR
   loggers:
-    "com.usermind": DEBUG
+    "com.usermind": INFO
     "org.apache.http.wire" : INFO
     "org.apache.http.headers" : INFO
     "org.reflections" : ERROR
