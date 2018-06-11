@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.usermind</groupId>
         <artifactId>integrations-sdk-base-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.3</version>
     </parent>
 
     <name>integrations-sdk-sdktemplate</name>
@@ -17,6 +17,25 @@
 
     <properties>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>build-server</id>
+            <activation>
+                <property>
+                    <name>env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build-number>${env.BUILD_NUMBER}</build-number>
+                <build-job>${env.BUILD_JOB}</build-job>
+                <build-url>${env.BUILD_URL}</build-url>
+                <git-commit>${env.GIT_COMMIT}</git-commit>
+                <git-branch>${env.GIT_BRANCH}</git-branch>
+                <finalName>${project.artifactId}-${build-version}</finalName>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
 
