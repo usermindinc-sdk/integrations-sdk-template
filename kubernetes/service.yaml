@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   # Your app
-  name: integrations-sdktemplate
+  name: integrations-sdk-sdktemplate
   # Your namespace
   namespace: integrations
   annotations:
@@ -11,7 +11,7 @@ metadata:
 spec:
   selector:
     # Your app
-    app: integrations-sdktemplate
+    app: integrations-sdk-sdktemplate
   ports:
     - name: http
       protocol: "TCP"
