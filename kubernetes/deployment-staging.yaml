@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: integrations-sdktemplate
+  name: integrations-sdk-sdktemplate
   # Your namespace goes in here
   namespace: integrations
   labels:
@@ -15,18 +15,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: integrations-sdktemplate
+      app: integrations-sdk-sdktemplate
 #      deployment: staging
   template:
     metadata:
       labels:
         # Your app
-        app: integrations-sdktemplate
+        app: integrations-sdk-sdktemplate
         deployment: staging
     spec:
       containers:
-        - name: integrations-sdktemplate
-          image: usermindinc/integrations-sdktemplate:${PRODUCT_VERSION}
+        - name: integrations-sdk-sdktemplate
+          image: usermindinc/integrations-sdk-sdktemplate:${PRODUCT_VERSION}
           env:
           # You will need one of these for each environement variable your app needs.
           # - name: ENV_VAR_NAME
@@ -50,7 +50,7 @@ spec:
       volumes:
       - name: integrations
         configMap:
-           name: integrations-sdktemplate-config
+           name: integrations-sdk-sdktemplate-config
            items:
            - key: config-staging.yaml
              path: config.yaml
