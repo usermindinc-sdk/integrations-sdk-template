@@ -9,6 +9,25 @@ node {
             checkout scm
             changeLogMessage = util.changeLogs()
         }
+
+        stage('Configure environment') {
+            build_config = util.loadJenkinsConfiguration("jenkins.yaml")
+            util.useJDKVersion(build_config.javaVersion)
+            util.useMavenVersion(build_config.mavenVersion)
+            pom = readMavenPom file: 'pom.xml'
+
+            // For you/your team to do: Choose a slack channel. For example, Skylab has a slack channel just for builds. If you just want the messages
+            // to go to the author of the latest git commit, leave this as is (and delete the if block).
+            // Remember that you need '@' (for direct messages) or '#' (for channels) on the front of the slackMessageDestination value.
+            slackMessageDestination = "@${util.committerSlackName()}"
+            // More complex example:
+            if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
+                // Change out for the appropriate team channel
+                slackTeamMessageDestination = "#integration-build"
+            }
+            gitCommit = util.commitSha()
+        }
+
         stage('build') {
             // Let people know a build has begun
             if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
@@ -30,25 +49,6 @@ node {
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
             }
         }
-
-        stage('Configure environment') {
-            build_config = util.loadJenkinsConfiguration("jenkins.yaml")
-            util.useJDKVersion(build_config.javaVersion)
-            util.useMavenVersion(build_config.mavenVersion)
-            pom = readMavenPom file: 'pom.xml'
-
-            // For you/your team to do: Choose a slack channel. For example, Skylab has a slack channel just for builds. If you just want the messages
-            // to go to the author of the latest git commit, leave this as is (and delete the if block).
-            // Remember that you need '@' (for direct messages) or '#' (for channels) on the front of the slackMessageDestination value.
-            slackMessageDestination = "@${util.committerSlackName()}"
-            // More complex example:
-            if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
-                // Change out for the appropriate team channel
-                slackTeamMessageDestination = "#integration-build"
-            }
-            gitCommit = util.commitSha()
-        }
-
 
         //If this is a pull request - then stop here. Failsafe to keep from going though the docker and kubernetes steps on PRs.
         if( util.isPullRequest() ) {
