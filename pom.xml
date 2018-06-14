@@ -3,13 +3,13 @@
 
     <groupId>com.usermind</groupId>
     <artifactId>integrations-sdk-sdktemplate</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>com.usermind</groupId>
         <artifactId>integrations-sdk-base-pom</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </parent>
 
     <name>integrations-sdk-sdktemplate</name>
