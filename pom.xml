@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.usermind</groupId>
         <artifactId>integrations-sdk-base-pom</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </parent>
 
     <name>integrations-sdk-sdktemplate</name>
