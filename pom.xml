@@ -3,7 +3,7 @@
 
     <groupId>com.usermind</groupId>
     <artifactId>integrations-sdk-sdktemplate</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <parent>
