@@ -87,12 +87,12 @@ node {
         stage('Deploy docker image to Kubernetes') {
             if(build_config.autoDeploy == true) {
                 echo "Configured for kube cluster: ${build_config.kubeCluster}"
-                echo "Configured for kube deployment: ${build_config.kubeDeploymentFile}"
+                echo "Configured for kube deployment: ${build_config.kubeDeploymentFiles?build_config.kubeDeploymentFiles.first():null}"
 
                 if(build_config.requireApproval == true) {
                     util.sendSlackMessage(build_config.deploymentSlackRoom, ":shipit: ${pom.artifactId} ${pom.version} ready for deployment! Approve here: ${env.BUILD_URL}" + "input \n ${changeLogMessage}")
                     // Wait for user input before proceeding
-                    approver = util.promptUserForDeployment("Deploy ${pom.artifactId} to the ${build_config.kubeCluster} kubernetes cluster with ${build_config.kubeDeploymentFile}?", "${build_config.deploymentSlackRoom}", slackTeamMessageDestination)
+                    approver = util.promptUserForDeployment("Deploy ${pom.artifactId} to the ${build_config.kubeCluster} kubernetes cluster with ${build_config.kubeDeploymentFiles?build_config.kubeDeploymentFiles.first():null}?", "${build_config.deploymentSlackRoom}", slackTeamMessageDestination)
                     util.sendSlackMessage(build_config.deploymentSlackRoom, ":jenkins_ninja: :approved: Deployment approved by ${approver}! Starting deployment.")
                     util.sendSlackMessage(slackTeamMessageDestination, ":jenkins_ninja: :approved: Deployment of ${pom.artifactId} approved by ${approver}! Starting deployment.")
                     if(slackMessageDestination != "@Jenkins") {
