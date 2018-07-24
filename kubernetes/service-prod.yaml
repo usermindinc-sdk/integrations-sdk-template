@@ -6,6 +6,7 @@ metadata:
   # Your namespace
   namespace: integrations
   annotations:
+    external-dns.alpha.kubernetes.io/hostname: integrations-sdktemplate.usermind.com
     service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
 
 spec:
