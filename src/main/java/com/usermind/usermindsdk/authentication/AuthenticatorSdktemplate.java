@@ -13,9 +13,9 @@ public class AuthenticatorSdktemplate implements Authenticator {
 
     @Override
     public AuthenticationData performAuthentication(String incomingCredentials) throws NoSuchMethodException {
-        LOGGER.info("About to perform a full fetch.");
+        LOGGER.info("Sdktemplate authentication started.");
         //TODO - implement
-        throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
+        throw new NoSuchMethodException("Authentication has not been implemented for this integration type.");
     }
 //{accountName: "name", token: "key"}
 
