@@ -39,7 +39,7 @@ node {
                 util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
                 // Add test related commands as appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar.usermind.com:9000'
+                sh 'mvn sonar:sonar -Dsonar.host.url=https://sonar.usermind.com'
             } else {
                 // Ensure that the application name is appropriate may need to include -application after artifactid
                 if(slackMessageDestination != "@Jenkins") {
