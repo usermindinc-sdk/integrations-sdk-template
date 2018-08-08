@@ -3,19 +3,20 @@
 
     <groupId>com.usermind</groupId>
     <artifactId>integrations-sdk-sdktemplate</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>com.usermind</groupId>
         <artifactId>integrations-sdk-base-pom</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
     </parent>
 
     <name>integrations-sdk-sdktemplate</name>
     <description>Integration for Sdktemplate</description>
 
     <properties>
+        <main-class>com.usermind.usermindsdk.AppMain</main-class>
     </properties>
 
     <profiles>
@@ -42,7 +43,7 @@
         <dependency>
             <groupId>com.usermind</groupId>
             <artifactId>integrations-sdk-base</artifactId>
-            <version>1.0.10</version>
+            <version>1.0.11</version>
         </dependency>
 
     </dependencies>
