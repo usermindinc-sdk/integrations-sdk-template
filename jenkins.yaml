@@ -17,8 +17,8 @@
     mavenVersion:       'Maven_3.5.4'
     kubeCluster:        'staging'
     kubeDeploymentFiles: 
-        - kubernetes/deployment-staging.yaml
-        - kubernetes/config-staging.yaml
+      - kubernetes/deployment-staging.yaml
+      - kubernetes/config-staging.yaml
   default: # this block gets used if no branch-specific one is supplied
     << : *common # this pulls in everything from 'common'
 
@@ -37,8 +37,8 @@
     pushDockerImage:    true
     configMap: 'prod'
     kubeDeploymentFiles: 
-        - kubernetes/deployment-prod.yaml
-        - kubernetes/config-prod.yaml
+      - kubernetes/deployment-prod.yaml
+      - kubernetes/config-prod.yaml
     kubeCluster:        'production'
     deploymentSlackRoom: deploy-prod
 

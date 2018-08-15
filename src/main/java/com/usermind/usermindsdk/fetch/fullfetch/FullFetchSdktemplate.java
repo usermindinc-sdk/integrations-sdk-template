@@ -1,6 +1,6 @@
 package com.usermind.usermindsdk.fetch.fullfetch;
 
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
+import com.usermind.usermindsdk.fetch.fetchsetup.MetadataFetchSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

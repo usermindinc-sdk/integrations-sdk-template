@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.fetch.metadata;
+package com.usermind.usermindsdk.fetch.fetchsetup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class MetadataFetchSdktemplate implements MetadataFetch {
 
     @Override
     public MetadataFetchData performMetadataFetch(String incomingCredentials) throws NoSuchMethodException {
-         LOGGER.info("Running metadata fetch");
+         LOGGER.info("Running fetchsetup fetch");
         //TODO - implement
         throw new NoSuchMethodException("Time based fetch has not been implemented for this integration type.");
     }

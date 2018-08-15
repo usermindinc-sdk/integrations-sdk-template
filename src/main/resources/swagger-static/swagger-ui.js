@@ -14417,7 +14417,7 @@ var createWrapper = require('../internal/createWrapper'),
     replaceHolders = require('../internal/replaceHolders'),
     restParam = require('./restParam');
 
-/** Used to compose bitmasks for wrapper metadata. */
+/** Used to compose bitmasks for wrapper fetchsetup. */
 var BIND_FLAG = 1,
     PARTIAL_FLAG = 32;
 
@@ -15457,8 +15457,8 @@ var identity = require('../utility/identity'),
  * The base implementation of `setData` without support for hot loop detection.
  *
  * @private
- * @param {Function} func The function to associate metadata with.
- * @param {*} data The metadata.
+ * @param {Function} func The function to associate fetchsetup with.
+ * @param {*} data The fetchsetup.
  * @returns {Function} Returns `func`.
  */
 var baseSetData = !metaMap ? identity : function(func, data) {
@@ -15969,7 +15969,7 @@ var arrayCopy = require('./arrayCopy'),
     replaceHolders = require('./replaceHolders'),
     setData = require('./setData');
 
-/** Used to compose bitmasks for wrapper metadata. */
+/** Used to compose bitmasks for wrapper fetchsetup. */
 var BIND_FLAG = 1,
     BIND_KEY_FLAG = 2,
     CURRY_BOUND_FLAG = 4,
@@ -16078,7 +16078,7 @@ module.exports = createHybridWrapper;
 (function (global){
 var createCtorWrapper = require('./createCtorWrapper');
 
-/** Used to compose bitmasks for wrapper metadata. */
+/** Used to compose bitmasks for wrapper fetchsetup. */
 var BIND_FLAG = 1;
 
 /**
@@ -16131,7 +16131,7 @@ var baseSetData = require('./baseSetData'),
     mergeData = require('./mergeData'),
     setData = require('./setData');
 
-/** Used to compose bitmasks for wrapper metadata. */
+/** Used to compose bitmasks for wrapper fetchsetup. */
 var BIND_FLAG = 1,
     BIND_KEY_FLAG = 2,
     PARTIAL_FLAG = 32,
@@ -16387,11 +16387,11 @@ var metaMap = require('./metaMap'),
     noop = require('../utility/noop');
 
 /**
- * Gets metadata for `func`.
+ * Gets fetchsetup for `func`.
  *
  * @private
  * @param {Function} func The function to query.
- * @returns {*} Returns the metadata for `func`.
+ * @returns {*} Returns the fetchsetup for `func`.
  */
 var getData = !metaMap ? noop : function(func) {
   return metaMap.get(func);
@@ -16856,7 +16856,7 @@ var arrayCopy = require('./arrayCopy'),
     composeArgsRight = require('./composeArgsRight'),
     replaceHolders = require('./replaceHolders');
 
-/** Used to compose bitmasks for wrapper metadata. */
+/** Used to compose bitmasks for wrapper fetchsetup. */
 var BIND_FLAG = 1,
     CURRY_BOUND_FLAG = 4,
     CURRY_FLAG = 8,
@@ -16870,18 +16870,18 @@ var PLACEHOLDER = '__lodash_placeholder__';
 var nativeMin = Math.min;
 
 /**
- * Merges the function metadata of `source` into `data`.
+ * Merges the function fetchsetup of `source` into `data`.
  *
- * Merging metadata reduces the number of wrappers required to invoke a function.
+ * Merging fetchsetup reduces the number of wrappers required to invoke a function.
  * This is possible because methods like `_.bind`, `_.curry`, and `_.partial`
  * may be applied regardless of execution order. Methods like `_.ary` and `_.rearg`
  * augment function arguments, making the order in which they are executed important,
- * preventing the merging of metadata. However, we make an exception for a safe
+ * preventing the merging of fetchsetup. However, we make an exception for a safe
  * common case where curried functions have `_.ary` and or `_.rearg` applied.
  *
  * @private
- * @param {Array} data The destination metadata.
- * @param {Array} source The source metadata.
+ * @param {Array} data The destination fetchsetup.
+ * @param {Array} source The source fetchsetup.
  * @returns {Array} Returns `data`.
  */
 function mergeData(data, source) {
@@ -16895,7 +16895,7 @@ function mergeData(data, source) {
     (srcBitmask == ARY_FLAG && bitmask == REARG_FLAG && data[7].length <= source[8]) ||
     (srcBitmask == (ARY_FLAG | REARG_FLAG) && bitmask == CURRY_FLAG);
 
-  // Exit early if metadata can't be merged.
+  // Exit early if fetchsetup can't be merged.
   if (!(isCommon || isCombo)) {
     return data;
   }
@@ -16948,7 +16948,7 @@ var getNative = require('./getNative');
 /** Native method references. */
 var WeakMap = getNative(global, 'WeakMap');
 
-/** Used to store function metadata. */
+/** Used to store function fetchsetup. */
 var metaMap = WeakMap && new WeakMap;
 
 module.exports = metaMap;
@@ -17031,7 +17031,7 @@ var HOT_COUNT = 150,
     HOT_SPAN = 16;
 
 /**
- * Sets metadata for `func`.
+ * Sets fetchsetup for `func`.
  *
  * **Note:** If this function becomes hot, i.e. is invoked a lot in a short
  * period of time, it will trip its breaker and transition to an identity function
@@ -17039,8 +17039,8 @@ var HOT_COUNT = 150,
  * for more details.
  *
  * @private
- * @param {Function} func The function to associate metadata with.
- * @param {*} data The metadata.
+ * @param {Function} func The function to associate fetchsetup with.
+ * @param {*} data The fetchsetup.
  * @returns {Function} Returns `func`.
  */
 var setData = (function() {

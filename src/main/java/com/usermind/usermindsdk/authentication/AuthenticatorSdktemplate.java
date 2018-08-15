@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.authentication;
 
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchData;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
+import com.usermind.usermindsdk.fetch.fetchsetup.MetadataFetchData;
+import com.usermind.usermindsdk.fetch.fetchsetup.MetadataFetchSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

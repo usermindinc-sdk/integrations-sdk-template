@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.fetch.time;
+package com.usermind.usermindsdk.fetch.timefetch;
 
 
 import com.usermind.usermindsdk.fetch.FetchedData;

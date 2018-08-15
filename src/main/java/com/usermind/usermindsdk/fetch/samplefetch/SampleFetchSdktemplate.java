@@ -2,7 +2,7 @@ package com.usermind.usermindsdk.fetch.samplefetch;
 
 
 import com.usermind.usermindsdk.fetch.FetchedData;
-import com.usermind.usermindsdk.fetch.metadata.MetadataFetchSdktemplate;
+import com.usermind.usermindsdk.fetch.fetchsetup.MetadataFetchSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

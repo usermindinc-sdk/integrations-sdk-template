@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.fetch.metadata;
+package com.usermind.usermindsdk.fetch.fetchsetup;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
