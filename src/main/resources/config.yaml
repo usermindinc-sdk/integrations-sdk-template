@@ -42,4 +42,6 @@ logging:
         prettyPrint: false
         appendLineSeparator: true
         additionalFields:
-            elasticsearch-index: "integrations-sdk"
+          elasticsearch-index: "integrations-sdk"
+          sdkType: "sdktemplate"
+        flattenMdc: true

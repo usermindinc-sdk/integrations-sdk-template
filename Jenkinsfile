@@ -37,17 +37,24 @@ node {
                 }
                 // Ensure that the application name is appropriate may need to include -application after artifactid
                 util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
-                // Add test related commands as appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
+                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar.usermind.com:9000'
             } else {
                 // Ensure that the application name is appropriate may need to include -application after artifactid
                 if(slackMessageDestination != "@Jenkins") {
                     util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
                 }
-                // Add test related commands as appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
+                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
                 sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
             }
+        }
+
+        try {
+            stage('sonar') {
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar.usermind.com'
+            }
+        } catch (error) {
+            util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
         }
 
         //If this is a pull request - then stop here. Failsafe to keep from going though the docker and kubernetes steps on PRs.
@@ -102,14 +109,14 @@ node {
                     util.sendSlackMessage(build_config.deploymentSlackRoom, ":jenkins_general: Starting deployment of ${pom.artifactId}-application ${pom.version}. \n ${changeLogMessage}")
                     util.sendSlackMessage(slackTeamMessageDestination, ":jenkins_general: Starting deployment of ${pom.artifactId}-application ${pom.version}. \n ${changeLogMessage}")
                     if(slackMessageDestination != "@Jenkins") {
-                       util.sendSlackMessage(slackMessageDestination, ":jenkins_general: Starting deployment of ${pom.artifactId}-application ${pom.version}. \n ${changeLogMessage}")
+                        util.sendSlackMessage(slackMessageDestination, ":jenkins_general: Starting deployment of ${pom.artifactId}-application ${pom.version}. \n ${changeLogMessage}")
                     }
                 }
                 withEnv(["PRODUCT_VERSION=${pom.version}"]) {
                     kubernetesDeploy(
-                            kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
-                            configs: "${build_config.kubeDeploymentFiles.join(',')}",
-                            dockerCredentials: [[credentialsId: 'dockerhub-userminddeployer']])
+                        kubeconfigId: "${build_config.kubeCluster}-kubernetes-credentials",
+                        configs: "${build_config.kubeDeploymentFiles.join(',')}",
+                        dockerCredentials: [[credentialsId: 'dockerhub-userminddeployer']])
                 }
 
                 //See if the deployment succeeded, and notify if not
