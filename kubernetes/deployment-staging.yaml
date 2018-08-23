@@ -27,6 +27,7 @@ spec:
       containers:
         - name: integrations-sdk-sdktemplate
           image: usermindinc/integrations-sdk-sdktemplate:${PRODUCT_VERSION}
+          imagePullPolicy: Always
           env:
           # You will need one of these for each environement variable your app needs.
           # - name: ENV_VAR_NAME
