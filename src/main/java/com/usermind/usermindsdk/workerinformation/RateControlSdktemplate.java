@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Component
-public class SdktemplateRateControl implements  RateControl {
+public class RateControlSdktemplate implements  RateControl {
     private static final Logger LOGGER = LoggerFactory.getLogger(RateControl.class);
 
     private Integer MaxRate = 100000;

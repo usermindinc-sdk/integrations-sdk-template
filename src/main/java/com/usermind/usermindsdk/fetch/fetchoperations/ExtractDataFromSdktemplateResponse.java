@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -19,16 +18,17 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
     }
 
     @Override
-    public List<String> extractData(String dataType, String input) {
+    public ExtractedData extractData(String incomingCredentials, String dataType, String input,
+                                    List<String> whitelist, List<String> blacklist, boolean metadata) {
 
-        List<String> results = new ArrayList<>();
+        ExtractedData extractedData = new ExtractedData();
 
         //TODO: Given a list of results, pull the individual result lines out.
         //So given {"value": [A], [B] ...}
         //return a list with A, B, etc.
         //The DataType tells you which entity this is, so that you will know what data you are extracting.
 
-        return results;
+        return extractedData;
     }
 
 }

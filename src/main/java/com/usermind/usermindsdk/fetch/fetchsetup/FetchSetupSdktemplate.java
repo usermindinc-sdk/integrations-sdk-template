@@ -1,6 +1,5 @@
 package com.usermind.usermindsdk.fetch.fetchsetup;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.helpers.CredentialDeserializerSdktemplate;
 import com.usermind.usermindsdk.helpers.CredentialsSdktemplate;
@@ -12,8 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Component
 public class FetchSetupSdktemplate implements FetchSetup {

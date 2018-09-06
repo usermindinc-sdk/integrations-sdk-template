@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class MetadataHandlerSdktemplate implements MetadataHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataHandlerSdktemplate.class);
@@ -18,9 +21,9 @@ public class MetadataHandlerSdktemplate implements MetadataHandler {
     }
 
     @Override
-    public String processMetaData(String input) throws Exception {
+    public Map<String, MetadataRecords> processMetaData(String input) throws Exception {
 
-        MetadataRecords metaDataRecords = new MetadataRecords();
+        Map<String, MetadataRecords> allEntities = new HashMap<>();
         //This is given metadata as an input string - whatever we get from the result of the MetadataFetchSetup call.
         //Parse it, and return it broken up into the format specified in MetadataRecords.
 
@@ -35,7 +38,7 @@ public class MetadataHandlerSdktemplate implements MetadataHandler {
 
 
 
-        return objectMapper.writer().writeValueAsString(metaDataRecords);
+        return allEntities;
     }
 
 }
