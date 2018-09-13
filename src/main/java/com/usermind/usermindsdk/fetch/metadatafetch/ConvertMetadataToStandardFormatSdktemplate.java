@@ -23,6 +23,7 @@ public class ConvertMetadataToStandardFormatSdktemplate implements ConvertMetada
     @Override
     public Map<String, MetadataRecords> processMetaData(String input) throws Exception {
 
+        //TODO - convert integration metadata into SDK metadata classes
         Map<String, MetadataRecords> allEntities = new HashMap<>();
         //This is given metadata as an input string - whatever we get from the result of the MetadataFetchSetup call.
         //Parse it, and return it broken up into the format specified in MetadataRecords.

@@ -13,7 +13,7 @@ public class AuthenticatorSdktemplate implements Authenticator<CredentialContain
     @Override
     public AuthenticationData performAuthentication(CredentialContainerSdktemplate credentials) throws NoSuchMethodException {
         LOGGER.info("Sdktemplate authentication started.");
-        //TODO - implement
+        //TODO - implement Authenticator
         throw new NoSuchMethodException("Authentication has not been implemented for this integration type.");
     }
 

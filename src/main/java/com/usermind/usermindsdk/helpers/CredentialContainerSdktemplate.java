@@ -15,4 +15,6 @@ public class CredentialContainerSdktemplate extends CredentialContainer {
         super(objectMapper);
     }
 
+    //TODO - give the class helper methods to get the authentication information
+
 }

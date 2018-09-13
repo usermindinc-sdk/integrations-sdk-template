@@ -13,12 +13,9 @@ import java.util.Map;
 public class AddAuthenticationInformationSdktemplate implements AddAuthenticationInformation<CredentialContainerSdktemplate> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAuthenticationInformationSdktemplate.class);
 
-    public AddAuthenticationInformationSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper) {
-    }
-
     @Override
     public void putAuthIntoHeaderMap(CredentialContainerSdktemplate credentials, String link, Map<String, String> headers)throws Exception {
-
+        //TODO - put authentication information into the headers
     }
 
 }

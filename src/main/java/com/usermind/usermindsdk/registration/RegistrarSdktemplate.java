@@ -47,6 +47,7 @@ public class RegistrarSdktemplate implements Registrar {
   @Override
   public String register() throws Exception {
     try {
+      //TODO - specify the registration code to announce this integration to the system
       String integrationConfig = loadFileFixtureAsString(integrationResourceFileName);
       String integrationTypeConfig = loadFileFixtureAsString(integrationTypeResourceFileName);
       IntegrationApiClient apiClient = new IntegrationApiClient(restTemplate, workerConfiguration.getIntegrationRestApiUrl(), objectMapper);
