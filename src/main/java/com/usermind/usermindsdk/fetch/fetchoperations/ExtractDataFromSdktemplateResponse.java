@@ -1,6 +1,7 @@
 package com.usermind.usermindsdk.fetch.fetchoperations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.usermind.usermindsdk.helpers.CredentialContainerSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ExtractDataFromSdktemplateResponse implements ExtractDataFromResponse {
+public class ExtractDataFromSdktemplateResponse implements ExtractDataFromResponse<CredentialContainerSdktemplate> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtractDataFromSdktemplateResponse.class);
 
     private ObjectMapper objectMapper;
@@ -18,7 +19,7 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
     }
 
     @Override
-    public ExtractedData extractData(String incomingCredentials, String dataType, String input,
+    public ExtractedData extractData(CredentialContainerSdktemplate credentials, String dataType, String input,
                                     List<String> whitelist, List<String> blacklist, boolean metadata) {
 
         ExtractedData extractedData = new ExtractedData();

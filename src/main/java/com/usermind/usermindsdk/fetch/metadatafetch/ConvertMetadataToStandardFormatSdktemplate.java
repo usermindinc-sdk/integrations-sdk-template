@@ -10,13 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class MetadataHandlerSdktemplate implements MetadataHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MetadataHandlerSdktemplate.class);
+public class ConvertMetadataToStandardFormatSdktemplate implements ConvertMetadataToStandardFormat {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConvertMetadataToStandardFormatSdktemplate.class);
 
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public MetadataHandlerSdktemplate(ObjectMapper objectMapper) {
+    public ConvertMetadataToStandardFormatSdktemplate(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

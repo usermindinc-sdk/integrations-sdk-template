@@ -1,14 +1,22 @@
 package com.usermind.usermindsdk;
 
-import com.usermind.usermindsdk.helpers.CredentialsSdktemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.usermind.usermindsdk.helpers.CredentialContainerSdktemplate;
+
+import java.io.IOException;
 
 public class TestClassFactory {
 
-    //Credentials in the stub for an example.
-    public static CredentialsSdktemplate getCredentialsSdktemplate() {
-        CredentialsSdktemplate credentials = new CredentialsSdktemplate();
-        //Set the credentials here with some stubbed values for testing
-        return credentials;
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
+    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate() throws IOException {
+        CredentialContainerSdktemplate credentialContainerSdktemplate = new CredentialContainerSdktemplate(objectMapper);
+        credentialContainerSdktemplate.load(getWorkingTestCredentials());
+        return credentialContainerSdktemplate;
+    }
+
+    public static String getWorkingTestCredentials() {
+        return "{\"credentials\":{\"apiId\":\"tz37h4mboh60\",\"apiSecret\":\"U4LlQn8bjOXUU8BW7qcOBtgHldwQX2DQh2waVgKvllMrZ2NoR21brgRATtKlD3npeEd5It+dE/yiq4+jSiAxow==\",\"domain\":\"schneider-electric3-pilot.csod.com\",\"username\":\"ADM_Usermind\"}}";
     }
 
 }

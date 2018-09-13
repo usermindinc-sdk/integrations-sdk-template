@@ -1,8 +1,7 @@
 package com.usermind.usermindsdk.fetch.fetchsetup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.helpers.CredentialDeserializerSdktemplate;
-import com.usermind.usermindsdk.helpers.CredentialsSdktemplate;
+import com.usermind.usermindsdk.helpers.CredentialContainerSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @Component
-public class FetchSetupSdktemplate implements FetchSetup {
+public class FetchSetupSdktemplate implements FetchSetup<CredentialContainerSdktemplate> {
     private static final Logger LOGGER = LoggerFactory.getLogger(FetchSetupSdktemplate.class);
 
     private final RestTemplate restTemplate;
@@ -29,9 +28,8 @@ public class FetchSetupSdktemplate implements FetchSetup {
 
 
     @Override
-    public FetchSetupData performFullFetchSetup(String incomingCredentials, List<String> whitelist, List<String> blacklist) throws NoSuchMethodException {
+    public FetchSetupData performFullFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist) throws NoSuchMethodException {
         LOGGER.info("Running fetchsetup full fetch");
-        CredentialsSdktemplate credentials = CredentialDeserializerSdktemplate.deserialize(incomingCredentials);
 
         FetchSetupData fetchSetupData = new FetchSetupData();
         try {
@@ -52,9 +50,8 @@ public class FetchSetupSdktemplate implements FetchSetup {
 
 
     @Override
-    public FetchSetupData performIncrementalFetchSetup(String incomingCredentials, List<String> whitelist, List<String> blacklist, String startTime) throws Exception {
+    public FetchSetupData performIncrementalFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist, String startTime) throws Exception {
         LOGGER.info("Running fetchsetup incremental fetch - everything after {}", startTime);
-        CredentialsSdktemplate credentials = CredentialDeserializerSdktemplate.deserialize(incomingCredentials);
 
         FetchSetupData fetchSetupData = new FetchSetupData();
          try {
@@ -71,9 +68,8 @@ public class FetchSetupSdktemplate implements FetchSetup {
     }
 
     @Override
-    public FetchSetupData performTimeLimitedFetchSetup(String incomingCredentials, List<String> whitelist, List<String> blacklist, String startTime, String endTime) throws Exception {
+    public FetchSetupData performTimeLimitedFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist, String startTime, String endTime) throws Exception {
         LOGGER.info("Running fetchsetup time limited fetch - everything between {} and {}", startTime, endTime);
-        CredentialsSdktemplate credentials = CredentialDeserializerSdktemplate.deserialize(incomingCredentials);
 
         FetchSetupData fetchSetupData = new FetchSetupData();
         try {
@@ -90,9 +86,8 @@ public class FetchSetupSdktemplate implements FetchSetup {
     }
 
     @Override
-    public FetchSetupData performSampleFetchSetup(String incomingCredentials, List<String> whitelist, List<String> blacklist, Integer sampleSize) throws Exception {
+    public FetchSetupData performSampleFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist, Integer sampleSize) throws Exception {
         LOGGER.info("Running fetchsetup sample fetch");
-        CredentialsSdktemplate credentials = CredentialDeserializerSdktemplate.deserialize(incomingCredentials);
 
         FetchSetupData fetchSetupData = new FetchSetupData();
         try {
@@ -111,9 +106,8 @@ public class FetchSetupSdktemplate implements FetchSetup {
     }
 
     @Override
-    public FetchSetupData performMetadataFetchSetup(String incomingCredentials, List<String> whitelist, List<String> blacklist) throws Exception {
+    public FetchSetupData performMetadataFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist) throws Exception {
         LOGGER.info("Running fetchsetup metadata fetch");
-        CredentialsSdktemplate credentials = CredentialDeserializerSdktemplate.deserialize(incomingCredentials);
 
         FetchSetupData fetchSetupData = new FetchSetupData();
         try {
