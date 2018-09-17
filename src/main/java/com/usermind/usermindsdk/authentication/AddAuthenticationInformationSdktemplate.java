@@ -1,11 +1,8 @@
 package com.usermind.usermindsdk.authentication;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.helpers.CredentialContainerSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.helpers.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.CredentialContainerSdktemplate;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.helpers;
+package com.usermind.usermindsdk.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
