@@ -7,7 +7,7 @@
 #      --> https://github.com/usermindinc/skylab/blob/5d74db89d4f3cb09c11800cbcc3d98229574b4a6/Jenkinsfile#L28-L29
 #
 ---
-  Default settings shared for all builds (unless directly overridden)
+  # Default settings shared for all builds (unless directly overridden)
   common: &common
     autoDeploy:         false
     requireApproval:    true # whether to require user input for deployments
