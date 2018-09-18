@@ -11,8 +11,12 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAuthenticationInformationSdktemplate.class);
 
     @Override
-    public void putAuthIntoHeaderMap(CredentialContainerSdktemplate credentials, String link, Map<String, String> headers)throws Exception {
+    public String putAuthIntoWebRequest(CredentialContainerSdktemplate credentials, String link, Map<String, String> headers)throws Exception {
         //TODO - put authentication information into the headers
+        //Some integrations add them to the link directly instead of the headers. The link returned is therefore the link used, NOT the
+        //one sent in - this lets you add authentication to that as well.
+
+        return link;
     }
 
 }
