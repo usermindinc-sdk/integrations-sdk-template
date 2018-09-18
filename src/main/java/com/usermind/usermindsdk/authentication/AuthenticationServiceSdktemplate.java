@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class AuthenticatorServiceSdktemplate implements AuthenticationService<CredentialContainerSdktemplate> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatorServiceSdktemplate.class);
+public class AuthenticationServiceSdktemplate implements AuthenticationService<CredentialContainerSdktemplate> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplate.class);
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public AuthenticatorServiceSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public AuthenticationServiceSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }

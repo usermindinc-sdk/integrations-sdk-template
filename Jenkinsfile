@@ -51,7 +51,7 @@ node {
 
         try {
             stage('sonar') {
-                sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar.usermind.com'
+                sh 'mvn sonar:sonar -Dsonar.host.url=https://sonar.usermind.com'
             }
         } catch (error) {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
