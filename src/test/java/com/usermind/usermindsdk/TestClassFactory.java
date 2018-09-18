@@ -9,9 +9,15 @@ public class TestClassFactory {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate() throws IOException {
+    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate() {
         CredentialContainerSdktemplate credentialContainerSdktemplate = new CredentialContainerSdktemplate(objectMapper);
-        credentialContainerSdktemplate.load(getWorkingTestCredentials());
+        try {
+            //this is done simply to let me remove the throws statement from the method call, which caused problem
+            //when streaming. In testing I was comfortable with that.
+            credentialContainerSdktemplate.load(getWorkingTestCredentials());
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
         return credentialContainerSdktemplate;
     }
 

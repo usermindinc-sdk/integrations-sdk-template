@@ -89,3 +89,31 @@ While in the staging Kubernetes cluster, go to the Kubernetes directory and run
 ```kubectl create -f service-staging.yaml -n integrations```
 
 Do the same for production using service-prod.yaml.
+
+#Testing
+
+###Credentials and Authentication
+Put a copy of working test credentials in the test class factory. That will help when running integration tests that actually connect.
+```com/usermind/usermindsdk/TestClassFactory.java```
+
+And put a copy of the authentication response in a JSON file. This can be the session information if that is what this integration does.
+```com/usermind/usermindsdk/authentication/token.json```
+
+That should MOSTLY make the authentication tests work.
+```com/usermind/usermindsdk/authentication/AuthenticationServiceSdktemplateTest.java```
+
+
+###Extractor   
+Put the same authentication response from above in the Extractor unit tests, inside the file (coming soon - will be the same file as above)
+```com/usermind/usermindsdk/fetch/fetchoperations/ExtractDataFromSdktemplateResponseTest.java```
+
+###Fetches
+There is an integration test that will hit a live third party server and run a full fetch.
+```com/usermind/usermindsdk/fetch/fetchsetup/FetchSetupSdktemplateIT.java```
+
+And a small unit test for full fetches that needs to be extended:
+```com/usermind/usermindsdk/fetch/fetchsetup/FetchSetupSdktemplateTest.java```
+
+###Registration
+A unit test to cover registrations is also included.
+```com/usermind/usermindsdk/registration/RegistrationSdktemplateTest.java```
