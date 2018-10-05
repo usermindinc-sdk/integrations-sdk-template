@@ -84,12 +84,17 @@ node {
 
         stage('Create configmap for Kubernetes') {
             // Update the Configmaps on kubernetes.
-            if (env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
+            if (env.BRANCH_NAME == 'master') {
                 // Append this to config in both instances if you have prod and staging configs:
                 // -${build_config.configMap}
-                sh "sed 's/^/    /' src/main/resources/config.yaml >> kubernetes/config-${build_config.configMap}.yaml"
+                sh "sed 's/^/    /' src/main/resources/config-prod.yaml >> kubernetes/config-${build_config.configMap}.yaml"
+            } else {
+                // Append this to config in both instances if you have prod and staging configs:
+                // -${build_config.configMap}
+                sh "sed 's/^/    /' src/main/resources/config-staging.yaml >> kubernetes/config-${build_config.configMap}.yaml"
             }
         }
+
 
         stage('Deploy docker image to Kubernetes') {
             if(build_config.autoDeploy == true) {
