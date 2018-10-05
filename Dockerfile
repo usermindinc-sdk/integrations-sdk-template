@@ -18,7 +18,10 @@ WORKDIR /app
 ADD target/${JAR_FILE} ${JAR_FILE}
 COPY docker/start start
 
-COPY src/main/resources/config.yaml /app/config/config.yaml
+#Uncomment one these lines to build a docker image that will run outside of Kubernetes -
+#Otherwise Kubernetes will place the file
+#COPY src/main/resources/config-staging.yaml /app/config/config.yaml
+#COPY src/main/resources/config-prod.yaml /app/config/config.yaml
 
 ENTRYPOINT ["/app/start"]
 
