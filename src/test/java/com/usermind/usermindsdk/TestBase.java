@@ -1,8 +1,10 @@
 package com.usermind.usermindsdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.usermind.usermindsdk.dropwizard.DropWizardService;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.helpers.JsonSerialization;
+import com.usermind.usermindsdk.spring.BeanRegistration;
 import io.dropwizard.jackson.Jackson;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -41,8 +43,11 @@ public class TestBase {
 
         AnnotationConfigApplicationContext acaContext = new AnnotationConfigApplicationContext();
 
-        WorkerConfiguration workerConfiguration = new WorkerConfiguration();
-        acaContext.getBeanFactory().registerSingleton("workerConfiguration", workerConfiguration);
+        acaContext.getEnvironment().setActiveProfiles(profiles.toArray(new String[profiles.size()]));
+        acaContext.register(DropWizardService.SPRING_CONFIG_CLASSES);
+
+        BeanRegistration beanRegistration = new BeanRegistration();
+        beanRegistration.registerClasses(acaContext, objectMapper, new WorkerConfiguration());
 
         return acaContext;
     }
