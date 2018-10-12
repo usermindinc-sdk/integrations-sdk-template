@@ -93,6 +93,8 @@ node {
                 // -${build_config.configMap}
                 sh "sed 's/^/    /' src/main/resources/config-staging.yaml >> kubernetes/config-${build_config.configMap}.yaml"
             }
+            sh "echo '  baseConfig.yaml: |' >> kubernetes/config-${build_config.configMap}.yaml"
+            sh "sed 's/^/    /' src/main/resources/baseConfig.yaml >> kubernetes/config-${build_config.configMap}.yaml"
         }
 
 

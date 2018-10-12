@@ -41,7 +41,6 @@ spec:
           # This is for use with a config map where your configs differ between staging and prod, this is the mounth path.
           - name: integrations
             mountPath: /app/config
-            subpath: config.yaml
 
       # How we talk to docker hub to get our private containers.
       imagePullSecrets:
@@ -55,3 +54,5 @@ spec:
            items:
            - key: config-staging.yaml
              path: config.yaml
+           - key: baseConfig.yaml
+             path: baseConfig.yaml
