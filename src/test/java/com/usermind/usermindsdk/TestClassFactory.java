@@ -4,10 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.CredentialContainerSdktemplate;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TestClassFactory {
 
+    private static final Set<String> entityList = new HashSet<>(Arrays.asList("", ""));
     private static ObjectMapper objectMapper = new ObjectMapper();
+
+    public static Set<String> getEntitySet() {
+        return entityList;
+    }
 
     public static CredentialContainerSdktemplate getCredentialContainerSdktemplate() {
         CredentialContainerSdktemplate credentialContainerSdktemplate = new CredentialContainerSdktemplate(objectMapper);

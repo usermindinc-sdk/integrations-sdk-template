@@ -2,6 +2,8 @@ package com.usermind.usermindsdk.fetch.fetchsetup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.fetch.metadatafetch.EntityInformation;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,20 @@ public class FetchSetupSdktemplate implements FetchSetup<CredentialContainerSdkt
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final EntityInformation entityInformation;
 
     @Autowired
-    public FetchSetupSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public FetchSetupSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper,
+                                 EntityInformation entityInformation) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+        this.entityInformation = entityInformation;
     }
 
 
 
     @Override
-    public FetchSetupData performFullFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist) throws Exception {
+    public FetchSetupData performFullFetchSetup(CredentialContainerSdktemplate credentials, String entity) throws Exception {
         LOGGER.info("Running fetchsetup full fetch");
         //TODO - implement full fetch
         FetchSetupData fetchSetupData = new FetchSetupData();
@@ -44,48 +49,40 @@ public class FetchSetupSdktemplate implements FetchSetup<CredentialContainerSdkt
 
 
     @Override
-    public FetchSetupData performIncrementalFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist, String startTime) throws Exception {
+    public FetchSetupData performIncrementalFetchSetup(CredentialContainerSdktemplate credentials, String entity, String startTime) throws Exception {
         LOGGER.info("Running fetchsetup incremental fetch - everything after {}", startTime);
+
+        if (StringUtils.isEmpty(entityInformation.getDateFieldForIncrementalFetch(entity))) {
+            return performFullFetchSetup(credentials, entity);
+        }
+
         //TODO - implement incremental fetch
         FetchSetupData fetchSetupData = new FetchSetupData();
         HttpHeaders headers = new HttpHeaders();
         URI uri = new URI("https://www.somepath.com");
         //See full fetch for more details. But this path should specify a path that will fetch everything AFTER the given time.
+        //If you can't, then just pass the call through to full fetch.
         fetchSetupData.addWebRequest("ObjectName", uri.toString(), headers);
 
         return fetchSetupData;
     }
 
     @Override
-    public FetchSetupData performTimeLimitedFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist, String startTime, String endTime) throws Exception {
+    public FetchSetupData performTimeLimitedFetchSetup(CredentialContainerSdktemplate credentials, String entity, String startTime, String endTime) throws Exception {
         LOGGER.info("Running fetchsetup time limited fetch - everything between {} and {}", startTime, endTime);
+        throw new NoSuchMethodException("Time limited fetch is not supported for Sdktemplate!");
         //TODO - implement time limited fetch
-        FetchSetupData fetchSetupData = new FetchSetupData();
-        HttpHeaders headers = new HttpHeaders();
-        URI uri = new URI("https://www.somepath.com");
-        //See full fetch for more details. But this path should specify a path that will fetch everything BETWEEN the two given times.
-        fetchSetupData.addWebRequest("ObjectName", uri.toString(), headers);
-
-        return fetchSetupData;
     }
 
     @Override
-    public FetchSetupData performSampleFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist, Integer sampleSize) throws Exception {
+    public FetchSetupData performSampleFetchSetup(CredentialContainerSdktemplate credentials, String entity, Integer sampleSize) throws Exception {
         LOGGER.info("Running fetchsetup sample fetch");
+        throw new NoSuchMethodException("Sample fetch is not supported for Sdktemplate!");
         //TODO - implement sample fetch
-        FetchSetupData fetchSetupData = new FetchSetupData();
-        HttpHeaders headers = new HttpHeaders();
-        URI uri = new URI("https://www.somepath.com");
-        //See full fetch for more details. But this path should specify a path that will fetch only about the number of records in "sampleSize".
-        //That can be the latest (if a "top" command is available), it can be a range of sample records (one from each month for the last sampleSize months)
-        //or it can be anything that makes sense given the APIs available.
-        fetchSetupData.addWebRequest("ObjectName", uri.toString(), headers);
-
-        return fetchSetupData;
-    }
+     }
 
     @Override
-    public FetchSetupData performMetadataFetchSetup(CredentialContainerSdktemplate credentials, List<String> whitelist, List<String> blacklist) throws Exception {
+    public FetchSetupData performMetadataFetchSetup(CredentialContainerSdktemplate credentials) throws Exception {
         LOGGER.info("Running fetchsetup metadata fetch");
         //TODO - implement metadata fetch
         FetchSetupData fetchSetupData = new FetchSetupData();

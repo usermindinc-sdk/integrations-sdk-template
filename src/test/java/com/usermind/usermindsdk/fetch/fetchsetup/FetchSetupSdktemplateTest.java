@@ -23,7 +23,7 @@ class FetchSetupSdktemplateTest extends TestBase {
 
     @Test
     void testMeta() throws Exception {
-        FetchSetupData setupData = fetchSetup.performMetadataFetchSetup(TestClassFactory.getCredentialContainerSdktemplate(), new ArrayList<String>(), new ArrayList<String>());
+        FetchSetupData setupData = fetchSetup.performMetadataFetchSetup(TestClassFactory.getCredentialContainerSdktemplate());
         assertThat(setupData.getFetchSetupWriteRequests().size()).isEqualTo(2);
     }
 }
