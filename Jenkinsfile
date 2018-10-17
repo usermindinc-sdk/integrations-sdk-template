@@ -38,20 +38,20 @@ node {
                 // Ensure that the application name is appropriate may need to include -application after artifactid
                 util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
                 // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
-                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
+                sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
             } else {
                 // Ensure that the application name is appropriate may need to include -application after artifactid
                 if(slackMessageDestination != "@Jenkins") {
                     util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
                 }
                 // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
-                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+                sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
             }
         }
 
         try {
             stage('sonar') {
-                sh 'mvn sonar:sonar -Dsonar.host.url=https://sonar.usermind.com'
+                sh 'mvn -B sonar:sonar -Dsonar.host.url=https://sonar.usermind.com'
             }
         } catch (error) {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
@@ -73,7 +73,13 @@ node {
                     // Ensure that the application name is appropriate may need to include -application after artifactid
                     dockerImage = docker.image("usermindinc/${pom.artifactId}:${pom.version}")
                     echo "Trying to push usermindinc/${pom.artifactId}:${pom.version}"
-                    dockerImage.push("${pom.version}")
+                    dockerImage = docker.image("usermindinc/${pom.artifactId}:${pom.version}")
+                    echo "Trying to push usermindinc/${pom.artifactId}:${pom.version}"
+                    if (env.BRANCH_NAME == 'master') {
+                        dockerImage.push("${pom.version}")
+                    } else {
+                        dockerImage.push("${pom.version}.${BUILD_NUMBER}")
+                    }
                     // Use this if you are not doing so in your pom.
                     // dockerImage.push("latest")
                 }
