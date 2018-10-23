@@ -24,6 +24,10 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<C
     public AuthenticatorResponse validate(CredentialContainerSdktemplate credentials) throws NoSuchMethodException {
         LOGGER.info("Sdktemplate authentication started.");
         //TODO - implement Authenticator
+        //If there is a session -
+        //SessionInformationSdktemplate sessionCredentials = new SessionInformationSdktemplate();
+        //SessionInformationSdktemplate sessionInfo = sessionCredentials.getSession(credentials);
+
         throw new NoSuchMethodException("Authentication has not been implemented for this integration type.");
     }
 

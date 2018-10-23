@@ -48,7 +48,7 @@ Essentially, connect and get metadata. If it fails, let it throw an exception. I
 
 ### Session Information
 
-As a part of that, if this integration keeps a session, put a class to track the session information in the authentication package.
+As a part of that, if this integration keeps a session, flesh out the SessionCredentials and SessionInformation classes. If there is no session, then delete those classes instead.
 
 ### Add Authentication Information 
 When fetches are made, authentication information is added at the last minute. This class gets the web call that is about to be make, and is expected to adjust it to have updated authentication.
