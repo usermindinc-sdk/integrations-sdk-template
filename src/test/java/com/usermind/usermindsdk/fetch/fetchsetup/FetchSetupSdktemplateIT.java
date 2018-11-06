@@ -12,15 +12,12 @@ import com.usermind.usermindsdk.fetch.metadatafetch.EntityInformationSdktemplate
 import com.usermind.usermindsdk.fetch.metadatafetch.MetadataFetchDriver;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleFetchDriver;
 import com.usermind.usermindsdk.fetch.timefetch.TimeLimitedFetchDriver;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,7 +104,7 @@ class FetchSetupSdktemplateIT extends TestBase {
                         ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), e.getKey(),
                                 e.getValue(), metadata);
                         //make sure we extracted data!
-                        assertThat(extracted.getExtractedData().isEmpty()).isFalse();
+                        assertThat(extracted.getExtractedDataItems().isEmpty()).isFalse();
                     });
         }
     }

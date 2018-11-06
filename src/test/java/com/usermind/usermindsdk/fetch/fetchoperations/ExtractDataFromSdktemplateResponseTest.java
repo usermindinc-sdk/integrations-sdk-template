@@ -14,8 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 
-import java.util.ArrayList;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -64,7 +62,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
 
         //does this normalize correctly?
         Normalizer normalizer = new Normalizer(new EntityInformationSdktemplate(), objectMapper);
-        String flattenedData = normalizer.normalizeData(ENTITY_TYPE, extracted.getExtractedData().get(0));
+        String flattenedData = normalizer.normalizeData(ENTITY_TYPE, extracted.getExtractedDataItems().get(0));
         assertThat(flattenedData).contains("records");
         assertThat(flattenedData).contains("1xhK75iKy");
 
@@ -100,7 +98,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
 
         //does this normalize correctly?
         Normalizer normalizer = new Normalizer(new EntityInformationSdktemplate(), objectMapper);
-        String flattenedData = normalizer.normalizeData(ANOTHER_ENTITY_TYPE, extracted.getExtractedData().get(0));
+        String flattenedData = normalizer.normalizeData(ANOTHER_ENTITY_TYPE, extracted.getExtractedDataItems().get(0));
 
         assertThat(flattenedData).contains("records");
         assertThat(flattenedData).contains("CS2aIZ9Udl2ftm2DO");
