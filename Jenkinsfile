@@ -56,6 +56,13 @@ node {
         } catch (error) {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
         }
+        
+        //Scan with SourceClear to identify vulnerabilities
+        stage('SourceClear scan') {
+            withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
+                sh "curl -sSL https://download.sourceclear.com/ci.sh | sh"   
+            }
+        }
 
         //If this is a pull request - then stop here. Failsafe to keep from going though the docker and kubernetes steps on PRs.
         if( util.isPullRequest() ) {
