@@ -1,7 +1,35 @@
 {
-  "actions": {},
+  "actions": {
+    "fetch-metadata": {
+      "description": "Sdktemplate metadata-only fetch",
+      "timeout_in_seconds": 600
+    },
+    "fetch": {
+      "description": "Sdktemplate entity fetch",
+      "timeout_in_seconds": 600
+    }
+  },
+  "dispatch": {
+    "types": {
+      "read": {
+        "actions": {
+          "fetch": {
+            "kafkaTopic": "Nifi_Unified_Fetch",
+            "shouldPersist": false
+          },
+          "fetch-metadata": {
+            "kafkaTopic": "Nifi_Unified_Fetch",
+            "shouldPersist": false
+          }
+        }
+      }
+    }
+  },
   "driver": {
     "actionMetadataEnabled": false
+  },
+  "ui": {
+    "authenticationEnabled": true
   },
   "onboarding": {
     "allowedFetchFrequencies": [

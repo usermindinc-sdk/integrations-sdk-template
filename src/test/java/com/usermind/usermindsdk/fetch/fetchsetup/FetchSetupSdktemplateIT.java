@@ -12,6 +12,7 @@ import com.usermind.usermindsdk.fetch.metadatafetch.EntityInformationSdktemplate
 import com.usermind.usermindsdk.fetch.metadatafetch.MetadataFetchDriver;
 import com.usermind.usermindsdk.fetch.samplefetch.SampleFetchDriver;
 import com.usermind.usermindsdk.fetch.timefetch.TimeLimitedFetchDriver;
+import com.usermind.usermindsdk.normalization.Normalizer;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,13 +99,24 @@ class FetchSetupSdktemplateIT extends TestBase {
 
         Map<String, String> allResults = fetchData.getAllByName();
         ExtractDataFromSdktemplateResponse extractor = ctx.getBean(ExtractDataFromSdktemplateResponse.class);
+        Normalizer normalizer = new Normalizer(new EntityInformationSdktemplate(), objectMapper);
+
         if (checkExtraction) {
             allResults.entrySet().stream().
                     forEach(e -> {
                         ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), e.getKey(),
-                                e.getValue(), metadata);
+                                e.getValue(), metadata, "");
                         //make sure we extracted data!
                         assertThat(extracted.getExtractedDataItems().isEmpty()).isFalse();
+
+                        //Does it normalize OK?
+                        String flattenedData = null;
+                        try {
+                            flattenedData = normalizer.normalizeData("Entity", extracted.getExtractedDataItems().get(0));
+                        } catch (Exception e1) {
+                            assertThat(false).withFailMessage("Normalization threw an error! " + e1.getMessage());
+                        }
+                        assertThat(flattenedData).isNotEmpty();
                     });
         }
     }

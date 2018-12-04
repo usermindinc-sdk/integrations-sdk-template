@@ -55,7 +55,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
         String firstUserList = "{\"total\":1,\"count\":1,\"data\":{\"openid\":[\"1xhK75iKyXz-Xl0McY3XOeJXqZxo\",\"2xhK75iKyXz-Xl0McY3XOeJXqZxo\"]},\"next_openid\":\"oxhK75iKyXz-Xl0McY3XOeJXqZxo\"}";
 
         ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), ENTITY_TYPE,
-                firstUserList, false);
+                firstUserList, false, "");
 
         mockServer.verify();
         assertThat(extracted.getNextPage().getFetchSetupWebRequests().size()).isEqualTo(1);
@@ -79,7 +79,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
 //                .andRespond(withSuccess(accessTokenResponse, MediaType.APPLICATION_JSON));
 
         ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), ENTITY_TYPE,
-                secondUserList, false);
+                secondUserList, false, "");
 
         mockServer.verify();
 
@@ -92,7 +92,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
         String templateList = "{\"template_list\":[{\"template_id\":\"7Hq5pCS2aIZ9Udl2ftm2DOmHGDD0LaquSQW9kDL9wAE\",\"title\":\"Test\",\"primary_industry\":\"\",\"deputy_industry\":\"\",\"content\":\"{{Hello}}\",\"example\":\"\"}]}";
 
         ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), ANOTHER_ENTITY_TYPE,
-                templateList, false);
+                templateList, false, "");
 
         assertThat(extracted.getNextPage().getFetchSetupWebRequests().size()).isEqualTo(0);
 

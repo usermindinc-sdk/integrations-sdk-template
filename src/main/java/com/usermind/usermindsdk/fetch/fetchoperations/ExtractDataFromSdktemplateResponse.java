@@ -17,7 +17,7 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
     }
 
     @Override
-    public ExtractedData extractData(CredentialContainerSdktemplate credentials, String entityName, String input, boolean metadata) {
+    public ExtractedData extractData(CredentialContainerSdktemplate credentials, String entityName, String input, boolean metadata, String rideAlong) {
 
         ExtractedData extractedData = new ExtractedData();
 
