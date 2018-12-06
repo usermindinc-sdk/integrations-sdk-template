@@ -36,6 +36,7 @@ if [[ $# -eq 0 ]] ; then
     exit 0
 fi
 
+rm Jenkinsfile
 mv SDKJenkinsfile Jenkinsfile
  
 find . -name '.DS_Store' -type f -delete
