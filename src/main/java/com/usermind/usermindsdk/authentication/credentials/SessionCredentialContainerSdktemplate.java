@@ -1,11 +1,8 @@
-package com.usermind.usermindsdk.authentication;
+package com.usermind.usermindsdk.authentication.credentials;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.exceptions.InvalidSessionException;
-
-import java.time.OffsetDateTime;
+import com.usermind.usermindsdk.authentication.credentials.SessionCredentialContainer;
 
 /*
 This class is to store session credentials. It is very similar to Credential Container. The base class stores a JSON node, you can just write get methods for

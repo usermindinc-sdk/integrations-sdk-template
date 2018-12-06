@@ -30,8 +30,6 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     private AuthenticationServiceSdktemplate authenticationService;
     private MockRestServiceServer mockServer;
 
-    public static final String URI_CALLED_FOR_AUTHENTICATION = "should be a reference to the java class, not defined here";
-
     @BeforeEach
     void setUp() throws IOException {
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
@@ -41,8 +39,8 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     @Test
     void basicTest() throws Exception {
 
-        String accessTokenResponse = loadFileFixtureAsString("token.json");
-        mockServer.expect(requestTo(CoreMatchers.startsWith(URI_CALLED_FOR_AUTHENTICATION)))
+        String accessTokenResponse = loadFileFixtureAsString("credentials/token.json");
+        mockServer.expect(requestTo(CoreMatchers.startsWith(AuthenticationServiceSdktemplate.AUTH_CHECKING_PATH)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(accessTokenResponse, MediaType.APPLICATION_JSON));
 
@@ -53,7 +51,7 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     @Test
     void invalidCredentialsTest() throws Exception {
 
-        mockServer.expect(requestTo(CoreMatchers.startsWith(URI_CALLED_FOR_AUTHENTICATION)))
+        mockServer.expect(requestTo(CoreMatchers.startsWith(AuthenticationServiceSdktemplate.AUTH_CHECKING_PATH)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withBadRequest());
 
@@ -67,7 +65,7 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     @Test
     void connectionExceptionTest() throws Exception {
 
-        mockServer.expect(requestTo(CoreMatchers.startsWith(URI_CALLED_FOR_AUTHENTICATION)))
+        mockServer.expect(requestTo(CoreMatchers.startsWith(AuthenticationServiceSdktemplate.AUTH_CHECKING_PATH)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withServerError());
 

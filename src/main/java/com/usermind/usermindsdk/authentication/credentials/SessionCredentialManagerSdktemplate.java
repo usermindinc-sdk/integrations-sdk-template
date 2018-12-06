@@ -1,16 +1,9 @@
-package com.usermind.usermindsdk.authentication;
+package com.usermind.usermindsdk.authentication.credentials;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import javax.ws.rs.core.UriBuilder;
-import java.net.URI;
 
 /**
  * This class is to hold the session credentials. All access to those should be through the getSession call here. That call
@@ -19,27 +12,38 @@ import java.net.URI;
 @Component
 public class SessionCredentialManagerSdktemplate {
 
-//    public static final String SESSION_PATH = "url to get the session";
+    public static final String SESSION_URI = "url to get the session";
 
     private SessionCredentialContainerSdktemplate csi;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public SessionCredentialManagerSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper) {
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
+    }
 
     //Keep this method as is
-    public SessionCredentialContainerSdktemplate getSession(CredentialContainerSdktemplate credentials,
-                                                            RestTemplate restTemplate, ObjectMapper objectMapper) throws Exception {
+    public SessionCredentialContainerSdktemplate getSession(CredentialContainerSdktemplate credentials) throws Exception {
 
         if (csi == null || csi.shouldRenew()) {
-            csi = getNewSession(credentials, restTemplate, objectMapper);
+            csi = getNewSession(credentials);
             return csi;
         }
 
         return csi;
     }
 
-    private SessionCredentialContainerSdktemplate getNewSession(CredentialContainerSdktemplate credentials,
-                                                                RestTemplate restTemplate, ObjectMapper objectMapper) throws Exception {
+    //Validate credentials. But don't store them.
+    public SessionCredentialContainerSdktemplate validate(CredentialContainerSdktemplate credentials) throws Exception {
+        return getNewSession(credentials);
+    }
+
+    private SessionCredentialContainerSdktemplate getNewSession(CredentialContainerSdktemplate credentials) throws Exception {
 
 //        URI uri = generateURIForSession(credentials);
-//        HttpHeaders headers = generateHeadersForSession(credentials, SESSION_PATH, "POST");
+//        HttpHeaders headers = generateHeadersForSession(credentials, SESSION_URI, "POST");
 //
 //        HttpEntity<String> entity = new HttpEntity<>(headers);
 //        ResponseEntity<JsonNode> response = restTemplate.exchange(uri, HttpMethod.POST, entity, JsonNode.class);
@@ -52,7 +56,7 @@ public class SessionCredentialManagerSdktemplate {
 
 //    protected URI generateURIForSession(CredentialContainerSdktemplate credentials) {
 //        return UriBuilder
-//                .fromPath(SESSION_PATH)
+//                .fromPath(SESSION_URI)
 //                .queryParam("grant_type", "client_credential")
 //                .queryParam("appid", credentials.getAppId())
 //                .queryParam("secret", credentials.getAppSecret())

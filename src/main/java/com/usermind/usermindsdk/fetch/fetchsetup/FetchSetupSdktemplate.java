@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.fetch.fetchsetup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
 import com.usermind.usermindsdk.fetch.metadatafetch.EntityInformation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.List;
 
 @Component
 public class FetchSetupSdktemplate implements FetchSetup<CredentialContainerSdktemplate> {

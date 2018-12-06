@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,20 +17,30 @@ public class TestClassFactory {
         return entityList;
     }
 
-    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate() {
+    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate()  {
+        return getCredentialContainerSdktemplate(getWorkingTestCredentials());
+    }
+
+    public static CredentialContainerSdktemplate getInvalidCredentialContainerSdktemplate()  {
+        return getCredentialContainerSdktemplate(getNonWorkingTestCredentials());
+    }
+
+    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate(String inputCredentials)  {
         CredentialContainerSdktemplate credentialContainerSdktemplate = new CredentialContainerSdktemplate(objectMapper);
         try {
-            //this is done simply to let me remove the throws statement from the method call, which caused problem
-            //when streaming. In testing I was comfortable with that.
-            credentialContainerSdktemplate.load(getWorkingTestCredentials());
+            credentialContainerSdktemplate.load(inputCredentials);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
         return credentialContainerSdktemplate;
     }
 
+    //TODO SDK: Put proper credentials into the next two methods. One should be valid, and one should be a valid format but not authenticate against the test system.
     public static String getWorkingTestCredentials() {
-        return "{\"credentials\":{\"apiId\":\"tz37h4mboh60\",\"apiSecret\":\"U4LlQn8bjOXUU8BW7qcOBtgHldwQX2DQh2waVgKvllMrZ2NoR21brgRATtKlD3npeEd5It+dE/yiq4+jSiAxow==\",\"domain\":\"schneider-electric3-pilot.csod.com\",\"username\":\"ADM_Usermind\"}}";
+        return "{\"credentials\":{\"appId\":\"aaa\",\"appSecret\":\"aaa\"}}";
     }
 
+    public static String getNonWorkingTestCredentials() {
+        return "{\"credentials\":{\"appId\":\"bbb\",\"appSecret\":\"bbb\"}}";
+    }
 }
