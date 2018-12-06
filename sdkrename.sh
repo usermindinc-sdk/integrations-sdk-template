@@ -35,6 +35,8 @@ if [[ $# -eq 0 ]] ; then
     echo 'Run this with one argument, the name of the product being integrated.'
     exit 0
 fi
+
+mv SDKJenkinsfile Jenkinsfile
  
 find . -name '.DS_Store' -type f -delete
 #mvn clean
