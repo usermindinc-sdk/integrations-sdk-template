@@ -2,7 +2,7 @@ package com.usermind.usermindsdk.fetch.fetchsetup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
-import com.usermind.usermindsdk.fetch.metadatafetch.EntityInformation;
+import com.usermind.usermindsdk.metadata.EntityInformation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,6 @@ public class FetchSetupSdktemplate implements FetchSetup<CredentialContainerSdkt
         this.objectMapper = objectMapper;
         this.entityInformation = entityInformation;
     }
-
-
 
     @Override
     public FetchSetupData performFullFetchSetup(CredentialContainerSdktemplate credentials, String entity) throws Exception {
@@ -80,19 +78,6 @@ public class FetchSetupSdktemplate implements FetchSetup<CredentialContainerSdkt
         //TODO - implement sample fetch
      }
 
-    @Override
-    public FetchSetupData performMetadataFetchSetup(CredentialContainerSdktemplate credentials) throws Exception {
-        LOGGER.info("Running fetchsetup metadata fetch");
-        //TODO - implement metadata fetch
-        FetchSetupData fetchSetupData = new FetchSetupData();
-        HttpHeaders headers = new HttpHeaders();
-        URI uri = new URI("https://www.somepath.com");
-        //See full fetch for more details. But this path should specify a path that will fetch not data, but metadata -
-        //what fields are in the response, and what type are they?
-        fetchSetupData.addWebRequest("ObjectName", uri.toString(), headers);
-
-        return fetchSetupData;
-    }
 }
 
 

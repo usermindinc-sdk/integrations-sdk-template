@@ -3,7 +3,7 @@ package com.usermind.usermindsdk.fetch.fetchoperations;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.fetch.metadatafetch.EntityInformationSdktemplate;
+import com.usermind.usermindsdk.metadata.EntityInformationSdktemplate;
 import com.usermind.usermindsdk.normalization.Normalizer;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,5 +1,7 @@
-package com.usermind.usermindsdk.fetch.metadatafetch;
+package com.usermind.usermindsdk.metadata;
 
+import com.usermind.usermindsdk.metadata.EntityInformation;
+import com.usermind.usermindsdk.metadata.EntityInformationItem;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

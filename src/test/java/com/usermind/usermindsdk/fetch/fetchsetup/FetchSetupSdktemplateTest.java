@@ -2,9 +2,8 @@ package com.usermind.usermindsdk.fetch.fetchsetup;
 
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-import com.usermind.usermindsdk.fetch.metadatafetch.EntityInformationSdktemplate;
+import com.usermind.usermindsdk.metadata.EntityInformationSdktemplate;
 import org.junit.jupiter.api.Test;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
@@ -21,9 +20,5 @@ class FetchSetupSdktemplateTest extends TestBase {
         fetchSetup = new FetchSetupSdktemplate(restTemplate, objectMapper, new EntityInformationSdktemplate());
     }
 
-    @Test
-    void testMeta() throws Exception {
-        FetchSetupData setupData = fetchSetup.performMetadataFetchSetup(TestClassFactory.getCredentialContainerSdktemplate());
-        assertThat(setupData.getFetchSetupWriteRequests().size()).isEqualTo(2);
-    }
+
 }

@@ -1,4 +1,4 @@
-package com.usermind.usermindsdk.fetch.metadatafetch;
+package com.usermind.usermindsdk.metadata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -23,8 +23,14 @@ public class ConvertMetadataToStandardFormatSdktemplate implements ConvertMetada
     @Override
     public Map<String, MetadataRecords> processMetaData(String input) throws Exception {
 
+        MetadataRecords records = objectMapper.readValue(input, MetadataRecords.class);
+        Map<String, MetadataRecords> metadata = new HashMap<>();
+        metadata.put(records.getEntity(), records);
+
+        return metadata;
+
+
         //TODO - convert integration metadata into SDK metadata classes
-        Map<String, MetadataRecords> allEntities = new HashMap<>();
         //This is given metadata as an input string - whatever we get from the result of the MetadataFetchSetup call.
         //Parse it, and return it broken up into the format specified in MetadataRecords.
 
@@ -38,8 +44,9 @@ public class ConvertMetadataToStandardFormatSdktemplate implements ConvertMetada
 
 
 
+   //     Map<String, MetadataRecords> allEntities = new HashMap<>();
 
-        return allEntities;
+    //    return allEntities;
     }
 
 }
