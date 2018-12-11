@@ -1,17 +1,20 @@
-package com.usermind.usermindsdk.fetch.fetchsetup;
+package com.usermind.usermindsdk.fetch;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.fetch.fetchoperations.ExtractDataFromSdktemplateResponse;
-import com.usermind.usermindsdk.fetch.fetchoperations.ExtractedData;
-import com.usermind.usermindsdk.fetch.fullfetch.FetchData;
-import com.usermind.usermindsdk.fetch.fullfetch.FullFetchDriver;
-import com.usermind.usermindsdk.fetch.incrementalfetch.IncrementalFetchDriver;
+import com.usermind.usermindsdk.fetch.FetchSetupSdktemplate;
+import com.usermind.usermindsdk.fetch.structures.FetchSetupData;
+import com.usermind.usermindsdk.fetch.ExtractDataFromSdktemplateResponse;
+import com.usermind.usermindsdk.fetch.structures.ExtractedData;
+import com.usermind.usermindsdk.fetch.structures.FetchData;
+import com.usermind.usermindsdk.fetch.drivers.FullFetchDriver;
+import com.usermind.usermindsdk.fetch.drivers.IncrementalFetchDriver;
 import com.usermind.usermindsdk.metadata.EntityInformation;
 import com.usermind.usermindsdk.metadata.EntityInformationSdktemplate;
 import com.usermind.usermindsdk.metadata.MetadataFetchDriver;
-import com.usermind.usermindsdk.fetch.samplefetch.SampleFetchDriver;
-import com.usermind.usermindsdk.fetch.timefetch.TimeLimitedFetchDriver;
+import com.usermind.usermindsdk.fetch.drivers.SampleFetchDriver;
+import com.usermind.usermindsdk.fetch.drivers.TimeLimitedFetchDriver;
+import com.usermind.usermindsdk.metadata.MetadataRecords;
 import com.usermind.usermindsdk.normalization.Normalizer;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -19,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,15 +81,6 @@ class FetchSetupSdktemplateIT extends TestBase {
         checkResults(fetchData, false, false);
     }
 
-    @Disabled
-    @Test
-    void testMetadataFetch() throws Exception{
-        MetadataFetchDriver metadataFetchDriver = ctx.getBean(MetadataFetchDriver.class);
-        FetchData fetchData = metadataFetchDriver.runMetadataFetch(TestClassFactory.getCredentialContainerSdktemplate());
-
-        checkResults(fetchData, true, true);
-    }
-
     private void checkResults(FetchData fetchData, boolean checkExtraction, boolean metadata) {
         //If the factory returns nothing then this test isn't helpful.
         assertThat(TestClassFactory.getEntitySet()).isNotEmpty();
@@ -105,7 +100,7 @@ class FetchSetupSdktemplateIT extends TestBase {
             allResults.entrySet().stream().
                     forEach(e -> {
                         ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), e.getKey(),
-                                e.getValue(), metadata, "");
+                                e.getValue(), "");
                         //make sure we extracted data!
                         assertThat(extracted.getExtractedDataItems().isEmpty()).isFalse();
 

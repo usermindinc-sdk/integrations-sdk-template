@@ -3,7 +3,6 @@ package com.usermind.usermindsdk.authentication;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.authentication.exceptions.InvalidCredentialsException;
-import com.usermind.usermindsdk.fetch.fetchsetup.FetchSetupSdktemplate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
