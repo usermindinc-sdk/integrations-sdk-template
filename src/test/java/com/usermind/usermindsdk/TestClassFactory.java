@@ -35,7 +35,8 @@ public class TestClassFactory {
         return credentialContainerSdktemplate;
     }
 
-    //TODO SDK: Put proper credentials into the next two methods. One should be valid, and one should be a valid format but not authenticate against the test system.
+    //TODO: Put proper credentials into the next two methods. One should be valid, and one should be a valid format but not authenticate against the test system.
+    //Fill in your information inside the credentials block.
     public static String getWorkingTestCredentials() {
         return "{\"credentials\":{\"appId\":\"aaa\",\"appSecret\":\"aaa\"}}";
     }

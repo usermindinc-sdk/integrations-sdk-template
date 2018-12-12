@@ -33,7 +33,17 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<C
         //get an entity list.
         //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentials.validate(credentials);
 
-        //If there is no session - simply take the credentials and call something, and make sure
+        //If there is not a session, then just make a rest call using the credentials and see if it succeeds or not.
+        //And ideally make that call one that gets a list of available entities.
+        //List<String> entities;
+        //Fill in entities with the list of everything we have access to read.
+        //return AuthenticatorResponse.success(ENTITIES);
+        //or
+        //return AuthenticatorResponse.failure(Status.CREDENTIALS_FAILURE,"explanation string");
+
+
+
+                //If there is no session - simply take the credentials and call something, and make sure
         //the call works and validates.
         throw new NoSuchMethodException("Authentication has not been implemented for this integration type.");
     }
