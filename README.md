@@ -19,6 +19,10 @@ Start by testing the Rest API calls (or other calls) in Curl or Postman. Before 
 
 Then before you begin coding, put the results of those calls inside your starter project.
 
+To run this as a web server use these arguments `server src/main/resources/config-prod.yaml` and go to http://localhost:8089/swagger
+
+You can then test your code using Swagger or the built in unit and integration tests.
+
 ## 1. Test Credentials
 In the file TestClassFactory, fill in the methods getWorkingTestCredentials and getNonWorkingTestCredentials with a valid credential structure that will validate and fail validation respectively. This will be of the format:
 
