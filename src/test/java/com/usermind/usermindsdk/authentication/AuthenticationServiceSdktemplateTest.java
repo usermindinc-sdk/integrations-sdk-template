@@ -6,11 +6,15 @@ import static org.mockito.Mockito.*;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
+import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SessionCredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
 import com.usermind.usermindsdk.authentication.exceptions.ConnectionException;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.http.HttpMethod;
@@ -30,10 +34,19 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     private AuthenticationServiceSdktemplate authenticationService;
     private MockRestServiceServer mockServer;
 
+    @Mock
+    SessionCredentialManagerSdktemplate sessionCredentialManager;
+
+    @Mock
+    SessionCredentialContainerSdktemplate sessionCredentialContainer;
+
+
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() throws Exception {
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
-        authenticationService = new AuthenticationServiceSdktemplate(restTemplate, objectMapper);
+        authenticationService = new AuthenticationServiceSdktemplate(restTemplate, objectMapper, sessionCredentialManager);
+
+        when(sessionCredentialManager.validate(any(CredentialContainerSdktemplate.class))).thenReturn(sessionCredentialContainer);
     }
 
     @Test
