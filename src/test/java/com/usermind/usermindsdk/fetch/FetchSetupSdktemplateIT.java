@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.fetch;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
+import com.usermind.usermindsdk.TestUtils;
 import com.usermind.usermindsdk.fetch.FetchSetupSdktemplate;
 import com.usermind.usermindsdk.fetch.structures.FetchSetupData;
 import com.usermind.usermindsdk.fetch.ExtractDataFromSdktemplateResponse;
@@ -16,11 +17,16 @@ import com.usermind.usermindsdk.fetch.drivers.SampleFetchDriver;
 import com.usermind.usermindsdk.fetch.drivers.TimeLimitedFetchDriver;
 import com.usermind.usermindsdk.metadata.MetadataRecords;
 import com.usermind.usermindsdk.normalization.Normalizer;
+import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -91,27 +97,37 @@ class FetchSetupSdktemplateIT extends TestBase {
             assertThat(fetchData.getAllEntities()).containsOnlyElementsOf(TestClassFactory.getEntitySet());
         }
 
-
+        Map<String, String> rideAlongs = fetchData.getRideAlongData();
         Map<String, String> allResults = fetchData.getAllByName();
+
         ExtractDataFromSdktemplateResponse extractor = ctx.getBean(ExtractDataFromSdktemplateResponse.class);
         Normalizer normalizer = new Normalizer(new EntityInformationSdktemplate(), objectMapper);
 
         if (checkExtraction) {
             allResults.entrySet().stream().
                     forEach(e -> {
-                        ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), e.getKey(),
-                                e.getValue(), "");
-                        //make sure we extracted data!
-                        assertThat(extracted.getExtractedDataItems().isEmpty()).isFalse();
+                        BufferedReader bufferedReader = TestUtils.stringToBufferedReader( e.getValue());
+                        StringWriter stringWriter = new StringWriter();
+                        BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
 
-                        //Does it normalize OK?
-                        String flattenedData = null;
+                        ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), e.getKey(),
+                                bufferedReader, bufferedWriter, "");
+
+                        //make sure we extracted data!
                         try {
-                            flattenedData = normalizer.normalizeData("Entity", extracted.getExtractedDataItems().get(0));
-                        } catch (Exception e1) {
-                            assertThat(false).withFailMessage("Normalization threw an error! " + e1.getMessage());
+                            bufferedWriter.close();
+                            stringWriter.close();
+                            String results = stringWriter.toString();
+                            assertThat(results.isEmpty()).isFalse();
+
+                            BufferedReader bufferedResults = TestUtils.stringToBufferedReader( results);
+
+                            //Does it normalize OK?
+                            String flattenedData = TestUtils.normalize("EntityName", results, normalizer);
+                            assertThat(flattenedData).isNotEmpty();
+                        } catch (IOException e1) {
+                            Fail.fail("Threw an exception trying to flush the buffered writer", e);
                         }
-                        assertThat(flattenedData).isNotEmpty();
                     });
         }
     }

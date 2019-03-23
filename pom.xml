@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.usermind</groupId>
             <artifactId>integrations-sdk-base</artifactId>
-            <version>1.0.27</version>
+            <version>1.0.31-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
