@@ -59,6 +59,12 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
 
         */
 
+        //And if you got invalid records - set the count of how many you had to delete.
+        extractedData.setInvalidRecords(0);
+
+        //The count of how many you wrote is kept automatically when you call addExtractedItem - but if you don't
+        //call that and write to the buffer directly. then call setRecordCount with the total number of records fetched.
+
         return extractedData;
     }
 

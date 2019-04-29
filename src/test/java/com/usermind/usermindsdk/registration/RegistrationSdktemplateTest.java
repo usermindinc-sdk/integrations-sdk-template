@@ -84,7 +84,7 @@ class RegistrationSdktemplateTest extends TestBase {
                 .andExpect(method(HttpMethod.PUT))
                 .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
 
-        assertThat("9fda1759-d800-4dea-983b-58e8d0c99028").isEqualTo(registrar.register(""));
+        assertThat("9fda1759-d800-4dea-983b-58e8d0c99028").isEqualTo(registrar.register());
         mockServer.verify();
     }
 }
