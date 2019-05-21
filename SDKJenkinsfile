@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
 
+properties([pipelineTriggers([upstream('Usermind/integrations-sdk-base/master')])])
+
 node {
 
     try {

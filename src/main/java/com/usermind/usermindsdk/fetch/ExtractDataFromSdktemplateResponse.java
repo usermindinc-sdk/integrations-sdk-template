@@ -42,7 +42,8 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
         //The DataType tells you which entity this is, so that you will know what data you are extracting.
 
         //Call extractedData.addExtractedItem to write it, or else write to the buffer yourself - but don't forget to add
-        //a newline if you do.
+        //a newline if you do, and if you do it yourself then remember to track how many records you've processed and set that in
+        //ExtractedData
 
         /*
         PREFERRED PATH: Read lines one at a time from the buffered reader, write lines to the buffered writer as you go. This
@@ -59,8 +60,9 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
 
         */
 
-        //And if you got invalid records - set the count of how many you had to delete.
-        extractedData.setInvalidRecords(0);
+        //And if you got invalid records - record them, which is needed for tracking later when you're asked what happened
+        //to that missing piece of data
+        extractedData.recordInvalidItem(entityName, "the rejected line");
 
         //The count of how many you wrote is kept automatically when you call addExtractedItem - but if you don't
         //call that and write to the buffer directly. then call setRecordCount with the total number of records fetched.
