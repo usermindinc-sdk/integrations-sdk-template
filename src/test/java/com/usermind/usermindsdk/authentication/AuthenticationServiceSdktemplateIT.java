@@ -14,7 +14,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class AuthenticationServiceSdkTemplateIT extends TestBase {
+class AuthenticationServiceSdktemplateIT extends TestBase {
 
     private AuthenticationServiceSdktemplate authenticationService;
     @BeforeEach
