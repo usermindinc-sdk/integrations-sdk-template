@@ -25,7 +25,7 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Keep this method as is
-    public SessionCredentialContainerSdktemplate getSession(CredentialContainerSdktemplate credentials) throws Exception {
+    public SessionCredentialContainerSdktemplate getSession(SdktemplateConnectionData credentials) throws Exception {
 
         if (csi == null || csi.shouldRenew()) {
             csi = getNewSession(credentials);
@@ -36,11 +36,11 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Validate credentials. But don't store them.
-    public SessionCredentialContainerSdktemplate validate(CredentialContainerSdktemplate credentials) throws Exception {
+    public SessionCredentialContainerSdktemplate validate(SdktemplateConnectionData credentials) throws Exception {
         return getNewSession(credentials);
     }
 
-    private SessionCredentialContainerSdktemplate getNewSession(CredentialContainerSdktemplate credentials) throws Exception {
+    private SessionCredentialContainerSdktemplate getNewSession(SdktemplateConnectionData credentials) throws Exception {
 
 //        URI uri = generateURIForSession(credentials);
 //        HttpHeaders headers = generateHeadersForSession(credentials, SESSION_URI, "POST");

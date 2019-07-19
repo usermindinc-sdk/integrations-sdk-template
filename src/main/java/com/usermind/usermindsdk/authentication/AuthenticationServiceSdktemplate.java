@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class AuthenticationServiceSdktemplate implements AuthenticationService<CredentialContainerSdktemplate> {
+public class AuthenticationServiceSdktemplate implements AuthenticationService<SdktemplateConnectionData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplate.class);
 
     private final RestTemplate restTemplate;
@@ -30,7 +30,7 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<C
     }
 
     @Override
-    public AuthenticatorResponse validate(CredentialContainerSdktemplate credentials) throws NoSuchMethodException {
+    public AuthenticatorResponse validate(SdktemplateConnectionData credentials) throws NoSuchMethodException {
         LOGGER.info("Sdktemplate authentication started.");
         //TODO - implement Authenticator
         //If there is a session - this call is all you need here to validate. But ideally you'll then

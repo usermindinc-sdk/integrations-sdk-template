@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,22 +17,21 @@ public class TestClassFactory {
         return entityList;
     }
 
-    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate()  {
+    public static SdktemplateConnectionData getCredentialContainerSdktemplate()  {
         return getCredentialContainerSdktemplate(getWorkingTestCredentials());
     }
 
-    public static CredentialContainerSdktemplate getInvalidCredentialContainerSdktemplate()  {
+    public static SdktemplateConnectionData getInvalidCredentialContainerSdktemplate()  {
         return getCredentialContainerSdktemplate(getNonWorkingTestCredentials());
     }
 
-    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate(String inputCredentials)  {
-        CredentialContainerSdktemplate credentialContainerSdktemplate = new CredentialContainerSdktemplate(objectMapper);
+    public static SdktemplateConnectionData getCredentialContainerSdktemplate(String inputCredentials)  {
+        SdktemplateConnectionData sdktemplateConnectionData = new SdktemplateConnectionData();
         try {
-            credentialContainerSdktemplate.load(inputCredentials);
-        } catch (IOException e) {
+            return (SdktemplateConnectionData) sdktemplateConnectionData.getInstance(inputCredentials, objectMapper);
+        } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-        return credentialContainerSdktemplate;
     }
 
     //TODO: Put proper credentials into the next two methods. One should be valid, and one should be a valid format but not authenticate against the test system.
