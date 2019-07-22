@@ -53,7 +53,7 @@ public class FetchSetupSdktemplate implements FetchSetup<SdktemplateConnectionDa
             return performFullFetchSetup(credentials, entity);
         }
 
-        throw new NoSuchMethodException("Time limited fetch is not supported for Sdktemplate!");
+        throw new NoSuchMethodException("Incremental fetch is not supported for Sdktemplate!");
     }
 
     @Override
