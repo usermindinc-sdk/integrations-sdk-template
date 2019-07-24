@@ -1,14 +1,12 @@
 package com.usermind.usermindsdk.metadata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
 import com.usermind.usermindsdk.fetch.structures.FetchSetupData;
-import com.usermind.usermindsdk.fetch.structures.WebRequestResponseType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +15,7 @@ import java.net.URI;
 import java.util.Map;
 
 @Component
-public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<CredentialContainerSdktemplate> {
+public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<ConnectionDataSdktemplate> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataFetchSetupSdktemplate.class);
 
     private final RestTemplate restTemplate;
@@ -37,7 +35,7 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Credent
     }
 
     @Override
-    public FetchSetupData performMetadataFetchSetup(CredentialContainerSdktemplate credentials) throws Exception {
+    public FetchSetupData performMetadataFetchSetup(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
         LOGGER.info("Running fetchsetup metadata fetch");
 
 
@@ -88,7 +86,7 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Credent
 //        return metaDataRecords;
 //    }
 
-    public static URI generateURI(CredentialContainerSdktemplate credentials, String path, String fragment, Map<String, String> queryParams) {
+    public static URI generateURI(ConnectionDataSdktemplate connectionDataSdktemplate, String path, String fragment, Map<String, String> queryParams) {
         UriBuilder builder = UriBuilder
                 .fromPath("www.example.com")
                 .scheme("http")

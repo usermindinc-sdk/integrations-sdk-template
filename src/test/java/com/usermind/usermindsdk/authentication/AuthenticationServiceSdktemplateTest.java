@@ -1,12 +1,10 @@
 package com.usermind.usermindsdk.authentication;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
 import com.usermind.usermindsdk.authentication.credentials.SessionCredentialContainerSdktemplate;
 import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
 import com.usermind.usermindsdk.authentication.exceptions.ConnectionException;
@@ -21,10 +19,8 @@ import org.mockito.quality.Strictness;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.client.MockRestServiceServer;
 import com.usermind.usermindsdk.authentication.exceptions.InvalidCredentialsException;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -49,7 +45,7 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
         authenticationService = new AuthenticationServiceSdktemplate(restTemplate, objectMapper, sessionCredentialManager);
 
-        when(sessionCredentialManager.validate(any(CredentialContainerSdktemplate.class))).thenReturn(sessionCredentialContainer);
+        when(sessionCredentialManager.validate(any(ConnectionDataSdktemplate.class))).thenReturn(sessionCredentialContainer);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.fetch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
 import com.usermind.usermindsdk.fetch.structures.ExtractedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
 @Component
-public class ExtractDataFromSdktemplateResponse implements ExtractDataFromResponse<CredentialContainerSdktemplate> {
+public class ExtractDataFromSdktemplateResponse implements ExtractDataFromResponse<ConnectionDataSdktemplate> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtractDataFromSdktemplateResponse.class);
 
     private ObjectMapper objectMapper;
@@ -21,7 +21,7 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
     }
 
     @Override
-    public ExtractedData extractData(CredentialContainerSdktemplate credentials, String entityName,
+    public ExtractedData extractData(ConnectionDataSdktemplate connectionDataSdktemplate, String entityName,
                                      BufferedReader bufferedReader, BufferedWriter bufferedWriter, String rideAlong) {
 
         ExtractedData extractedData = new ExtractedData(bufferedWriter);

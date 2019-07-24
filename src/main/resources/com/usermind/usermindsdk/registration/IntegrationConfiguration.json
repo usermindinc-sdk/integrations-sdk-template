@@ -26,43 +26,11 @@
     }
   },
   "driver": {
-    "actionMetadataEnabled": false
+    "actionMetadataEnabled": true
   },
   "ui": {
-    "authenticationEnabled": true
-  },
-  "onboarding": {
-    "allowedFetchFrequencies": [
-      "24hrs",
-      "12hrs",
-      "6hrs",
-      "3hrs",
-      "1hrs"
-    ],
-    "auth": {
-      "helpText": "Sdktemplate",
-      "keys": {
-        "apiId": {
-          "displayName": "API Key",
-          "hidden": false
-        },
-        "accountName": {
-          "displayName": "Account Name",
-          "hidden": false
-        }
-      },
-      "type": "keyValue"
-    },
-    "category": "sdktemplate",
-    "disconnectable": true,
-    "displayName": "Sdktemplate",
-    "icons": {
-      "error": "//s.usermind.com/images/channels/sdktemplate-error.svg",
-      "off": "//s.usermind.com/images/channels/sdktemplate-off.svg",
-      "on": "//s.usermind.com/images/channels/sdktemplate-on.svg"
-    },
-    "legacy": false,
-    "maxConnections": 1
+    "authenticationEnabled": true,
+    "nifiAuthEnabled": true
   }
 }
 

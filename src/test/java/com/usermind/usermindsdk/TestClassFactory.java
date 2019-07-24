@@ -1,9 +1,8 @@
 package com.usermind.usermindsdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,28 +10,27 @@ import java.util.Set;
 public class TestClassFactory {
 
     private static final Set<String> entityList = new HashSet<>(Arrays.asList("", ""));
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static ObjectMapper objectMapper = TestBase.setupObjectMapper();
 
     public static Set<String> getEntitySet() {
         return entityList;
     }
 
-    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate()  {
+    public static ConnectionDataSdktemplate getCredentialContainerSdktemplate()  {
         return getCredentialContainerSdktemplate(getWorkingTestCredentials());
     }
 
-    public static CredentialContainerSdktemplate getInvalidCredentialContainerSdktemplate()  {
+    public static ConnectionDataSdktemplate getInvalidCredentialContainerSdktemplate()  {
         return getCredentialContainerSdktemplate(getNonWorkingTestCredentials());
     }
 
-    public static CredentialContainerSdktemplate getCredentialContainerSdktemplate(String inputCredentials)  {
-        CredentialContainerSdktemplate credentialContainerSdktemplate = new CredentialContainerSdktemplate(objectMapper);
+    public static ConnectionDataSdktemplate getCredentialContainerSdktemplate(String inputCredentials)  {
+        ConnectionDataSdktemplate credentialContainerSdktemplate = new ConnectionDataSdktemplate();
         try {
-            credentialContainerSdktemplate.load(inputCredentials);
-        } catch (IOException e) {
+            return (ConnectionDataSdktemplate) credentialContainerSdktemplate.getInstance(inputCredentials, objectMapper);
+        } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-        return credentialContainerSdktemplate;
     }
 
     //TODO: Put proper credentials into the next two methods. One should be valid, and one should be a valid format but not authenticate against the test system.

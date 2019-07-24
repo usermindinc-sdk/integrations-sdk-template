@@ -25,10 +25,10 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Keep this method as is
-    public SessionCredentialContainerSdktemplate getSession(CredentialContainerSdktemplate credentials) throws Exception {
+    public SessionCredentialContainerSdktemplate getSession(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
 
         if (csi == null || csi.shouldRenew()) {
-            csi = getNewSession(credentials);
+            csi = getNewSession(connectionDataSdktemplate);
             return csi;
         }
 
@@ -36,14 +36,14 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Validate credentials. But don't store them.
-    public SessionCredentialContainerSdktemplate validate(CredentialContainerSdktemplate credentials) throws Exception {
-        return getNewSession(credentials);
+    public SessionCredentialContainerSdktemplate validate(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
+        return getNewSession(connectionDataSdktemplate);
     }
 
-    private SessionCredentialContainerSdktemplate getNewSession(CredentialContainerSdktemplate credentials) throws Exception {
+    private SessionCredentialContainerSdktemplate getNewSession(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
 
-//        URI uri = generateURIForSession(credentials);
-//        HttpHeaders headers = generateHeadersForSession(credentials, SESSION_URI, "POST");
+//        URI uri = generateURIForSession(connectionDataSdktemplate);
+//        HttpHeaders headers = generateHeadersForSession(connectionDataSdktemplate, SESSION_URI, "POST");
 //
 //        HttpEntity<String> entity = new HttpEntity<>(headers);
 //        ResponseEntity<JsonNode> response = restTemplate.exchange(uri, HttpMethod.POST, entity, JsonNode.class);
@@ -54,7 +54,7 @@ public class SessionCredentialManagerSdktemplate {
         return session;
     }
 
-//    protected URI generateURIForSession(CredentialContainerSdktemplate credentials) {
+//    protected URI generateURIForSession(CredentialContainerSdktemplate connectionDataSdktemplate) {
 //        return UriBuilder
 //                .fromPath(SESSION_URI)
 //                .queryParam("grant_type", "client_credential")

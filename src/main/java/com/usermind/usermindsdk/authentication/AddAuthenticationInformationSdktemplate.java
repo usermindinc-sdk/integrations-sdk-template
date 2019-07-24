@@ -1,17 +1,14 @@
 package com.usermind.usermindsdk.authentication;
 
-import com.usermind.usermindsdk.authentication.credentials.CredentialContainerSdktemplate;
-import com.usermind.usermindsdk.authentication.credentials.SessionCredentialContainerSdktemplate;
-import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-public class AddAuthenticationInformationSdktemplate implements AddAuthenticationInformation<CredentialContainerSdktemplate> {
+public class AddAuthenticationInformationSdktemplate implements AddAuthenticationInformation<ConnectionDataSdktemplate> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAuthenticationInformationSdktemplate.class);
 
     /*
@@ -26,13 +23,13 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
     }
 */
     @Override
-    public String putAuthIntoWebRequest(CredentialContainerSdktemplate credentials, String link, Map<String, String> headers)throws Exception {
+    public String putAuthIntoWebRequest(ConnectionDataSdktemplate connectionDataSdktemplate, String link, Map<String, String> headers)throws Exception {
         //TODO - put authentication information into the headers
         //Some integrations add them to the link directly instead of the headers. The link returned is therefore the link used, NOT the
         //one sent in - this lets you add authentication to that as well.
 
         //If you have sessions, then uncomment this to get the session information:
-        //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentials.getSession(credentials);
+        //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentials.getSession(connectionDataSdktemplate);
 
 
    /*
