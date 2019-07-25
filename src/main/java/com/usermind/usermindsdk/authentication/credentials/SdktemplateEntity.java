@@ -14,7 +14,7 @@ public class SdktemplateEntity extends Entity {
     //    3. incrementalField - Field that is used for incremental fetch. Optional field. In case if we don't mention it, then we gonna fetch the data fully all the time
 
 
-    //TODO: If we want to add any new field then we can add them here.
+    //TODO:  put in a field for each item in the entity (other than the ones in the base class!) and a getter for each
     // If we don't need any new properties, then we can delete this class.
 
 //    For example: lets assume, we want to fetch data from a database table.

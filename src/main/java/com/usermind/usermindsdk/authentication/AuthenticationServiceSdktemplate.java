@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class AuthenticationServiceSdktemplate implements AuthenticationService<ConnectionDataSdktemplate> {
+public class AuthenticationServiceSdktemplate implements AuthenticationService<SdktemplateConnectionData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplate.class);
 
     private final RestTemplate restTemplate;
@@ -29,13 +29,12 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<C
         this.sessionCredentialManager = sessionCredentialManager;
     }
 
-    @Override
-    public AuthenticatorResponse validate(ConnectionDataSdktemplate connectionDataSdktemplate) throws NoSuchMethodException {
+    public AuthenticatorResponse validate(SdktemplateConnectionData sdktemplateConnectionData) throws NoSuchMethodException {
         LOGGER.info("Sdktemplate authentication started.");
         //TODO - implement Authenticator
         //If there is a session - this call is all you need here to validate. But ideally you'll then
         //get an entity list.
-        //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentialManager.validate(connectionDataSdktemplate);
+        //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentialManager.validate(sdktemplateConnectionData);
 
         //If there is not a session, then just make a rest call using the credentials and see if it succeeds or not.
         //And ideally make that call one that gets a list of available entities.
@@ -47,7 +46,7 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<C
 
 
 
-                //If there is no session - simply take the credentials and call something, and make sure
+        //If there is no session - simply take the sdktemplateConnectionData and call something, and make sure
         //the call works and validates.
         throw new NoSuchMethodException("Authentication has not been implemented for this integration type.");
     }

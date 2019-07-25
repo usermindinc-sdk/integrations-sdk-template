@@ -7,12 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class ConnectionDataSdktemplate extends ConnectionData<SdktemplateEntity> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionDataSdktemplate.class);
-
-    public ConnectionDataSdktemplate() {
-        super();
-    }
+public class SdktemplateConnectionData extends ConnectionData<SdktemplateEntity> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateConnectionData.class);
 
     //TODO - add properties of the connection with appropriate annotations
 //    if we need username and password to make a http call to get any required data,
@@ -30,30 +26,30 @@ public class ConnectionDataSdktemplate extends ConnectionData<SdktemplateEntity>
 //                               - for such fields we can add this annotations.
 //    For example:
 
-//    @UserInputAnnotation(displayName = "User Name",    <----- User friendly name
-//            toolTip = "Login credentials - username"   <----- This is an optional field, if we want to give more details about the property, we can write anything here
-//            )
-//    @CredentialsAnnotation()
-//    private String username;
-//
-//
-//    @UserInputAnnotation(displayName = "Password",
-//            hidden = true,                             <----- If its set to true, whatever the value we enter on the UI will not be visible as plain text
-//            toolTip = "Login credentials - password"
-//            )
-//    @CredentialsAnnotation()
-//    private String password;
+    @UserInputAnnotation(displayName = "User Name",    //<----- User friendly name
+            toolTip = "Login credentials - username"   //<----- This is an optional field, if we want to give more details about the property, we can write anything here
+            )
+    @CredentialsAnnotation()
+    private String username;
+
+
+    @UserInputAnnotation(displayName = "Password",
+            hidden = true,                             //<----- If its set to true, whatever the value we enter on the UI will not be visible as plain text
+            toolTip = "The password"
+            )
+    @CredentialsAnnotation()
+    private String password;
 
 
     //TODO - for each property we add we should have getter method for that property.
     // It is recommended to use IntelliJ's getter generator to generate getter methods after adding the properties
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
 
     //TODO - FYI - this class extends ConnectionData class from base library

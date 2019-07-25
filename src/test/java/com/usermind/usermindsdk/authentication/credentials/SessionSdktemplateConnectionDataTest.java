@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class SessionCredentialContainerSdktemplateTest extends TestBase {
+class SessionSdktemplateConnectionDataTest extends TestBase {
 
     private SessionCredentialContainerSdktemplate session;
 

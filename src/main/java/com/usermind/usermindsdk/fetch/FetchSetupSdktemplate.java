@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.fetch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.fetch.structures.FetchSetupData;
 import com.usermind.usermindsdk.metadata.EntityInformation;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FetchSetupSdktemplate implements FetchSetup<ConnectionDataSdktemplate> {
+public class FetchSetupSdktemplate implements FetchSetup<SdktemplateConnectionData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(FetchSetupSdktemplate.class);
 
     private final RestTemplate restTemplate;
@@ -37,7 +37,7 @@ public class FetchSetupSdktemplate implements FetchSetup<ConnectionDataSdktempla
      */
 
     @Override
-    public FetchSetupData performFullFetchSetup(ConnectionDataSdktemplate connectionDataSdktemplate, String entity) throws Exception {
+    public FetchSetupData performFullFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity) throws Exception {
         LOGGER.info("Running fetchsetup full fetch");
         FetchSetupData fetchSetupData = new FetchSetupData();
         return fetchSetupData;
@@ -45,25 +45,25 @@ public class FetchSetupSdktemplate implements FetchSetup<ConnectionDataSdktempla
 
 
     @Override
-    public FetchSetupData performIncrementalFetchSetup(ConnectionDataSdktemplate connectionDataSdktemplate, String entity, String startTime) throws Exception {
+    public FetchSetupData performIncrementalFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity, String startTime) throws Exception {
         LOGGER.info("Running fetchsetup incremental fetch - everything after {}", startTime);
 
         //If there isn't an incremental field, then just do a full fetch.
         if (StringUtils.isEmpty(entityInformation.getDateFieldForIncrementalFetch(entity))) {
-            return performFullFetchSetup(connectionDataSdktemplate, entity);
+            return performFullFetchSetup(sdktemplateConnectionData, entity);
         }
 
-        throw new NoSuchMethodException("Time limited fetch is not supported for Sdktemplate!");
+        throw new NoSuchMethodException("Incremental fetch is not supported for Sdktemplate!");
     }
 
     @Override
-    public FetchSetupData performTimeLimitedFetchSetup(ConnectionDataSdktemplate connectionDataSdktemplate, String entity, String startTime, String endTime) throws Exception {
+    public FetchSetupData performTimeLimitedFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity, String startTime, String endTime) throws Exception {
         LOGGER.info("Running fetchsetup time limited fetch - everything between {} and {}", startTime, endTime);
         throw new NoSuchMethodException("Time limited fetch is not supported for Sdktemplate!");
     }
 
     @Override
-    public FetchSetupData performSampleFetchSetup(ConnectionDataSdktemplate connectionDataSdktemplate, String entity, Integer sampleSize) throws Exception {
+    public FetchSetupData performSampleFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity, Integer sampleSize) throws Exception {
         LOGGER.info("Running fetchsetup sample fetch");
         throw new NoSuchMethodException("Sample fetch is not supported for Sdktemplate!");
      }

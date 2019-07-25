@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.authentication.credentials.SessionCredentialContainerSdktemplate;
 import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
 import com.usermind.usermindsdk.authentication.exceptions.ConnectionException;
@@ -45,7 +45,7 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
         authenticationService = new AuthenticationServiceSdktemplate(restTemplate, objectMapper, sessionCredentialManager);
 
-        when(sessionCredentialManager.validate(any(ConnectionDataSdktemplate.class))).thenReturn(sessionCredentialContainer);
+        when(sessionCredentialManager.validate(any(SdktemplateConnectionData.class))).thenReturn(sessionCredentialContainer);
     }
 
     @Test

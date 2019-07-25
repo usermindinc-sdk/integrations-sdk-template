@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,18 +16,18 @@ public class TestClassFactory {
         return entityList;
     }
 
-    public static ConnectionDataSdktemplate getCredentialContainerSdktemplate()  {
+    public static SdktemplateConnectionData getCredentialContainerSdktemplate()  {
         return getCredentialContainerSdktemplate(getWorkingTestCredentials());
     }
 
-    public static ConnectionDataSdktemplate getInvalidCredentialContainerSdktemplate()  {
+    public static SdktemplateConnectionData getInvalidCredentialContainerSdktemplate()  {
         return getCredentialContainerSdktemplate(getNonWorkingTestCredentials());
     }
 
-    public static ConnectionDataSdktemplate getCredentialContainerSdktemplate(String inputCredentials)  {
-        ConnectionDataSdktemplate credentialContainerSdktemplate = new ConnectionDataSdktemplate();
+    public static SdktemplateConnectionData getCredentialContainerSdktemplate(String inputCredentials)  {
+        SdktemplateConnectionData sdktemplateConnectionData = new SdktemplateConnectionData();
         try {
-            return (ConnectionDataSdktemplate) credentialContainerSdktemplate.getInstance(inputCredentials, objectMapper);
+            return (SdktemplateConnectionData) sdktemplateConnectionData.getInstance(inputCredentials, objectMapper);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }

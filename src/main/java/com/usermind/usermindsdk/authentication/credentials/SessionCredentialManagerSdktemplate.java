@@ -25,10 +25,11 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Keep this method as is
-    public SessionCredentialContainerSdktemplate getSession(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
+
+    public SessionCredentialContainerSdktemplate getSession(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
 
         if (csi == null || csi.shouldRenew()) {
-            csi = getNewSession(connectionDataSdktemplate);
+            csi = getNewSession(sdktemplateConnectionData);
             return csi;
         }
 
@@ -36,14 +37,14 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Validate credentials. But don't store them.
-    public SessionCredentialContainerSdktemplate validate(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
-        return getNewSession(connectionDataSdktemplate);
+    public SessionCredentialContainerSdktemplate validate(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
+        return getNewSession(sdktemplateConnectionData);
     }
 
-    private SessionCredentialContainerSdktemplate getNewSession(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
+    private SessionCredentialContainerSdktemplate getNewSession(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
 
-//        URI uri = generateURIForSession(connectionDataSdktemplate);
-//        HttpHeaders headers = generateHeadersForSession(connectionDataSdktemplate, SESSION_URI, "POST");
+//        URI uri = generateURIForSession(sdktemplateConnectionData);
+//        HttpHeaders headers = generateHeadersForSession(sdktemplateConnectionData, SESSION_URI, "POST");
 //
 //        HttpEntity<String> entity = new HttpEntity<>(headers);
 //        ResponseEntity<JsonNode> response = restTemplate.exchange(uri, HttpMethod.POST, entity, JsonNode.class);

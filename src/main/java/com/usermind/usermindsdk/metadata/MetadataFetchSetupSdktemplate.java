@@ -1,7 +1,7 @@
 package com.usermind.usermindsdk.metadata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usermind.usermindsdk.authentication.credentials.ConnectionDataSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.fetch.structures.FetchSetupData;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.Map;
 
 @Component
-public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<ConnectionDataSdktemplate> {
+public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<SdktemplateConnectionData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetadataFetchSetupSdktemplate.class);
 
     private final RestTemplate restTemplate;
@@ -35,7 +35,7 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Connect
     }
 
     @Override
-    public FetchSetupData performMetadataFetchSetup(ConnectionDataSdktemplate connectionDataSdktemplate) throws Exception {
+    public FetchSetupData performMetadataFetchSetup(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
         LOGGER.info("Running fetchsetup metadata fetch");
 
 
@@ -86,7 +86,8 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Connect
 //        return metaDataRecords;
 //    }
 
-    public static URI generateURI(ConnectionDataSdktemplate connectionDataSdktemplate, String path, String fragment, Map<String, String> queryParams) {
+
+    public static URI generateURI(SdktemplateConnectionData sdktemplateConnectionData, String path, String fragment, Map<String, String> queryParams) {
         UriBuilder builder = UriBuilder
                 .fromPath("www.example.com")
                 .scheme("http")
