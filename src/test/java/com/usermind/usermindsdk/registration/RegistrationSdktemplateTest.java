@@ -76,17 +76,17 @@ class RegistrationSdktemplateTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(firstResponse, MediaType.APPLICATION_JSON));
 
-        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types")))
-                .andExpect(method(HttpMethod.PUT))
-                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
+//        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types")))
+//                .andExpect(method(HttpMethod.PUT))
+//                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
 
         mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(thirdResponse, MediaType.APPLICATION_JSON));
 
-        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
-                .andExpect(method(HttpMethod.PUT))
-                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
+//        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
+//                .andExpect(method(HttpMethod.PUT))
+//                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
 
         assertThat("9fda1759-d800-4dea-983b-58e8d0c99028").isEqualTo(registrar.register());
         mockServer.verify();

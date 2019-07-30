@@ -36,7 +36,17 @@ public class TestClassFactory {
     //TODO: Put proper credentials into the next two methods. One should be valid, and one should be a valid format but not authenticate against the test system.
     //Fill in your information inside the credentials block.
     public static String getWorkingTestCredentials() {
-        return "{\"credentials\":{\"appId\":\"aaa\",\"appSecret\":\"aaa\"}}";
+        return "{\n" +
+                "  \"encrypted\": {\n" +
+                "    \"credentials\": {\n" +
+                "      \"username\": \"um\",\n" +
+                "      \"password\": \"pwd\"\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"entities\": [],\n" +
+                "  \"misc\": {},\n" +
+                "  \"version\": \"2.0\"\n" +
+                "}";
     }
 
     public static String getNonWorkingTestCredentials() {
