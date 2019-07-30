@@ -15,6 +15,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 
+import java.net.URI;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -52,6 +54,11 @@ class RegistrationSdktemplateTest extends TestBase {
             "  \"per_page\" : 499\n" +
             "}";
 
+    public static final String emptyResponse = "{\n" +
+            "  \"results\" : [],\n" +
+            "  \"per_page\" : 499\n" +
+            "}";
+
     private MockRestServiceServer mockServer;
 
     @Mock
@@ -76,19 +83,41 @@ class RegistrationSdktemplateTest extends TestBase {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(firstResponse, MediaType.APPLICATION_JSON));
 
-//        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types")))
-//                .andExpect(method(HttpMethod.PUT))
-//                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
 
         mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(thirdResponse, MediaType.APPLICATION_JSON));
 
-//        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
-//                .andExpect(method(HttpMethod.PUT))
-//                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
+        assertThat("9fda1759-d800-4dea-983b-58e8d0c99028").isEqualTo(registrar.register());
+        mockServer.verify();
+    }
+
+
+    @Test
+    void firstTimeRegistration() throws Exception {
+        when(configuration.getIntegrationRestApiUrl()).thenReturn("https://stage-atc-integrations.usermind.com");
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(emptyResponse, MediaType.APPLICATION_JSON));
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON)
+                        .location(new URI("https://stage-atc-integrations.usermind.com/v1/integration_types/dewfwrw-d800-4dea-983b-58e8d0c99028")));
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(emptyResponse, MediaType.APPLICATION_JSON));
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON)
+                        .location(new URI("https://stage-atc-integrations.usermind.com/v1/integrations/9fda1759-d800-4dea-983b-58e8d0c99028")));
 
         assertThat("9fda1759-d800-4dea-983b-58e8d0c99028").isEqualTo(registrar.register());
         mockServer.verify();
     }
+
+
 }
