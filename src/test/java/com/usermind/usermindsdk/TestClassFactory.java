@@ -50,6 +50,16 @@ public class TestClassFactory {
     }
 
     public static String getNonWorkingTestCredentials() {
-        return "{\"credentials\":{\"appId\":\"bbb\",\"appSecret\":\"bbb\"}}";
+        return "{\n" +
+                "  \"encrypted\": {\n" +
+                "    \"credentials\": {\n" +
+                "      \"username\": \"invalid_username\",\n" +
+                "      \"password\": \"invalid_password\"\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"entities\": [],\n" +
+                "  \"misc\": {},\n" +
+                "  \"version\": \"2.0\"\n" +
+                "}";
     }
 }

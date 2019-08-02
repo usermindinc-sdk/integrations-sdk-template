@@ -22,7 +22,7 @@ public class SdktemplateInfo implements WorkerInfo {
     @Override
     public AuthenticationType getAuthenticationType() {
         //TODO -  This is to provide information on what authentication mechanism this integration uses
-        // If we need to make a connection through OAuth , then we can all it as
+        // If we need to make a connection through OAuth , then we can call it as
         // return AuthenticationType.OAUTH;
         // else
         // return AuthenticationType.KEYVALUE;
@@ -31,7 +31,7 @@ public class SdktemplateInfo implements WorkerInfo {
 
     @Override
     public String getWorkerDisplayName() {
-        //TODO - Display Name of an integration. This will be shown on the UI while lisitng this integration
+        //TODO - Display Name of an integration. This will be shown on the UI while listing this integration
         return DISPLAY_NAME;
     }
 

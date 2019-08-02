@@ -59,8 +59,8 @@ public class SessionCredentialManagerSdktemplate {
 //        return UriBuilder
 //                .fromPath(SESSION_URI)
 //                .queryParam("grant_type", "client_credential")
-//                .queryParam("appid", credentials.getAppId())
-//                .queryParam("secret", credentials.getAppSecret())
+//                .queryParam("appid", connectionDataSdktemplate.getAppId())
+//                .queryParam("secret", connectionDataSdktemplate.getAppSecret())
 //                .build();
 //    }
 
