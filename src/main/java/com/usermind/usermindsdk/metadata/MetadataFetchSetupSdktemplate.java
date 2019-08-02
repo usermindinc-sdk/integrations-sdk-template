@@ -35,7 +35,7 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
     }
 
     @Override
-    public FetchSetupData performMetadataFetchSetup(SdktemplateConnectionData credentials) throws Exception {
+    public FetchSetupData performMetadataFetchSetup(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
         LOGGER.info("Running fetchsetup metadata fetch");
 
 
@@ -86,7 +86,8 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
 //        return metaDataRecords;
 //    }
 
-    public static URI generateURI(SdktemplateConnectionData credentials, String path, String fragment, Map<String, String> queryParams) {
+
+    public static URI generateURI(SdktemplateConnectionData sdktemplateConnectionData, String path, String fragment, Map<String, String> queryParams) {
         UriBuilder builder = UriBuilder
                 .fromPath("www.example.com")
                 .scheme("http")
