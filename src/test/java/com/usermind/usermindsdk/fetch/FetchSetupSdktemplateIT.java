@@ -123,7 +123,7 @@ class FetchSetupSdktemplateIT extends TestBase {
                             BufferedReader bufferedResults = TestUtils.stringToBufferedReader( results);
 
                             //Does it normalize OK?
-                            String flattenedData = TestUtils.normalize("EntityName", results, normalizer);
+                            String flattenedData = TestUtils.normalize(e.getKey(), results, normalizer);
                             assertThat(flattenedData).isNotEmpty();
                         } catch (IOException e1) {
                             Fail.fail("Threw an exception trying to flush the buffered writer", e);
