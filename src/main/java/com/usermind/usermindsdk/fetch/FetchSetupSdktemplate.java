@@ -37,7 +37,7 @@ public class FetchSetupSdktemplate implements FetchSetup<SdktemplateConnectionDa
      */
 
     @Override
-    public FetchSetupData performFullFetchSetup(SdktemplateConnectionData credentials, String entity) throws Exception {
+    public FetchSetupData performFullFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity) throws Exception {
         LOGGER.info("Running fetchsetup full fetch for {}", entity);
         FetchSetupData fetchSetupData = new FetchSetupData();
         return fetchSetupData;
@@ -45,25 +45,25 @@ public class FetchSetupSdktemplate implements FetchSetup<SdktemplateConnectionDa
 
 
     @Override
-    public FetchSetupData performIncrementalFetchSetup(SdktemplateConnectionData credentials, String entity, String startTime) throws Exception {
+    public FetchSetupData performIncrementalFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity, String startTime) throws Exception {
         LOGGER.info("Running fetchsetup incremental fetch for {} - everything after {}", entity, startTime);
 
         //If there isn't an incremental field, then just do a full fetch.
         if (StringUtils.isEmpty(entityInformation.getDateFieldForIncrementalFetch(entity))) {
-            return performFullFetchSetup(credentials, entity);
+            return performFullFetchSetup(sdktemplateConnectionData, entity);
         }
 
         throw new NoSuchMethodException("Incremental fetch is not supported for Sdktemplate!");
     }
 
     @Override
-    public FetchSetupData performTimeLimitedFetchSetup(SdktemplateConnectionData credentials, String entity, String startTime, String endTime) throws Exception {
+    public FetchSetupData performTimeLimitedFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity, String startTime, String endTime) throws Exception {
         LOGGER.info("Running fetchsetup time limited fetch for {} - everything between {} and {}", entity, startTime, endTime);
         throw new NoSuchMethodException("Time limited fetch is not supported for Sdktemplate!");
     }
 
     @Override
-    public FetchSetupData performSampleFetchSetup(SdktemplateConnectionData credentials, String entity, Integer sampleSize) throws Exception {
+    public FetchSetupData performSampleFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity, Integer sampleSize) throws Exception {
         LOGGER.info("Running fetchsetup sample fetch for {}", entity);
         throw new NoSuchMethodException("Sample fetch is not supported for Sdktemplate!");
      }

@@ -39,9 +39,8 @@ Fetch an entity, and put that result in fetch/entity.json. You might want to ren
 Now you're ready to write the authentication code.
 
 ## 3. Credential Classes 
-Fill in credential information in the Credential Container class in the authentication/credentials package as per the documentation in the Credential Container file. That file keeps just a JSON node. So to get your fields easily, just make a helper get method for each field.
-Fill in the same information in the resource registration/IntegrationConfiguration.json in the auth section. Follow the example in the JSON. 
-If this integration has a session, fill in the SessionCredentialContainer just as you did the Credential Container, but for the session information instead.
+Fill in connection data information in the ConnectionData class in the authentication/credentials package as per the documentation in the Connection Data file.
+If this integration has a session, fill in the SessionCredentialContainer. This class keeps just a JSON node. So to get your fields easily, just make a helper get method for each field.
 If you do not have sessions, delete the Session Credential Container and the Session Credential Manager.
 
 ## 4 Authentication Code

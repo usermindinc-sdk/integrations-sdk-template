@@ -75,12 +75,12 @@ class SdktemplateCreateEntityActionTest extends TestBase {
     void testInvalid() throws Exception {
         String entityName = "Products";
         Map<String, Object> rowData = getRowData();
-        SdktemplateConnectionData connectionData = TestClassFactory.getCredentialContainerSdktemplate();
+        SdktemplateConnectionData sdktemplateConnectionData = TestClassFactory.getCredentialContainerSdktemplate();
 
         mockServer.expect(method(HttpMethod.PATCH))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
-        actionHandler.runAction(connectionData, entityName, rowData);
+        actionHandler.runAction(sdktemplateConnectionData, entityName, rowData);
 
         mockServer.verify();
     }

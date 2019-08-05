@@ -25,10 +25,11 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Keep this method as is
-    public SessionCredentialContainerSdktemplate getSession(SdktemplateConnectionData credentials) throws Exception {
+
+    public SessionCredentialContainerSdktemplate getSession(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
 
         if (csi == null || csi.shouldRenew()) {
-            csi = getNewSession(credentials);
+            csi = getNewSession(sdktemplateConnectionData);
             return csi;
         }
 
@@ -36,14 +37,14 @@ public class SessionCredentialManagerSdktemplate {
     }
 
     //Validate credentials. But don't store them.
-    public SessionCredentialContainerSdktemplate validate(SdktemplateConnectionData credentials) throws Exception {
-        return getNewSession(credentials);
+    public SessionCredentialContainerSdktemplate validate(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
+        return getNewSession(sdktemplateConnectionData);
     }
 
-    private SessionCredentialContainerSdktemplate getNewSession(SdktemplateConnectionData credentials) throws Exception {
+    private SessionCredentialContainerSdktemplate getNewSession(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
 
-//        URI uri = generateURIForSession(credentials);
-//        HttpHeaders headers = generateHeadersForSession(credentials, SESSION_URI, "POST");
+//        URI uri = generateURIForSession(sdktemplateConnectionData);
+//        HttpHeaders headers = generateHeadersForSession(sdktemplateConnectionData, SESSION_URI, "POST");
 //
 //        HttpEntity<String> entity = new HttpEntity<>(headers);
 //        ResponseEntity<JsonNode> response = restTemplate.exchange(uri, HttpMethod.POST, entity, JsonNode.class);
@@ -54,12 +55,12 @@ public class SessionCredentialManagerSdktemplate {
         return session;
     }
 
-//    protected URI generateURIForSession(CredentialContainerSdktemplate credentials) {
+//    protected URI generateURIForSession(CredentialContainerSdktemplate connectionDataSdktemplate) {
 //        return UriBuilder
 //                .fromPath(SESSION_URI)
 //                .queryParam("grant_type", "client_credential")
-//                .queryParam("appid", credentials.getAppId())
-//                .queryParam("secret", credentials.getAppSecret())
+//                .queryParam("appid", connectionDataSdktemplate.getAppId())
+//                .queryParam("secret", connectionDataSdktemplate.getAppSecret())
 //                .build();
 //    }
 
