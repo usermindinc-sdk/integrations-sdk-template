@@ -1,5 +1,13 @@
 package com.usermind.usermindsdk.authentication.credentials;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+/**
+ * Dont't Delete this class. We need this class to create Bean at runtime.
+ */
+@Component
+@Scope("prototype")
 public class SdktemplateEntity extends Entity {
 
     public SdktemplateEntity() {

@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.registration;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateEntity;
 import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
 import com.usermind.usermindsdk.workerinformation.SdktemplateInfo;
 import com.usermind.usermindsdk.workerinformation.WorkerInfo;
@@ -64,13 +65,16 @@ class RegistrationSdktemplateTest extends TestBase {
     @Mock
     WorkerConfiguration configuration;
 
-    @Mock
     SdktemplateConnectionData sdktemplateConnectionData;
+    SdktemplateEntity sdktemplateEntity;
 
     @BeforeEach
     void setUp() throws Exception {
         mockServer = MockRestServiceServer.bindTo(restTemplate).build();
-        registrar = new Registrar(restTemplate, objectMapper, configuration, workerInfo, sdktemplateConnectionData);
+        sdktemplateConnectionData = new SdktemplateConnectionData();
+        sdktemplateEntity = new SdktemplateEntity();
+        registrar = new Registrar(restTemplate, objectMapper, configuration, workerInfo,
+            sdktemplateConnectionData, sdktemplateEntity);
         return;
     }
 
