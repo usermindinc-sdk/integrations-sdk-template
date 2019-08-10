@@ -12,28 +12,31 @@ import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class SdktemplateCreateEntityActionIT extends TestBase {
 
+    private SdktemplateCreateEntityInput getInput() {
+        SdktemplateCreateEntityInput inputData = new SdktemplateCreateEntityInput();
+        String uuid = UUID.randomUUID().toString();
+        inputData.setField("id", "id_" + uuid);
+        inputData.setField("name", "name_" + uuid);
+        inputData.setField("data", "field" + uuid);
+
+        return inputData;
+    }
+
+
     @Test
     void testCreateAction() throws Exception {
         ActionHandler actionHandler = ctx.getBean(ActionHandler.class);
 
         String entityName = "entity name here";
-        String uuid = UUID.randomUUID().toString();
-        Map<String, Object> rowData = new HashMap<>();
-        rowData.put("id", "id_" + uuid);
-        rowData.put("name", "name_" + uuid);
-        rowData.put("data", "field" + uuid);
-
-
+        SdktemplateCreateEntityInput inputData = getInput();
         actionHandler.runAction(TestClassFactory.getCredentialContainerSdktemplate(),
-                entityName, rowData);
+                entityName, inputData);
 
         return;
     }

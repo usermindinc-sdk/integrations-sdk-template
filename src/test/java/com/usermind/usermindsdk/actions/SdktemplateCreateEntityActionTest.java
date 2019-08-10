@@ -42,19 +42,18 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         actionHandler = new SdktemplateCreateEntityAction();
     }
 
-    private Map<String, Object> getRowData() {
-        Map<String, Object> rowData = new HashMap<>();
-        rowData.put("keyOne", "valueOne");
-        rowData.put("keyTwo", "valueTwo");
-        rowData.put("keyThree", "valueThree");
-
-        return rowData;
+    private SdktemplateCreateEntityInput getInput() {
+        SdktemplateCreateEntityInput inputData = new SdktemplateCreateEntityInput();
+        inputData.setField("keyOne", "valueOne");
+        inputData.setField("keyTwo", "valueTwo");
+        inputData.setField("keyThree", "valueThree");
+        return inputData;
     }
 
     @Test
     void testValid() throws Exception {
         String entityName = "Products";
-        Map<String, Object> rowData = getRowData();
+        SdktemplateCreateEntityInput inputData = getInput();
         SdktemplateConnectionData connectionData = TestClassFactory.getCredentialContainerSdktemplate();
 
         //TODO - add a test here to verify that something happened
@@ -65,7 +64,7 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andExpect(method(HttpMethod.PATCH))
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
-        actionHandler.runAction(connectionData, entityName, rowData);
+        actionHandler.runAction(connectionData, entityName, inputData);
 
 //        mockServer.verify();
 
@@ -74,13 +73,13 @@ class SdktemplateCreateEntityActionTest extends TestBase {
     @Test
     void testInvalid() throws Exception {
         String entityName = "Products";
-        Map<String, Object> rowData = getRowData();
+        SdktemplateCreateEntityInput inputData = getInput();
         SdktemplateConnectionData sdktemplateConnectionData = TestClassFactory.getCredentialContainerSdktemplate();
 
         mockServer.expect(method(HttpMethod.PATCH))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
-        actionHandler.runAction(sdktemplateConnectionData, entityName, rowData);
+        actionHandler.runAction(sdktemplateConnectionData, entityName, inputData);
 
         mockServer.verify();
     }
