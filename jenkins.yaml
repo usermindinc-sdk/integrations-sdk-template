@@ -21,25 +21,11 @@ common: &common
 default: # this block gets used if no branch-specific one is supplied
     << : *common # this pulls in everything from 'common'
 
-develop: # Configuration for develop branch
-    << : *common # this pulls in everything from 'common'
-    pushDockerImage:    true
-    autoDeploy:         true
-    requireApproval:    false
-    configMap: 'staging'
-    deploymentSlackRoom: staging
-    deploymentDirectory: uploads/staging
-
 master:  # Configuration for master branch
     << : *common # this pulls in everything from 'common'
     autoDeploy:         true
-    requireApproval:    true
+    requireApproval:    false
     pushDockerImage:    true
-    configMap: 'prod'
-    kubeDeploymentFiles:
-        - kubernetes/deployment-prod.yaml
-        - kubernetes/config-prod.yaml
-    kubeCluster:        'production'
-    deploymentSlackRoom: deploy-prod
-    deploymentDirectory: uploads/prod
-
+    configMap: 'staging'
+    deploymentSlackRoom: staging
+    deploymentDirectory: uploads/staging
