@@ -42,18 +42,20 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         actionHandler = new SdktemplateCreateEntityAction();
     }
 
-    private SdktemplateCreateEntityInput getInput() {
+    private Map<String, SdktemplateCreateEntityInput> getInput() {
         SdktemplateCreateEntityInput inputData = new SdktemplateCreateEntityInput();
         inputData.setField("keyOne", "valueOne");
         inputData.setField("keyTwo", "valueTwo");
         inputData.setField("keyThree", "valueThree");
-        return inputData;
+
+        Map<String, SdktemplateCreateEntityInput> inputMap = new HashMap<>();
+        inputMap.put("key", inputData);
+        return inputMap;
     }
 
     @Test
     void testValid() throws Exception {
         String entityName = "Products";
-        SdktemplateCreateEntityInput inputData = getInput();
         SdktemplateConnectionData connectionData = TestClassFactory.getCredentialContainerSdktemplate();
 
         //TODO - add a test here to verify that something happened
@@ -64,7 +66,7 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andExpect(method(HttpMethod.PATCH))
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
-        actionHandler.runAction(connectionData, entityName, inputData);
+        actionHandler.runAction(connectionData, entityName, getInput());
 
 //        mockServer.verify();
 
@@ -73,13 +75,12 @@ class SdktemplateCreateEntityActionTest extends TestBase {
     @Test
     void testInvalid() throws Exception {
         String entityName = "Products";
-        SdktemplateCreateEntityInput inputData = getInput();
         SdktemplateConnectionData sdktemplateConnectionData = TestClassFactory.getCredentialContainerSdktemplate();
 
         mockServer.expect(method(HttpMethod.PATCH))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
-        actionHandler.runAction(sdktemplateConnectionData, entityName, inputData);
+        actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
 
         mockServer.verify();
     }
