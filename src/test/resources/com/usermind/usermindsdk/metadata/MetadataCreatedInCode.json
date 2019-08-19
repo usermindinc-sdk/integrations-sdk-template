@@ -1,0 +1,42 @@
+//TODO This is an example of manually created metadata, for when you can't fetch it dynamically.
+//Sample code follows.
+
+{
+  "records": [
+    {
+      "type": "STRING",
+      "required": true,
+      "fieldName": "template_id",
+      "display_name": "Template Id",
+      "is_required": true,
+      "read_only": true
+    },
+    {
+      "type": "STRING",
+      "required": true,
+      "fieldName": "title",
+      "display_name": "Title",
+      "is_required": true,
+      "read_only": true
+    },
+    {
+      "type": "STRING",
+      "required": false,
+      "fieldName": "field1",
+      "display_name": "Sample Field",
+      "is_required": false,
+      "read_only": true
+    },
+    {
+      "type": "STRING",
+      "required": false,
+      "fieldName": "field 2",
+      "display_name": "Another sample field",
+      "is_required": false,
+      "read_only": true
+    }
+  ],
+  "entity": "TemplateList",
+  "accessible": true,
+  "primaryKey": "template_id"
+}

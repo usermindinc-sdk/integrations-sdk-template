@@ -7,37 +7,25 @@
 #      --> https://github.com/usermindinc/skylab/blob/5d74db89d4f3cb09c11800cbcc3d98229574b4a6/Jenkinsfile#L28-L29
 #
 ---
-  Default settings shared for all builds (unless directly overridden)
-  common: &common
+# Default settings shared for all builds (unless directly overridden)
+common: &common
     autoDeploy:         false
     requireApproval:    true # whether to require user input for deployments
     pushDockerImage:    false
     javaVersion:        'oraclejdk8'
     mavenVersion:       'Maven_3.5.4'
     kubeCluster:        'staging'
-    kubeDeploymentFiles: 
-      - kubernetes/deployment-staging.yaml
-      - kubernetes/config-staging.yaml
-  default: # this block gets used if no branch-specific one is supplied
+    kubeDeploymentFiles:
+        - kubernetes/deployment-staging.yaml
+        - kubernetes/config-staging.yaml
+default: # this block gets used if no branch-specific one is supplied
     << : *common # this pulls in everything from 'common'
 
-  develop: # Configuration for develop branch
+master:  # Configuration for master branch
     << : *common # this pulls in everything from 'common'
-    pushDockerImage:    true
     autoDeploy:         true
     requireApproval:    false
+    pushDockerImage:    true
     configMap: 'staging'
     deploymentSlackRoom: staging
-
-  master:  # Configuration for master branch
-    << : *common # this pulls in everything from 'common'
-    autoDeploy:         true
-    requireApproval:    true
-    pushDockerImage:    true
-    configMap: 'prod'
-    kubeDeploymentFiles: 
-      - kubernetes/deployment-prod.yaml
-      - kubernetes/config-prod.yaml
-    kubeCluster:        'production'
-    deploymentSlackRoom: deploy-prod
-
+    deploymentDirectory: uploads/staging

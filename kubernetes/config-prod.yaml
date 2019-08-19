@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: integrations-sdk-sdktemplate-config
-  namespace: integrations
-data:
-  config-prod.yaml: |
