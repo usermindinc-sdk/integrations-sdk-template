@@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Component
 public class RateControlSdktemplate implements  RateControl {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RateControl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RateControlSdktemplate.class);
 
     private Integer MaxRate = 100000;
     private Integer TimeframeMinutes = 1;
