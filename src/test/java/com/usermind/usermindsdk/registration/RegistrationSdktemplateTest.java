@@ -43,6 +43,39 @@ class RegistrationSdktemplateTest extends TestBase {
             "  \"per_page\" : 499\n" +
             "}";
 
+    public static final String integrtionResponse = "{  \n"
+        + "   \"results\":[  \n"
+        + "      {  \n"
+        + "         \"id\":\"9fda1759-d800-4dea-983b-58e8d0c99028\",\n"
+        + "         \"created_at\":\"2019-01-17T06:16:46.72\",\n"
+        + "         \"updated_at\":\"2019-07-24T05:30:28.982\",\n"
+        + "         \"integration_type\":\"cornerstone\",\n"
+        + "         \"configuration\":{  \n"
+        + "            \"writer\":{  \n"
+        + "               \"type\":\"S3\"\n"
+        + "            }\n"
+        + "         },\n"
+        + "         \"current_stable_integration_id\":\"0beb3aa7-f46a-4d10-9a3f-888a345f051a\",\n"
+        + "         \"visibility\":null\n"
+        + "      }\n"
+        + "   ],\n"
+        + "   \"per_page\":499\n"
+        + "}";
+
+    public static final String integrationTypeResponse = "{\n"
+        + "    \"id\": \"72d1fc79-adbf-4285-a892-1b2e219e1cfc\",\n"
+        + "    \"created_at\": \"2019-08-22T05:38:01.015\",\n"
+        + "    \"updated_at\": \"2019-08-23T11:10:10.49\",\n"
+        + "    \"integration_type\": \"remote-files\",\n"
+        + "    \"configuration\": {\n"
+        + "        \"writer\": {\n"
+        + "            \"type\": \"S3\"\n"
+        + "        }\n"
+        + "    },\n"
+        + "    \"current_stable_integration_id\": \"9f504970-3110-4002-a22f-7d616504cae1\",\n"
+        + "    \"visibility\": null\n"
+        + "}";
+
     public static final String thirdResponse = "{\n" +
             "  \"results\" : [ {\n" +
             "    \"id\" : \"9fda1759-d800-4dea-983b-58e8d0c99028\",\n" +
@@ -81,19 +114,39 @@ class RegistrationSdktemplateTest extends TestBase {
 
     @Test
     void basicTest() throws Exception {
-        when(configuration.getIntegrationRestApiUrl()).thenReturn("https://stage-atc-integrations.usermind.com");
+        when(configuration.getIntegrationRestApiUrl()).thenReturn("https://stage-atc-integrations.usermind.com/");
 
         mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types")))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess(firstResponse, MediaType.APPLICATION_JSON));
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(emptyResponse, MediaType.APPLICATION_JSON));
 
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types")))
+            .andExpect(method(HttpMethod.POST))
+            .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON)
+                .location(new URI("https://stage-atc-integrations.usermind.com/v1/integration_types/dewfwrw-d800-4dea-983b-58e8d0c99028")));
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations?filter%5Bintegration_type_id%5D=dewfwrw-d800-4dea-983b-58e8d0c99028&filter%5Bversion%5D=1.0&perPage=499")))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(integrtionResponse, MediaType.APPLICATION_JSON));
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types/dewfwrw-d800-4dea-983b-58e8d0c99028")))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(integrationTypeResponse, MediaType.APPLICATION_JSON));
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integration_types/dewfwrw-d800-4dea-983b-58e8d0c99028")))
+            .andExpect(method(HttpMethod.PUT))
+            .andRespond(withSuccess(emptyResponse, MediaType.APPLICATION_JSON));
 
         mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess(thirdResponse, MediaType.APPLICATION_JSON));
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(emptyResponse, MediaType.APPLICATION_JSON));
+
+        mockServer.expect(requestTo(CoreMatchers.startsWith("https://stage-atc-integrations.usermind.com/v1/integrations")))
+            .andExpect(method(HttpMethod.POST))
+            .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON)
+                .location(new URI("https://stage-atc-integrations.usermind.com/v1/integrations/9fda1759-d800-4dea-983b-58e8d0c99028")));
 
         assertThat("9fda1759-d800-4dea-983b-58e8d0c99028").isEqualTo(registrar.register());
-        mockServer.verify();
     }
 
 

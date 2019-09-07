@@ -76,16 +76,15 @@ node {
         }
 
         stage('Copy files to NiFi') {
-            if(build_config.autoDeploy == true) {
+             if (env.BRANCH_NAME == 'master' && build_config.autoDeploy == true) {
                 sh "git --no-pager log --oneline -20 > ${pom.artifactId}_changes.txt"
-
                 sshPublisher(publishers:[
                     sshPublisherDesc(configName: 'NiFi 0 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
                     sshPublisherDesc(configName: 'NiFi 1 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
                     sshPublisherDesc(configName: 'NiFi 2 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')])
                 ])
-            }
-        }
+             }
+                }
         stage('Write to Slack') {
             if (env.BRANCH_NAME == 'master') {
                 //See if the deployment succeeded, and notify if not
@@ -94,8 +93,6 @@ node {
                 if (currentBuild.result == 'FAILURE') {
                     slackMessage = ":jenkins_general_rage: Deployment of ${pom.artifactId} ${pom.version} FAILED! Error is here: ${env.BUILD_URL}" + "consoleFull"
                 }
-                //Send the message to a team related room or DM
-                util.sendSlackMessage(slackTeamMessageDestination, slackMessage)
                 //Send the message to an environment related room.
                 util.sendSlackMessage(build_config.deploymentSlackRoom, slackMessage)
                 //Send the message to the person who created the PR.
