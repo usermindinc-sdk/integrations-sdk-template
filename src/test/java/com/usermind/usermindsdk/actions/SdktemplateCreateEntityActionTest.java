@@ -4,6 +4,7 @@ import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -53,6 +54,7 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         return inputMap;
     }
 
+    @Disabled
     @Test
     void testValid() throws Exception {
         String entityName = "Products";

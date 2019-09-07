@@ -10,16 +10,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class RateControlSdktemplate implements  RateControl {
     private static final Logger LOGGER = LoggerFactory.getLogger(RateControlSdktemplate.class);
 
-    private Integer MaxRate = 100000;
+    private Integer maxRate = 100000;
     private Integer TimeframeMinutes = 1;
 
     @Override
     public Integer getMaxRate() {
-        return MaxRate;
+        return maxRate;
     }
 
     public void setMaxRate(Integer maxRate) {
-        MaxRate = checkNotNull(maxRate);
+        maxRate = checkNotNull(maxRate);
     }
 
     @Override
