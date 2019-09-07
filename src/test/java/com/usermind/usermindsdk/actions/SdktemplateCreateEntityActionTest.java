@@ -3,6 +3,7 @@ package com.usermind.usermindsdk.actions;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
+import com.usermind.usermindsdk.exceptions.SDKActionConfigurationFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
@@ -86,5 +88,19 @@ class SdktemplateCreateEntityActionTest extends TestBase {
 
         mockServer.verify();
     }
+
+    @Test
+    void testNoEntity() throws Exception {
+        String entityName = "NotPresent";
+        SdktemplateConnectionData credentialContainer = TestClassFactory.getCredentialContainerSdktemplate();
+        Map<String, SdktemplateCreateEntityInput> gbqInput = getInput();
+
+        Exception exception = assertThrows(SDKActionConfigurationFailedException.class,
+                ()->{
+                    actionHandler.runAction(credentialContainer, entityName, gbqInput);
+
+                });
+    }
+
 
 }

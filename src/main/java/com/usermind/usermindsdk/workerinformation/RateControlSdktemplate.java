@@ -11,7 +11,7 @@ public class RateControlSdktemplate implements  RateControl {
     private static final Logger LOGGER = LoggerFactory.getLogger(RateControlSdktemplate.class);
 
     private Integer maxRate = 100000;
-    private Integer TimeframeMinutes = 1;
+    private Integer timeframeMinutes = 1;
 
     @Override
     public Integer getMaxRate() {
@@ -24,10 +24,10 @@ public class RateControlSdktemplate implements  RateControl {
 
     @Override
     public Integer getTimeframeMinutes() {
-        return TimeframeMinutes;
+        return timeframeMinutes;
     }
 
     public void setTimeframeMinutes(Integer timeframeMinutes) {
-        TimeframeMinutes = checkNotNull(timeframeMinutes);
+        this.timeframeMinutes = checkNotNull(timeframeMinutes);
     }
 }

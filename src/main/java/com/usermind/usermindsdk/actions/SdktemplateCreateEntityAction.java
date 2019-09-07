@@ -1,6 +1,8 @@
 package com.usermind.usermindsdk.actions;
 
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateEntity;
+import com.usermind.usermindsdk.exceptions.SDKActionConfigurationFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component("CreateEntity")
-public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateConnectionData, SdktemplateCreateEntityInput>  {
+public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateConnectionData, SdktemplateCreateEntityInput> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateCreateEntityAction.class);
 
 
@@ -23,6 +25,24 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
     public Map<String, String> runAction(SdktemplateConnectionData connectionData, String entityName, Map<String, SdktemplateCreateEntityInput> actions) throws Exception {
 
         Map<String, String> failedActions = new HashMap<>();
+
+        //Find the entity in the connection -- if you don't need to find anything from the entity,
+        //you can remove this (and the matching unit test.)
+        for (Map.Entry<String, SdktemplateCreateEntityInput> actionEntry : actions.entrySet()) {
+            SdktemplateEntity gbqEntity = connectionData
+                    .getEntities()
+                    .stream()
+                    .filter(e -> e.getEntityName().equals(entityName))
+                    .findAny()
+                    .orElse(null);
+
+            if (gbqEntity == null) {
+                throw new SDKActionConfigurationFailedException("Entity '" + entityName + "' was not defined in the connection.");
+            }
+
+            //Do the work here ...
+        }
+
         //Throw new SDKActionFailedException if the action fails.
 
         //This goes with SdktemplateCreateEntityInput - they are a pair, with the same names except that one ends in Action and one ends in Input.
@@ -39,8 +59,12 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
         It is up to the developer to take the return call from the integration and figure out which actions failed. if this is impossible, then fail the entire batch of actions
         with an appropriate error message.
 
+
+        If this is NOT a batched action - ie, getBatchSize returns 1 - then you can also just throw an exception. That will get caught by the caller which will then assume each
+        action failed. For a batch size of one, that is an appropriate thing.
          */
 
         return failedActions;
+
     }
 }
