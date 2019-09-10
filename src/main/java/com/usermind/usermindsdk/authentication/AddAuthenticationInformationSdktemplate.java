@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Component
 public class AddAuthenticationInformationSdktemplate implements AddAuthenticationInformation<SdktemplateConnectionData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAuthenticationInformationSdktemplate.class);
@@ -48,6 +50,8 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
         return link;
 
     */
+        checkNotNull(sdktemplateConnectionData);
+        checkNotNull(headers);
         return link;
     }
 
