@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Component("SdktemplateCreateEntityInput")
+@Component("CreateEntityInput")
 @Scope("prototype")
 public class SdktemplateCreateEntityInput implements ActionInput {
     private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateCreateEntityInput.class);
