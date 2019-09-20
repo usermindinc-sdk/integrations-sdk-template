@@ -19,7 +19,7 @@ public class RateControlSdktemplate implements  RateControl {
     }
 
     public void setMaxRate(Integer maxRate) {
-        maxRate = checkNotNull(maxRate);
+        this.maxRate = checkNotNull(maxRate);
     }
 
     @Override
