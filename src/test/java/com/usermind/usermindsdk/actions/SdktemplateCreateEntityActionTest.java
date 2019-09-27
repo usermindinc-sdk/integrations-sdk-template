@@ -21,6 +21,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -70,9 +71,10 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andExpect(method(HttpMethod.PATCH))
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
-        actionHandler.runAction(connectionData, entityName, getInput());
+        Map<String, String> failures = actionHandler.runAction(connectionData, entityName, getInput());
 
 //        mockServer.verify();
+        assertThat(failures).isEmpty();
 
     }
 
@@ -84,9 +86,13 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         mockServer.expect(method(HttpMethod.PATCH))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
-        actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
+        Map<String, String> failures = actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
 
         mockServer.verify();
+        assertThat(failures.size()).isEqualTo(1);
+        assertThat(failures).containsKey("key");
+        assertThat(failures.get("key")).contains("Unauthorized");
+
     }
 
     @Test
