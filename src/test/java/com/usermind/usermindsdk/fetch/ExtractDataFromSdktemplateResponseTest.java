@@ -40,15 +40,21 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
         extractor = new ExtractDataFromSdktemplateResponse(objectMapper);
     }
 
+
     @Test
-    void testBasic() throws Exception {
-        String entityString = loadFileFixtureAsString("entity.json");
+    void testBasicEntity() throws Exception {
+        //"entity" should be the entity name
+       testBasic("entity");
+    }
+
+    void testBasic(String entityName) throws Exception {
+        String entityString = loadFileFixtureAsString(entityName + ".json");
 
         BufferedReader bufferedReader = TestUtils.stringToBufferedReader(entityString);
         StringWriter stringWriter = new StringWriter();
         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
 
-        ExtractedData results = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), "entity", bufferedReader, bufferedWriter, "");
+        ExtractedData results = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), entityName, bufferedReader, bufferedWriter, "");
         //Write some less generic tests! If your response has three records in it, for example, this should show three records.
         //Maybe check a few values.
         bufferedWriter.flush();
