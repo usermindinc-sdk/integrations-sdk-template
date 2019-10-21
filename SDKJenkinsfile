@@ -58,16 +58,10 @@ node {
         } catch (error) {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
         }
-        
-        //Scan with SourceClear to identify vulnerabilities
-        stage('SourceClear scan') {
-            withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
-                sh "curl -sSL https://download.sourceclear.com/ci.sh | sh"   
-            }
-        }
 
-        //If this is a pull request - then stop here. Failsafe to keep from going though the docker and kubernetes steps on PRs.
-        if( util.isPullRequest() ) {
+        //If this is a pull request - then stop here. Failsafe to keep from going though the deployment steps on PRs.
+        //Same for developer branches.
+        if( util.isPullRequest() || (env.BRANCH_NAME != 'develop' && env.BRANCH_NAME != 'master')) {
             if(slackMessageDestination != "@Jenkins") {
                 util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId}-application ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull")
             }
@@ -75,10 +69,16 @@ node {
             return
         }
 
-        stage('Copy files to NiFi') {
-            if(build_config.autoDeploy == true) {
-                sh "git --no-pager log --oneline -20 > ${pom.artifactId}_changes.txt"
+        //Scan with SourceClear to identify vulnerabilities
+        stage('SourceClear scan') {
+            withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
+                sh "curl -sSL https://download.sourceclear.com/ci.sh | sh"
+            }
+        }
 
+        stage('Copy files to NiFi') {
+            if (env.BRANCH_NAME == 'master' && build_config.autoDeploy == true) {
+                sh "git --no-pager log --oneline -20 > ${pom.artifactId}_changes.txt"
                 sshPublisher(publishers:[
                         sshPublisherDesc(configName: 'NiFi 0 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
                         sshPublisherDesc(configName: 'NiFi 1 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
@@ -86,7 +86,22 @@ node {
                 ])
             }
         }
-
+        stage('Write to Slack') {
+            if (env.BRANCH_NAME == 'master') {
+                //See if the deployment succeeded, and notify if not
+                slackTeamMessageDestination = '#staging'
+                slackMessage = ":jenkins_general: :live: Deployment of ${pom.artifactId} ${pom.version} Jar File to Staging NIFI cluster is succeeded!"
+                if (currentBuild.result == 'FAILURE') {
+                    slackMessage = ":jenkins_general_rage: Deployment of ${pom.artifactId} ${pom.version} FAILED! Error is here: ${env.BUILD_URL}" + "consoleFull"
+                }
+                //Send the message to an environment related room.
+                util.sendSlackMessage(build_config.deploymentSlackRoom, slackMessage)
+                //Send the message to the person who created the PR.
+                if(slackMessageDestination != "@Jenkins") {
+                    util.sendSlackMessage(slackMessageDestination, slackMessage)
+                }
+            }
+        }
     }
 
     catch (buildError) {
