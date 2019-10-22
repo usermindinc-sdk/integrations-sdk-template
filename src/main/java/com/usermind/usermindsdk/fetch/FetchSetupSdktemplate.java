@@ -28,18 +28,18 @@ public class FetchSetupSdktemplate implements FetchSetup<SdktemplateConnectionDa
     }
 
     /*
-
-    First, see MetadataFetchSetupSdktemplate for examples. This works in exactly the same way.
-    It is not doing fetches, but it's sending instructions on how to do the fetches to the orchestration layer.
-
-    So send in write requests, web requests, or calls to libraries in the same way as MetadataFetchSetupSdktemplate.
-
+    TODO:
+        First, see MetadataFetchSetupSdktemplate for examples. This works in exactly the same way.
+        It is not doing fetches, but it's sending instructions on how to do the fetches to the orchestration layer.
+        So send in write requests, web requests, or calls to libraries in the same way as MetadataFetchSetupSdktemplate.
      */
 
     @Override
     public FetchSetupData performFullFetchSetup(SdktemplateConnectionData sdktemplateConnectionData, String entity) throws Exception {
+        //Returning empty FetchSetupData for now
         LOGGER.info("Running fetchsetup full fetch for {}", entity);
         FetchSetupData fetchSetupData = new FetchSetupData();
+        //TODO: Add to the FetchSetupData
         return fetchSetupData;
     }
 

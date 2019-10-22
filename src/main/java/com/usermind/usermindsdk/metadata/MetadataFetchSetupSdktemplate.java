@@ -22,9 +22,10 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
     private final ObjectMapper objectMapper;
     private final EntityInformation entityInformation;
 
-    //Put the entity names here for common use
-//    public static final String DIRECT_WRITE_ENTITY = "DirectWrite";
-//    public static final String WEB_REQUEST_ENTITY = "WebRequest";
+    //TODO: Put the entity names here for common use
+    //Examples:
+    //  public static final String DIRECT_WRITE_ENTITY = "DirectWrite";
+    //  public static final String WEB_REQUEST_ENTITY = "WebRequest";
 
     @Autowired
     public MetadataFetchSetupSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper,
@@ -51,6 +52,7 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
         //some data and call five client libraries, just send in instructions on how to do each.
         FetchSetupData fetchSetupData = new FetchSetupData();
 
+        //TODO: choose one or multiple implementation and use it/them
         //1 - Write data directly
         //MetadataRecords directWriteMetadata = getDirectWriteMetadata();
         //fetchSetupData.addWriteRequest(DIRECT_WRITE_ENTITY, objectMapper.writer().writeValueAsString(directWriteMetadata));

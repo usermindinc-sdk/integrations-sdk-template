@@ -39,7 +39,6 @@ class FetchSetupSdktemplateIT extends TestBase {
     private FetchSetupSdktemplate fetchSetup;
     private final EntityInformation entityInformation = new EntityInformationSdktemplate();
 
-    @Disabled
     @Test
     void testSetupCall() throws Exception {
         FetchSetupSdktemplate fetchSetupSdktemplate = ctx.getBean(FetchSetupSdktemplate.class);
@@ -47,7 +46,6 @@ class FetchSetupSdktemplateIT extends TestBase {
         assertThat(fetchData.getFetchSetupWebRequests().isEmpty()).isFalse();
     }
 
-    @Disabled
     @Test
     void testFullFetch() throws Exception {
         FullFetchDriver fullFetchSdktemplate = ctx.getBean(FullFetchDriver.class);
@@ -56,7 +54,6 @@ class FetchSetupSdktemplateIT extends TestBase {
         checkResults(fetchData, true, false);
     }
 
-    @Disabled
     @Test
     void testIncrementalFetch() throws Exception {
         IncrementalFetchDriver incrementalFetchSdktemplate = ctx.getBean(IncrementalFetchDriver.class);
@@ -67,7 +64,6 @@ class FetchSetupSdktemplateIT extends TestBase {
         checkResults(fetchData, false, false);
     }
 
-    @Disabled
     @Test
     void testSampleFetch() throws Exception {
         SampleFetchDriver sampleFetchSdktemplate = ctx.getBean(SampleFetchDriver.class);
@@ -76,7 +72,6 @@ class FetchSetupSdktemplateIT extends TestBase {
         checkResults(fetchData, true, false);
     }
 
-    @Disabled
     @Test
     void testTimeLimitedFetch() throws Exception {
         TimeLimitedFetchDriver timeLimitedFetchSdktemplate = ctx.getBean(TimeLimitedFetchDriver.class);

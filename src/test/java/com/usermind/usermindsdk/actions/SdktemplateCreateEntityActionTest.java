@@ -23,6 +23,12 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 
+/*
+    TODO: Make sure to change the names of this and all the other classes in this folder according
+        to the type of Action you are performing instead of the generic CreateEntity
+ */
+
+
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class SdktemplateCreateEntityActionTest extends TestBase {
@@ -57,7 +63,6 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         return inputMap;
     }
 
-    @Disabled
     @Test
     void testValid() throws Exception {
         String entityName = "Products";
@@ -72,8 +77,8 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
         Map<String, String> failures = actionHandler.runAction(connectionData, entityName, getInput());
-
-//        mockServer.verify();
+//      TODO: uncomment the next line when you have implemented the TODO above
+//      mockServer.verify();
         assertThat(failures).isEmpty();
 
     }

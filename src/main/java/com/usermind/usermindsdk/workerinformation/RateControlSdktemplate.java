@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+/*
+    TODO: nothing to change in this class, just leave as is!!!
+ */
 
 @Component
 public class RateControlSdktemplate implements  RateControl {
