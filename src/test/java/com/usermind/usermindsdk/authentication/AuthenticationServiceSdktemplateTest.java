@@ -1,5 +1,6 @@
 package com.usermind.usermindsdk.authentication;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.usermind.usermindsdk.TestBase;
@@ -62,28 +63,26 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
 
     @Test
     void invalidCredentialsTest() throws Exception {
-
         mockServer.expect(requestTo(CoreMatchers.startsWith(AuthenticationServiceSdktemplate.AUTH_CHECKING_PATH)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withBadRequest());
 
-        Assertions.assertThrows(InvalidCredentialsException.class, () -> {
-            authenticationService.validate(TestClassFactory.getCredentialContainerSdktemplate());
-        });
+        assertThat(authenticationService
+                .validate(TestClassFactory.
+                        getCredentialContainerSdktemplate()).getStatus()).isEqualTo(Status.CREDENTIALS_FAILURE);
 
         mockServer.verify();
     }
 
     @Test
     void connectionExceptionTest() throws Exception {
-
         mockServer.expect(requestTo(CoreMatchers.startsWith(AuthenticationServiceSdktemplate.AUTH_CHECKING_PATH)))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withServerError());
 
-        Assertions.assertThrows(ConnectionException.class, () -> {
-            authenticationService.validate(TestClassFactory.getCredentialContainerSdktemplate());
-        });
+        assertThat(authenticationService
+                .validate(TestClassFactory.
+                        getCredentialContainerSdktemplate()).getStatus()).isEqualTo(Status.CONNECTION_FAILURE);
         mockServer.verify();
     }
 }

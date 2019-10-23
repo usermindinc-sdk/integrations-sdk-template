@@ -34,10 +34,8 @@ class AuthenticationServiceSdktemplateIT extends TestBase {
     @Test
     void invalidCredentialsTest() throws Exception {
 
-        Assertions.assertThrows(InvalidCredentialsException.class, () -> {
-            authenticationService.validate(TestClassFactory.getInvalidCredentialContainerSdktemplate());
-        });
-
+        AuthenticatorResponse response = authenticationService.validate(TestClassFactory.getInvalidCredentialContainerSdktemplate());
+        assertThat(response.getStatus()).isEqualTo(Status.CREDENTIALS_FAILURE);
         return;
     }
 
