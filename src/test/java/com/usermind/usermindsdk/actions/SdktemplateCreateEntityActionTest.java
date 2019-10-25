@@ -77,8 +77,7 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
         Map<String, String> failures = actionHandler.runAction(connectionData, entityName, getInput());
-//      TODO: uncomment the next line when you have implemented the TODO above
-//      mockServer.verify();
+        mockServer.verify();
         assertThat(failures).isEmpty();
 
     }
