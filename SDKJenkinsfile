@@ -31,6 +31,7 @@ node {
             if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
                 // Change out for the appropriate team channel
                 slackTeamMessageDestination = "#integration-build"
+                slackTeamFailureMessageDestination = "#integration-build-failures"
             }
             gitCommit = util.commitSha()
         }
@@ -84,6 +85,7 @@ node {
             }
         } catch (error) {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
+            util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_general_rage: The sonar build failed!", "danger")
         }
 
         //If this is a pull request or a branch other than master and develop - then stop here. Failsafe to keep from going though the deployment steps as
@@ -121,6 +123,7 @@ node {
                 slackMessage = ":jenkins_general: :live: Deployment of ${pom.artifactId} ${pom.version} Jar File to Staging NIFI cluster is succeeded!"
                 if (currentBuild.result == 'FAILURE') {
                     slackMessage = ":jenkins_general_rage: Deployment of ${pom.artifactId} ${pom.version} FAILED! Error is here: ${env.BUILD_URL}" + "consoleFull"
+                    util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_general_rage: Deployment of ${pom.artifactId} ${pom.version} FAILED! Error is here: ${env.BUILD_URL}" + "consoleFull")
                 }
                 //Send the message to an environment related room.
                 util.sendSlackMessage(build_config.deploymentSlackRoom, slackMessage)
@@ -136,6 +139,7 @@ node {
         currentBuild.result = 'FAILURE'
         if(slackMessageDestination != "@Jenkins") {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: ${pom.artifactId} ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull", "danger")
+            util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_rage: ${pom.artifactId} ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull", "danger")
             util.sendFailureEmail(util.commitAuthorEmail())
         }
         throw buildError
