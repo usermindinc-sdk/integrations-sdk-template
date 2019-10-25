@@ -3,7 +3,9 @@ package com.usermind.usermindsdk.actions;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
+import com.usermind.usermindsdk.exceptions.SDKActionConfigurationFailedException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,8 +18,16 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.assertj.core.api.Assertions.assertThat;
+
+/*
+    TODO: Make sure to change the names of this and all the other classes in this folder according
+        to the type of Action you are performing instead of the generic CreateEntity
+ */
+
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -66,9 +76,9 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andExpect(method(HttpMethod.PATCH))
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
-        actionHandler.runAction(connectionData, entityName, getInput());
-
-//        mockServer.verify();
+        Map<String, String> failures = actionHandler.runAction(connectionData, entityName, getInput());
+        mockServer.verify();
+        assertThat(failures).isEmpty();
 
     }
 
@@ -80,9 +90,27 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         mockServer.expect(method(HttpMethod.PATCH))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
-        actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
+        Map<String, String> failures = actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
 
         mockServer.verify();
+        assertThat(failures.size()).isEqualTo(1);
+        assertThat(failures).containsKey("key");
+        assertThat(failures.get("key")).contains("Unauthorized");
+
     }
+
+    @Test
+    void testNoEntity() throws Exception {
+        String entityName = "NotPresent";
+        SdktemplateConnectionData credentialContainer = TestClassFactory.getCredentialContainerSdktemplate();
+        Map<String, SdktemplateCreateEntityInput> gbqInput = getInput();
+
+        Exception exception = assertThrows(SDKActionConfigurationFailedException.class,
+                ()->{
+                    actionHandler.runAction(credentialContainer, entityName, gbqInput);
+
+                });
+    }
+
 
 }

@@ -9,6 +9,12 @@ import org.springframework.web.client.RestTemplate;
  * This class is to hold the session credentials. All access to those should be through the getSession call here. That call
  * will either return the cached credentials, but will also renew them if appropriate.
  */
+
+/*
+TODO: if you do not have sessions in your integration (look for the authentication type in the API)
+    make sure to delete this class and the corresponding Unit/Integration Test classes in the test folder!
+ */
+
 @Component
 public class SessionCredentialManagerSdktemplate {
 

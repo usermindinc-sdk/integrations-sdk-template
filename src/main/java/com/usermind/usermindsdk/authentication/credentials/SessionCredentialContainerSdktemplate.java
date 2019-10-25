@@ -5,7 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.credentials.SessionCredentialContainer;
 
 /*
-This class is to store session credentials. It is very similar to Credential Container. The base class stores a JSON node, you can just write get methods for
+TODO: if you do not have sessions in your integration (look for the authentication type in the API)
+    make sure to delete this class and the corresponding Unit/Integration Test classes in the test folder!
+ */
+
+/*
+This class is to store session credentials. It is very similar to Connection Data in some ways.
+The base class stores a JSON node, you can just write get methods for
 any things in particular that you need from the session object.
 
 Some connections have credentials, that when used will return a temporary session. This is to store that session information.

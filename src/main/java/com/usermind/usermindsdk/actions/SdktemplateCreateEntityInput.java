@@ -10,7 +10,13 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Component("SdktemplateCreateEntityInput")
+/*
+    TODO: Make sure to change the names of this and all the other classes in this folder according
+        to the type of Action you are performing instead of the generic CreateEntity
+ */
+
+
+@Component("CreateEntityInput")
 @Scope("prototype")
 public class SdktemplateCreateEntityInput implements ActionInput {
     private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateCreateEntityInput.class);

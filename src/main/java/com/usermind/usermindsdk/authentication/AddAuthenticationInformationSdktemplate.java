@@ -7,13 +7,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Component
 public class AddAuthenticationInformationSdktemplate implements AddAuthenticationInformation<SdktemplateConnectionData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAuthenticationInformationSdktemplate.class);
 
     /*
-    If you have sessions, uncomment this block to get the session manager. If you don't have sessions,
-    delete this block.
+    TODO - If you have sessions, uncomment this block to get the session manager. If you don't have sessions,
+        delete this block.
 
     private final SessionCredentialManagerSdktemplate sessionCredentials;
 
@@ -28,13 +30,15 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
         //Some integrations add them to the link directly instead of the headers. The link returned is therefore the link used, NOT the
         //one sent in - this lets you add authentication to that as well.
 
-        //If you have sessions, then uncomment this to get the session information:
+        //TODO - If you have sessions, then uncomment this to get the session information:
         //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentials.getSession(sdktemplateConnectionData);
 
 
    /*
     EXAMPLES
-    Each code block is a complete implementation of this method taken from other integrations
+    Here are 2 examples of a complete implementation of this method taken from other integrations
+
+    Example 1:
 
         Add some session information to the url as a query parameter:
         UriBuilder uriBuilder = UriBuilder
@@ -43,11 +47,15 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
         link = uriBuilder.toString();
         return link;
 
+    Example 2:
+
         Add authentication information to the headers, return the same link:
         headers.put(AUTHORIZATION, TOKEN_STRING + credentials.getToken());
         return link;
 
     */
+        checkNotNull(sdktemplateConnectionData);
+        checkNotNull(headers);
         return link;
     }
 

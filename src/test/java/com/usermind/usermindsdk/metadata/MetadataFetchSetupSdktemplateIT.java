@@ -16,7 +16,6 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 class MetadataFetchSetupSdktemplateIT extends TestBase {
 
-    @Disabled
     @Test
     void testMetadataFetch() throws Exception{
 

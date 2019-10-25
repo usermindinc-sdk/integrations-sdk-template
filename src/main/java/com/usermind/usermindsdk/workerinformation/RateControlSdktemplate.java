@@ -8,26 +8,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Component
 public class RateControlSdktemplate implements  RateControl {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RateControl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RateControlSdktemplate.class);
 
-    private Integer MaxRate = 100000;
-    private Integer TimeframeMinutes = 1;
+    private Integer maxRate = 100000;
+    private Integer timeframeMinutes = 1;
 
     @Override
     public Integer getMaxRate() {
-        return MaxRate;
+        return maxRate;
     }
 
     public void setMaxRate(Integer maxRate) {
-        MaxRate = checkNotNull(maxRate);
+        this.maxRate = checkNotNull(maxRate);
     }
 
     @Override
     public Integer getTimeframeMinutes() {
-        return TimeframeMinutes;
+        return timeframeMinutes;
     }
 
     public void setTimeframeMinutes(Integer timeframeMinutes) {
-        TimeframeMinutes = checkNotNull(timeframeMinutes);
+        this.timeframeMinutes = checkNotNull(timeframeMinutes);
     }
 }

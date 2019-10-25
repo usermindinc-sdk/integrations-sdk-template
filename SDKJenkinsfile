@@ -1,7 +1,5 @@
 #!/usr/bin/env groovy
 
-properties([pipelineTriggers([upstream('Usermind/integrations-sdk-base/master')])])
-
 node {
 
     try {
@@ -13,6 +11,13 @@ node {
         }
 
         stage('Configure environment') {
+            if(env.BRANCH_NAME == 'master') {
+                properties([pipelineTriggers([upstream('Usermind/integrations-sdk-base/master')])])
+            } else {
+                //Remove any existing triggers
+                properties([pipelineTriggers([])])
+            }
+
             build_config = util.loadJenkinsConfiguration("jenkins.yaml")
             util.useJDKVersion(build_config.javaVersion)
             util.useMavenVersion(build_config.mavenVersion)
@@ -26,8 +31,31 @@ node {
             if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
                 // Change out for the appropriate team channel
                 slackTeamMessageDestination = "#integration-build"
+                slackTeamFailureMessageDestination = "#integration-build-failures"
             }
             gitCommit = util.commitSha()
+        }
+
+        def endAfterReleaseStage = false
+        stage('Continuation and gitflow checks') {
+             if (env.BRANCH_NAME != 'master' && currentBuild.getBuildCauses().toString().contains('hudson.model.Cause\$UpstreamCause')) {
+                //If this is triggered by an upstream event, then only build master. No one else should do anything at all.
+                 //But note that building master will trigger jgitflow, which will rebuild develop
+                 echo "This was triggered by an upstream event, only going to build master"
+                endAfterReleaseStage = true
+            } else if (env.BRANCH_NAME == 'master' && !util.changeLogs().contains("with non-snapshot versions*  _by jenkins_"))  {
+                echo "Running jgitflow"
+                //withCredentials([usernamePassword(credentialsId: 'Github-Tony', passwordVariable: 'gpass', usernameVariable: 'guser')]) {
+                withCredentials([usernamePassword(credentialsId: 'github-userminddeployer', passwordVariable: 'githubPassword', usernameVariable: 'githubUsername')]) {
+                    sh 'mvn --batch-mode jgitflow:release-start jgitflow:release-finish -DnoDeploy=true -DpushReleases=true -DnoReleaseBuild=true'
+                }
+                endAfterReleaseStage = true
+            }
+        }
+
+        if( endAfterReleaseStage == true ) {
+            currentBuild.result = 'SUCCESS'
+            return
         }
 
         stage('build') {
@@ -57,17 +85,12 @@ node {
             }
         } catch (error) {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
-        }
-        
-        //Scan with SourceClear to identify vulnerabilities
-        stage('SourceClear scan') {
-            withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
-                sh "curl -sSL https://download.sourceclear.com/ci.sh | sh"   
-            }
+            util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_general_rage: The sonar build failed!", "danger")
         }
 
-        //If this is a pull request - then stop here. Failsafe to keep from going though the docker and kubernetes steps on PRs.
-        if( util.isPullRequest() ) {
+        //If this is a pull request or a branch other than master and develop - then stop here. Failsafe to keep from going though the deployment steps as
+        //well as things like SourceClear that are slower and that aren't useful for side branches.
+        if( util.isPullRequest() || (env.BRANCH_NAME != 'develop' && env.BRANCH_NAME != 'master')) {
             if(slackMessageDestination != "@Jenkins") {
                 util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId}-application ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull")
             }
@@ -75,24 +98,48 @@ node {
             return
         }
 
-        stage('Copy files to NiFi') {
-            if(build_config.autoDeploy == true) {
-                sh "git --no-pager log --oneline -20 > ${pom.artifactId}_changes.txt"
-
-                sshPublisher(publishers:[
-                        sshPublisherDesc(configName: 'NiFi 0 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
-                        sshPublisherDesc(configName: 'NiFi 1 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
-                        sshPublisherDesc(configName: 'NiFi 2 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')])
-                ])
+        //Scan with SourceClear to identify vulnerabilities
+        stage('SourceClear scan') {
+            withCredentials([string(credentialsId: 'SRCCLR_API_TOKEN', variable: 'SRCCLR_API_TOKEN')]) {
+                sh "curl -sSL https://download.sourceclear.com/ci.sh | sh"
             }
         }
 
+        stage('Copy files to NiFi') {
+             if (env.BRANCH_NAME == 'master' && build_config.autoDeploy == true) {
+                sh "git --no-pager log --oneline -20 > ${pom.artifactId}_changes.txt"
+                sshPublisher(publishers:[
+                    sshPublisherDesc(configName: 'NiFi 0 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
+                    sshPublisherDesc(configName: 'NiFi 1 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
+                    sshPublisherDesc(configName: 'NiFi 2 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')])
+                ])
+             }
+        }
+        
+        stage('Write to Slack') {
+            if (env.BRANCH_NAME == 'master') {
+                //See if the deployment succeeded, and notify if not
+                slackTeamMessageDestination = '#staging'
+                slackMessage = ":jenkins_general: :live: Deployment of ${pom.artifactId} ${pom.version} Jar File to Staging NIFI cluster is succeeded!"
+                if (currentBuild.result == 'FAILURE') {
+                    slackMessage = ":jenkins_general_rage: Deployment of ${pom.artifactId} ${pom.version} FAILED! Error is here: ${env.BUILD_URL}" + "consoleFull"
+                    util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_general_rage: Deployment of ${pom.artifactId} ${pom.version} FAILED! Error is here: ${env.BUILD_URL}" + "consoleFull")
+                }
+                //Send the message to an environment related room.
+                util.sendSlackMessage(build_config.deploymentSlackRoom, slackMessage)
+                //Send the message to the person who created the PR.
+                if(slackMessageDestination != "@Jenkins") {
+                 util.sendSlackMessage(slackMessageDestination, slackMessage)
+                }
+            }
+        }
     }
 
     catch (buildError) {
         currentBuild.result = 'FAILURE'
         if(slackMessageDestination != "@Jenkins") {
             util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: ${pom.artifactId} ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull", "danger")
+            util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_rage: ${pom.artifactId} ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull", "danger")
             util.sendFailureEmail(util.commitAuthorEmail())
         }
         throw buildError
