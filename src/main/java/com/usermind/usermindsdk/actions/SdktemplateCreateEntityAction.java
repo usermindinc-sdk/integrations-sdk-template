@@ -11,6 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+    TODO: Make sure to change the names of this and all the other classes in this folder according
+        to the type of Action you are performing instead of the generic CreateEntity
+ */
+
+
 @Component("CreateEntity")
 public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateConnectionData, SdktemplateCreateEntityInput> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateCreateEntityAction.class);
@@ -29,18 +35,18 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
         //Find the entity in the connection -- if you don't need to find anything from the entity,
         //you can remove this (and the matching unit test.)
         for (Map.Entry<String, SdktemplateCreateEntityInput> actionEntry : actions.entrySet()) {
-            SdktemplateEntity gbqEntity = connectionData
+            SdktemplateEntity sdktemplateEntity = connectionData
                     .getEntities()
                     .stream()
                     .filter(e -> e.getEntityName().equals(entityName))
                     .findAny()
                     .orElse(null);
 
-            if (gbqEntity == null) {
+            if (sdktemplateEntity == null) {
                 throw new SDKActionConfigurationFailedException("Entity '" + entityName + "' was not defined in the connection.");
             }
 
-            //Do the work here ...
+            //TODO: Do the work here ...
         }
 
         //Throw new SDKActionFailedException if the action fails.
