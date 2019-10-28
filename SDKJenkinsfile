@@ -47,7 +47,7 @@ node {
                 echo "Running jgitflow"
                 //withCredentials([usernamePassword(credentialsId: 'Github-Tony', passwordVariable: 'gpass', usernameVariable: 'guser')]) {
                 withCredentials([usernamePassword(credentialsId: 'github-userminddeployer', passwordVariable: 'githubPassword', usernameVariable: 'githubUsername')]) {
-                    sh 'mvn --batch-mode jgitflow:release-start jgitflow:release-finish -DnoDeploy=true -DpushReleases=true -DnoReleaseBuild=true'
+                    sh 'mvn --batch-mode jgitflow:release-start jgitflow:release-finish -DpullDevelop=true -DnoDeploy=true -DpushReleases=true -DnoReleaseBuild=true'
                 }
                 endAfterReleaseStage = true
             }
