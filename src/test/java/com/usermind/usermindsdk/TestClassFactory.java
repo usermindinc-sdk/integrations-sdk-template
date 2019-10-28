@@ -3,18 +3,9 @@ package com.usermind.usermindsdk;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public class TestClassFactory {
 
-    private static final Set<String> entityList = new HashSet<>(Arrays.asList("", ""));
     private static ObjectMapper objectMapper = TestBase.setupObjectMapper();
-
-    public static Set<String> getEntitySet() {
-        return entityList;
-    }
 
     public static SdktemplateConnectionData getCredentialContainerSdktemplate()  {
         return getCredentialContainerSdktemplate(getWorkingTestCredentials());

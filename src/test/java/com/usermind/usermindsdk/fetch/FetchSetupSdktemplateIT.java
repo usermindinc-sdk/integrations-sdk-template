@@ -3,19 +3,16 @@ package com.usermind.usermindsdk.fetch;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.TestUtils;
-import com.usermind.usermindsdk.fetch.FetchSetupSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.fetch.structures.FetchSetupData;
-import com.usermind.usermindsdk.fetch.ExtractDataFromSdktemplateResponse;
 import com.usermind.usermindsdk.fetch.structures.ExtractedData;
 import com.usermind.usermindsdk.fetch.structures.FetchData;
 import com.usermind.usermindsdk.fetch.drivers.FullFetchDriver;
 import com.usermind.usermindsdk.fetch.drivers.IncrementalFetchDriver;
 import com.usermind.usermindsdk.metadata.EntityInformation;
 import com.usermind.usermindsdk.metadata.EntityInformationSdktemplate;
-import com.usermind.usermindsdk.metadata.MetadataFetchDriver;
 import com.usermind.usermindsdk.fetch.drivers.SampleFetchDriver;
 import com.usermind.usermindsdk.fetch.drivers.TimeLimitedFetchDriver;
-import com.usermind.usermindsdk.metadata.MetadataRecords;
 import com.usermind.usermindsdk.normalization.Normalizer;
 import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.Disabled;
@@ -28,8 +25,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,18 +35,21 @@ class FetchSetupSdktemplateIT extends TestBase {
 
     private FetchSetupSdktemplate fetchSetup;
     private final EntityInformation entityInformation = new EntityInformationSdktemplate();
+    private final SdktemplateConnectionData connectionData = new SdktemplateConnectionData();
 
     @Test
     void testSetupCall() throws Exception {
         FetchSetupSdktemplate fetchSetupSdktemplate = ctx.getBean(FetchSetupSdktemplate.class);
-        FetchSetupData fetchData = fetchSetupSdktemplate.performFullFetchSetup(TestClassFactory.getCredentialContainerSdktemplate(), TestClassFactory.getEntitySet().stream().findAny().get());
+        FetchSetupData fetchData = fetchSetupSdktemplate.performFullFetchSetup(TestClassFactory.getCredentialContainerSdktemplate(),
+                connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()) .stream().findAny().get());
         assertThat(fetchData.getFetchSetupWebRequests().isEmpty()).isFalse();
     }
 
     @Test
     void testFullFetch() throws Exception {
         FullFetchDriver fullFetchSdktemplate = ctx.getBean(FullFetchDriver.class);
-        FetchData fetchData = fullFetchSdktemplate.runFullFetch(TestClassFactory.getCredentialContainerSdktemplate(), TestClassFactory.getEntitySet());
+        FetchData fetchData = fullFetchSdktemplate.runFullFetch(TestClassFactory.getCredentialContainerSdktemplate(),
+                connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
         checkResults(fetchData, true, false);
     }
@@ -57,7 +57,8 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testIncrementalFetch() throws Exception {
         IncrementalFetchDriver incrementalFetchSdktemplate = ctx.getBean(IncrementalFetchDriver.class);
-        FetchData fetchData = incrementalFetchSdktemplate.runIncrementalFetch(TestClassFactory.getCredentialContainerSdktemplate(), TestClassFactory.getEntitySet(), "2019-04-24T00:00:00Z");
+        FetchData fetchData = incrementalFetchSdktemplate.runIncrementalFetch(TestClassFactory.getCredentialContainerSdktemplate(),
+                connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()), "2019-04-24T00:00:00Z");
 
         //Incremental fetch will sometimes fetch data, but if run a second time there might not be new data.
         //So don't test the extraction except to make sure it doesn't throw an exception
@@ -67,7 +68,8 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testSampleFetch() throws Exception {
         SampleFetchDriver sampleFetchSdktemplate = ctx.getBean(SampleFetchDriver.class);
-        FetchData fetchData = sampleFetchSdktemplate.runSampleFetch(TestClassFactory.getCredentialContainerSdktemplate(), 10, TestClassFactory.getEntitySet());
+        FetchData fetchData = sampleFetchSdktemplate.runSampleFetch(TestClassFactory.getCredentialContainerSdktemplate(), 10,
+                connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
         checkResults(fetchData, true, false);
     }
@@ -75,7 +77,9 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testTimeLimitedFetch() throws Exception {
         TimeLimitedFetchDriver timeLimitedFetchSdktemplate = ctx.getBean(TimeLimitedFetchDriver.class);
-        FetchData fetchData = timeLimitedFetchSdktemplate.runTimeLimitedFetch(TestClassFactory.getCredentialContainerSdktemplate(), "2019-03-10T00:00:00Z", "2019-04-15T00:00:00Z", TestClassFactory.getEntitySet());
+        FetchData fetchData = timeLimitedFetchSdktemplate.runTimeLimitedFetch(TestClassFactory.getCredentialContainerSdktemplate(),
+                "2019-03-10T00:00:00Z", "2019-04-15T00:00:00Z",
+                connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
         //Time limited fetch may or may not get data depending on the times chosen.
         //So don't test the extraction except to make sure it doesn't throw an exception
@@ -84,12 +88,12 @@ class FetchSetupSdktemplateIT extends TestBase {
 
     private void checkResults(FetchData fetchData, boolean checkExtraction, boolean metadata) {
         //If the factory returns nothing then this test isn't helpful.
-        assertThat(TestClassFactory.getEntitySet()).isNotEmpty();
+        assertThat(connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet())).isNotEmpty();
         //It should have run through the entire process and gotten actual data back
         if (metadata) {
             assertThat(fetchData.getAllEntities()).containsOnlyElementsOf(Arrays.asList("metadata"));
         } else {
-            assertThat(fetchData.getAllEntities()).containsOnlyElementsOf(TestClassFactory.getEntitySet());
+            assertThat(fetchData.getAllEntities()).containsOnlyElementsOf(connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
         }
 
         Map<String, String> rideAlongs = fetchData.getRideAlongData();

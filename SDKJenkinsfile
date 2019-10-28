@@ -92,7 +92,7 @@ node {
         //well as things like SourceClear that are slower and that aren't useful for side branches.
         if( util.isPullRequest() || (env.BRANCH_NAME != 'develop' && env.BRANCH_NAME != 'master')) {
             if(slackMessageDestination != "@Jenkins") {
-                util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId}-application ${pom.version} build FAILED: ${env.BUILD_URL}consoleFull")
+                util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId}-application ${pom.version} build succeeded: ${env.BUILD_URL}consoleFull")
             }
             currentBuild.result = 'SUCCESS'
             return
