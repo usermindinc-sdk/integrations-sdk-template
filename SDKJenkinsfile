@@ -10,6 +10,18 @@ node {
             changeLogMessage = util.changeLogs()
         }
 
+        stage('Update Pom') {
+            // Update the parent library to the latest
+            //Update the integrations base library to the latest (1.0 will go to the latest)
+            sh 'mvn versions:update-parent versions:update-property -Dproperty=integrations.base.version -DnewVersion=1.0'
+
+            if ( env.BRANCH_NAME == 'master' ) {
+                sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${env.BUILD_NUMBER} versions:commit'
+            } else if ( env.BRANCH_NAME == 'develop' ) {
+                sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${env.BUILD_NUMBER}-SNAPSHOT versions:commit'
+            }
+        }
+
         stage('Configure environment') {
             if(env.BRANCH_NAME == 'master') {
                 properties([pipelineTriggers([upstream('Usermind/integrations-sdk-base/master')])])
@@ -30,32 +42,10 @@ node {
             // More complex example:
             if(util.isPullRequest() || env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
                 // Change out for the appropriate team channel
-                slackTeamMessageDestination = "#integration-build"
-                slackTeamFailureMessageDestination = "#integration-build-failures"
+                slackTeamMessageDestination = build_config.channel
+                slackTeamFailureMessageDestination = build_config.failureChannel
             }
             gitCommit = util.commitSha()
-        }
-
-        def endAfterReleaseStage = false
-        stage('Continuation and gitflow checks') {
-             if (env.BRANCH_NAME != 'master' && currentBuild.getBuildCauses().toString().contains('hudson.model.Cause\$UpstreamCause')) {
-                //If this is triggered by an upstream event, then only build master. No one else should do anything at all.
-                 //But note that building master will trigger jgitflow, which will rebuild develop
-                 echo "This was triggered by an upstream event, only going to build master"
-                endAfterReleaseStage = true
-            } else if (env.BRANCH_NAME == 'master' && !util.changeLogs().contains("with non-snapshot versions*  _by jenkins_"))  {
-                echo "Running jgitflow"
-                //withCredentials([usernamePassword(credentialsId: 'Github-Tony', passwordVariable: 'gpass', usernameVariable: 'guser')]) {
-                withCredentials([usernamePassword(credentialsId: 'github-userminddeployer', passwordVariable: 'githubPassword', usernameVariable: 'githubUsername')]) {
-                    sh 'mvn --batch-mode jgitflow:release-start jgitflow:release-finish -DpullDevelop=true -DnoDeploy=true -DpushReleases=true -DnoReleaseBuild=true'
-                }
-                endAfterReleaseStage = true
-            }
-        }
-
-        if( endAfterReleaseStage == true ) {
-            currentBuild.result = 'SUCCESS'
-            return
         }
 
         stage('build') {

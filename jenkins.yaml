@@ -12,6 +12,8 @@ common: &common
     autoDeploy:         false
     javaVersion:        'oraclejdk8'
     mavenVersion:       'Maven_3.5.4'
+    channel:            '#integration-build'
+    failureChannel:     '#integration-build-failures'
 
 default: # this block gets used if no branch-specific one is supplied
     << : *common # this pulls in everything from 'common'
@@ -21,3 +23,4 @@ master:  # Configuration for master branch
     autoDeploy:         true
     deploymentSlackRoom: staging
     deploymentDirectory: uploads/staging
+

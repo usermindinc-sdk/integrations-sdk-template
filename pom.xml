@@ -16,14 +16,14 @@
     <description>Integration for Sdktemplate</description>
 
     <properties>
+        <integrations.base.version>1.0.58</integrations.base.version>
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>com.usermind</groupId>
             <artifactId>integrations-sdk-base</artifactId>
-            <version>[1.0.53,1.9)</version>
+            <version>${integrations.base.version}</version>
         </dependency>
 
     </dependencies>
