@@ -37,7 +37,7 @@ class FetchSetupSdktemplateIT extends TestBase {
 
     private FetchSetupSdktemplate fetchSetup;
     private final EntityInformation entityInformation = new EntityInformationSdktemplate();
-    private final SdktemplateConnectionData connectionData = new SdktemplateConnectionData();
+    private final SdktemplateConnectionData connectionData = TestClassFactory.getCredentialContainerSdktemplate();
 
     @Mock
     TrackingLog trackingLog;
@@ -45,7 +45,7 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testSetupCall() throws Exception {
         FetchSetupSdktemplate fetchSetupSdktemplate = ctx.getBean(FetchSetupSdktemplate.class);
-        FetchSetupData fetchData = fetchSetupSdktemplate.performFullFetchSetup(TestClassFactory.getCredentialContainerSdktemplate(),
+        FetchSetupData fetchData = fetchSetupSdktemplate.performFullFetchSetup(connectionData,
                 connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()) .stream().findAny().get());
         assertThat(fetchData.getFetchSetupWebRequests().isEmpty()).isFalse();
     }
@@ -53,7 +53,7 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testFullFetch() throws Exception {
         FullFetchDriver fullFetchSdktemplate = ctx.getBean(FullFetchDriver.class);
-        FetchData fetchData = fullFetchSdktemplate.runFullFetch(TestClassFactory.getCredentialContainerSdktemplate(),
+        FetchData fetchData = fullFetchSdktemplate.runFullFetch(connectionData,
                 connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
         checkResults(fetchData, true, false);
@@ -62,7 +62,7 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testIncrementalFetch() throws Exception {
         IncrementalFetchDriver incrementalFetchSdktemplate = ctx.getBean(IncrementalFetchDriver.class);
-        FetchData fetchData = incrementalFetchSdktemplate.runIncrementalFetch(TestClassFactory.getCredentialContainerSdktemplate(),
+        FetchData fetchData = incrementalFetchSdktemplate.runIncrementalFetch(connectionData,
                 connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()), "2019-04-24T00:00:00Z");
 
         //Incremental fetch will sometimes fetch data, but if run a second time there might not be new data.
@@ -73,7 +73,7 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testSampleFetch() throws Exception {
         SampleFetchDriver sampleFetchSdktemplate = ctx.getBean(SampleFetchDriver.class);
-        FetchData fetchData = sampleFetchSdktemplate.runSampleFetch(TestClassFactory.getCredentialContainerSdktemplate(), 10,
+        FetchData fetchData = sampleFetchSdktemplate.runSampleFetch(connectionData, 10,
                 connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
         checkResults(fetchData, true, false);
@@ -82,7 +82,7 @@ class FetchSetupSdktemplateIT extends TestBase {
     @Test
     void testTimeLimitedFetch() throws Exception {
         TimeLimitedFetchDriver timeLimitedFetchSdktemplate = ctx.getBean(TimeLimitedFetchDriver.class);
-        FetchData fetchData = timeLimitedFetchSdktemplate.runTimeLimitedFetch(TestClassFactory.getCredentialContainerSdktemplate(),
+        FetchData fetchData = timeLimitedFetchSdktemplate.runTimeLimitedFetch(connectionData,
                 "2019-03-10T00:00:00Z", "2019-04-15T00:00:00Z",
                 connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
@@ -114,7 +114,7 @@ class FetchSetupSdktemplateIT extends TestBase {
                         StringWriter stringWriter = new StringWriter();
                         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
 
-                        ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), e.getKey(),
+                        ExtractedData extracted = extractor.extractData(connectionData, e.getKey(),
                                 bufferedReader, bufferedWriter, trackingLog, "");
 
                         //make sure we extracted data!
