@@ -1,5 +1,6 @@
 package com.usermind.usermindsdk.fetch;
 
+import com.usermind.tracking.TrackingLog;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.TestUtils;
@@ -18,6 +19,7 @@ import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.BufferedReader;
@@ -36,6 +38,9 @@ class FetchSetupSdktemplateIT extends TestBase {
     private FetchSetupSdktemplate fetchSetup;
     private final EntityInformation entityInformation = new EntityInformationSdktemplate();
     private final SdktemplateConnectionData connectionData = new SdktemplateConnectionData();
+
+    @Mock
+    TrackingLog trackingLog;
 
     @Test
     void testSetupCall() throws Exception {
@@ -110,7 +115,7 @@ class FetchSetupSdktemplateIT extends TestBase {
                         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
 
                         ExtractedData extracted = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), e.getKey(),
-                                bufferedReader, bufferedWriter, "");
+                                bufferedReader, bufferedWriter, trackingLog, "");
 
                         //make sure we extracted data!
                         try {

@@ -1,6 +1,7 @@
 package com.usermind.usermindsdk.fetch;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.usermind.tracking.TrackingLog;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.TestUtils;
@@ -12,6 +13,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -35,6 +37,9 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
 
     private ExtractDataFromSdktemplateResponse extractor;
 
+    @Mock
+    TrackingLog trackingLog;
+
     @BeforeEach
     void setUp() throws Exception {
         extractor = new ExtractDataFromSdktemplateResponse(objectMapper);
@@ -54,7 +59,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
         StringWriter stringWriter = new StringWriter();
         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
 
-        ExtractedData results = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), entityName, bufferedReader, bufferedWriter, "");
+        ExtractedData results = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), entityName, bufferedReader, bufferedWriter, trackingLog, "");
         //Write some less generic tests! If your response has three records in it, for example, this should show three records.
         //Maybe check a few values.
         bufferedWriter.flush();

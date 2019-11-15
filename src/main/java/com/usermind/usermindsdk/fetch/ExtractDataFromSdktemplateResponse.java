@@ -1,6 +1,7 @@
 package com.usermind.usermindsdk.fetch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.usermind.tracking.TrackingLog;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.fetch.structures.ExtractedData;
 import org.slf4j.Logger;
@@ -22,9 +23,10 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
 
     @Override
     public ExtractedData extractData(SdktemplateConnectionData sdktemplateConnectionData, String entityName,
-                                     BufferedReader bufferedReader, BufferedWriter bufferedWriter, String rideAlong) {
+                                     BufferedReader bufferedReader, BufferedWriter bufferedWriter,
+                                     TrackingLog trackingLog, String rideAlong) {
 
-        ExtractedData extractedData = new ExtractedData(bufferedWriter);
+        ExtractedData extractedData = new ExtractedData(bufferedWriter, trackingLog);
 
         //The given URL from FetchSetup was called. Something was fetched back. This method is here to get that
         //integration formatted data into a form that Usermind understands.
