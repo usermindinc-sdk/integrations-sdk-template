@@ -16,7 +16,6 @@ import com.usermind.usermindsdk.fetch.drivers.SampleFetchDriver;
 import com.usermind.usermindsdk.fetch.drivers.TimeLimitedFetchDriver;
 import com.usermind.usermindsdk.normalization.Normalizer;
 import org.assertj.core.api.Fail;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -39,8 +38,7 @@ class FetchSetupSdktemplateIT extends TestBase {
     private final EntityInformation entityInformation = new EntityInformationSdktemplate();
     private final SdktemplateConnectionData connectionData = TestClassFactory.getCredentialContainerSdktemplate();
 
-    @Mock
-    TrackingLog trackingLog;
+    private TrackingLog trackingLog = TrackingLog.builder().build();
 
     @Test
     void testSetupCall() throws Exception {

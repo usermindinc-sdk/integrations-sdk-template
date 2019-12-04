@@ -1,14 +1,10 @@
 package com.usermind.usermindsdk.fetch;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.usermind.tracking.TrackingLog;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
 import com.usermind.usermindsdk.TestUtils;
-import com.usermind.usermindsdk.fetch.ExtractDataFromSdktemplateResponse;
 import com.usermind.usermindsdk.fetch.structures.ExtractedData;
-import com.usermind.usermindsdk.metadata.EntityInformationSdktemplate;
-import com.usermind.usermindsdk.normalization.Normalizer;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +24,6 @@ import java.io.StringWriter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -37,8 +32,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
 
     private ExtractDataFromSdktemplateResponse extractor;
 
-    @Mock
-    TrackingLog trackingLog;
+    private TrackingLog trackingLog = TrackingLog.builder().build();
 
     @BeforeEach
     void setUp() throws Exception {
