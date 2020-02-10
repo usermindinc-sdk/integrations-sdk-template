@@ -30,14 +30,11 @@ public class SdktemplateSessionManager extends ConnectionSessionManager<Sdktempl
     private SdktemplateSession csi;
     public static String SESSION_API = "https://base.api.to.call/oauth/authorize";
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
 
     @Autowired
-    public SdktemplateSessionManager(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public SdktemplateSessionManager(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
     }
-
 
     //Validate credentials. But don't store them.
     @Override
