@@ -1,28 +1,21 @@
 package com.usermind.usermindsdk.authentication;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
-
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
-import com.usermind.usermindsdk.authentication.credentials.SessionCredentialContainerSdktemplate;
-import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
-import com.usermind.usermindsdk.authentication.exceptions.ConnectionException;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateSessionManager;
 import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import com.usermind.usermindsdk.authentication.exceptions.InvalidCredentialsException;
-import org.junit.jupiter.api.Test;
+import org.springframework.test.web.client.MockRestServiceServer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
@@ -35,18 +28,12 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     private MockRestServiceServer mockServer;
 
     @Mock
-    SessionCredentialManagerSdktemplate sessionCredentialManager;
-
-    @Mock
-    SessionCredentialContainerSdktemplate sessionCredentialContainer;
-
+    SdktemplateSessionManager sessionCredentialManager;
 
     @BeforeEach
     void setUp() throws Exception {
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
         authenticationService = new AuthenticationServiceSdktemplate(restTemplate, objectMapper, sessionCredentialManager);
-
-        when(sessionCredentialManager.validate(any(SdktemplateConnectionData.class))).thenReturn(sessionCredentialContainer);
     }
 
     @Test

@@ -2,7 +2,7 @@ package com.usermind.usermindsdk.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
-import com.usermind.usermindsdk.authentication.credentials.SessionCredentialManagerSdktemplate;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,14 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<S
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    private final SessionCredentialManagerSdktemplate sessionCredentialManager;
+    private final SdktemplateSessionManager sessionCredentialManager;
     //Use this variable to fill in the URL of the path to authenticate - then the unit tests will work. If you change
     //this, just change the tests to match.
     public static final String AUTH_CHECKING_PATH = "https://example.com/authentication";
 
     @Autowired
     public AuthenticationServiceSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper,
-                                            SessionCredentialManagerSdktemplate sessionCredentialManager) {
+                                            SdktemplateSessionManager sessionCredentialManager) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
         this.sessionCredentialManager = sessionCredentialManager;
