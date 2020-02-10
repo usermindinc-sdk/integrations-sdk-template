@@ -34,7 +34,7 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<S
         //TODO - implement Authenticator
         //  If there is a session - this call is all you need here to validate. But ideally you'll then
         //  get an entity list.
-        //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentialManager.validate(sdktemplateConnectionData);
+        //SdktemplateSession session = SdktemplateSessionManager.getSession(sdktemplateConnectionData);
 
         //TODO - If there is not a session, then just make a rest call using the credentials and see if it succeeds or not.
         //  And ideally make that call one that gets a list of available entities.

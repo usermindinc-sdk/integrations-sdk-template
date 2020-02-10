@@ -31,7 +31,7 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
         //one sent in - this lets you add authentication to that as well.
 
         //TODO - If you have sessions, then uncomment this to get the session information:
-        //SessionCredentialContainerSdktemplate sessionInformation = sessionCredentials.getSession(sdktemplateConnectionData);
+        //SdktemplateSession session = sessionCredentials.getSession(sdktemplateConnectionData);
 
 
    /*
