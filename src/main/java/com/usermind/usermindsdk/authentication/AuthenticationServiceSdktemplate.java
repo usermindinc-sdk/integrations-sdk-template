@@ -23,10 +23,10 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<S
 
     @Autowired
     public AuthenticationServiceSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper,
-                                            SdktemplateSessionManager sessionCredentialManager) {
+                                            SdktemplateSessionManager sessionManager) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
-        this.sessionCredentialManager = sessionCredentialManager;
+        this.sessionCredentialManager = sessionManager;
     }
 
     public AuthenticatorResponse validate(SdktemplateConnectionData sdktemplateConnectionData) throws NoSuchMethodException {
