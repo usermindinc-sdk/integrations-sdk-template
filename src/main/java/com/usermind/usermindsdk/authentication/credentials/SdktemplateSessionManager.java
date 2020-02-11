@@ -39,10 +39,10 @@ public class SdktemplateSessionManager extends ConnectionSessionManager<Sdktempl
     //Validate credentials. But don't store them.
     @Override
     public SdktemplateSession validate(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
-        return getNewSession(sdktemplateConnectionData);
+        return getNewSession(sdktemplateConnectionData).getSession();
     }
 
-    protected SdktemplateSession getNewSession(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
+    protected ConnectionSessionPlusMeta<SdktemplateSession> getNewSession(SdktemplateConnectionData sdktemplateConnectionData) throws Exception {
 
         MultiValueMap<String, String> sessionRequestHeaders = new LinkedMultiValueMap<>();
         //TODO - add any headers needed to get a session
@@ -60,15 +60,18 @@ public class SdktemplateSessionManager extends ConnectionSessionManager<Sdktempl
         SdktemplateSession sdktemplateSession = new SdktemplateSession();
         SdktemplateSession newSdktemplateSession = (SdktemplateSession)sdktemplateSession.getInstance(response.getBody());
 
-        //And set the time this session expires - either calculate it, or else if it's sent back in the session response,
-        //query the session response to get it.
-        this.setExpirationTime(newSdktemplateSession.getExpiresIn());
+        //Return the session paired with the time it expires. If it never expires, return null as the second argument.
+
+        //You will need to either calculate the session expiration time, or else if it's sent back in the session response,
+        //query the session response to get it. The example has it being sent back in the session response, which is
+        //frequently the case.
 
         //To calculate it - for the example below, say the session will expire in two hours after
         //being issued for this integration type. Then:
         //this.setExpirationTime(Instant.ofEpochMilli(
         //        Long.parseLong(sdktemplateSession.getIssuedAt()))
         //        .plus(2, HOURS).atOffset(ZoneOffset.UTC));
-        return newSdktemplateSession;
-    }
+
+        return new ConnectionSessionPlusMeta(newSdktemplateSession, newSdktemplateSession.getExpiresIn());
+     }
 }
