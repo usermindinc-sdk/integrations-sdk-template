@@ -1,5 +1,6 @@
 package com.usermind.usermindsdk.actions;
 
+import com.usermind.usermindsdk.actions.drivers.ActionFailureResult;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateEntity;
 import com.usermind.usermindsdk.exceptions.SDKActionConfigurationFailedException;
@@ -28,9 +29,9 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
     }
 
     @Override
-    public Map<String, String> runAction(SdktemplateConnectionData connectionData, String entityName, Map<String, SdktemplateCreateEntityInput> actions) throws Exception {
+    public Map<String, ActionFailureResult> runAction(SdktemplateConnectionData connectionData, String entityName, Map<String, SdktemplateCreateEntityInput> actions) throws Exception {
 
-        Map<String, String> failedActions = new HashMap<>();
+        Map<String, ActionFailureResult> failedActions = new HashMap<>();
 
         //Find the entity in the connection -- if you don't need to find anything from the entity,
         //you can remove this (and the matching unit test.)
@@ -49,7 +50,8 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
             //TODO: Do the work here ...
         }
 
-        //Throw new SDKActionFailedException if the action fails.
+        //Throw new SDKActionFailedException if the action fails completely. That means no call succeeded, and there is no
+        //return information from the API.
 
         //This goes with SdktemplateCreateEntityInput - they are a pair, with the same names except that one ends in Action and one ends in Input.
 
@@ -59,15 +61,20 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
         The actions are in a map. The key is an identifier, the value is the action. It is up to the developer to group the actions as appropriate for batching, and then
         to run them.
 
-        Return a list of actions that failed. If an action succeeded, do nothing - but for each action that failed, return the ID of the failed action and a string
-        with an error message. A blank error message is not acceptable - return something detailing what went wrong, as clearly as possible.
+        Return a list of actions that failed. The key is the same identifier as the input map.
+        If an action succeeded, do nothing - but for each action that failed, return the ID of the failed action and an ActionFailureResult.
+        ActionFailureResult is string with an error message and a boolean.
+        A blank error message is NOT acceptable - return something detailing what went wrong, as clearly as possible. This is what will be seen when we look to
+        figure out why the action failed.
+        The boolean is to report if the action can be retried or not. For most failures - let it retry. But if the failure is something returned by the API
+        that tells you that retrying will not help, then return a false and it will not be retried.
 
         It is up to the developer to take the return call from the integration and figure out which actions failed. if this is impossible, then fail the entire batch of actions
         with an appropriate error message.
 
-
         If this is NOT a batched action - ie, getBatchSize returns 1 - then you can also just throw an exception. That will get caught by the caller which will then assume each
         action failed. For a batch size of one, that is an appropriate thing.
+
          */
 
         return failedActions;

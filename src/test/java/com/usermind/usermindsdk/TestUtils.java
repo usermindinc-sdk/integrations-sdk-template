@@ -1,5 +1,6 @@
 package com.usermind.usermindsdk;
 
+import com.usermind.tracking.TrackingLog;
 import com.usermind.usermindsdk.normalization.Normalizer;
 
 import java.io.*;
@@ -20,7 +21,7 @@ public class TestUtils {
              StringWriter stringWriter = new StringWriter();
              BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);) {
 
-            normalizer.normalizeData(entityName, bufferedReader, bufferedWriter);
+            normalizer.normalizeData(entityName, TrackingLog.builder().build(), bufferedReader, bufferedWriter);
             bufferedWriter.flush();
             flattenedData = stringWriter.toString();
         }
