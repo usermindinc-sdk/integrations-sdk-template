@@ -94,9 +94,9 @@ class FetchSetupSdktemplateIT extends TestBase {
         assertThat(connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet())).isNotEmpty();
         //It should have run through the entire process and gotten actual data back
         if (metadata) {
-            assertThat(fetchData.getAllEntities()).containsOnlyElementsOf(Arrays.asList("metadata"));
+            assertThat(fetchData.getAllEntities()).isSubsetOf(Arrays.asList("metadata"));
         } else {
-            assertThat(fetchData.getAllEntities()).containsOnlyElementsOf(connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
+            assertThat(fetchData.getAllEntities()).isSubsetOf(connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
         }
 
         Map<String, String> rideAlongs = fetchData.getRideAlongData();

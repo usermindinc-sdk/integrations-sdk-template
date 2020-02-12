@@ -17,11 +17,11 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
     TODO - If you have sessions, uncomment this block to get the session manager. If you don't have sessions,
         delete this block.
 
-    private final SessionCredentialManagerSdktemplate sessionCredentials;
+    private final SdktemplateSessionManager sessionManager;
 
     @Autowired
-    public AddAuthenticationInformationSdktemplate(SessionCredentialManagerSdktemplate sessionCredentials) {
-        this.sessionCredentials = sessionCredentials;
+    public AddAuthenticationInformationSdktemplate(SdktemplateSessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 */
     @Override
@@ -31,7 +31,7 @@ public class AddAuthenticationInformationSdktemplate implements AddAuthenticatio
         //one sent in - this lets you add authentication to that as well.
 
         //TODO - If you have sessions, then uncomment this to get the session information:
-        //SdktemplateSession session = sessionCredentials.getSession(sdktemplateConnectionData);
+        //SdktemplateSession session = sessionManager.getSession(sdktemplateConnectionData);
 
 
    /*

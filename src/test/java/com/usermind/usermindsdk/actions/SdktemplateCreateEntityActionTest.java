@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.actions;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
+import com.usermind.usermindsdk.actions.drivers.ActionFailureResult;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.exceptions.SDKActionConfigurationFailedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +77,7 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andExpect(method(HttpMethod.PATCH))
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
-        Map<String, String> failures = actionHandler.runAction(connectionData, entityName, getInput());
+        Map<String, ActionFailureResult> failures = actionHandler.runAction(connectionData, entityName, getInput());
         mockServer.verify();
         assertThat(failures).isEmpty();
 
@@ -90,12 +91,12 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         mockServer.expect(method(HttpMethod.PATCH))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
-        Map<String, String> failures = actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
+        Map<String, ActionFailureResult> failures = actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
 
         mockServer.verify();
         assertThat(failures.size()).isEqualTo(1);
         assertThat(failures).containsKey("key");
-        assertThat(failures.get("key")).contains("Unauthorized");
+        assertThat(failures.get("key").getErrorMessage()).contains("Unauthorized");
 
     }
 
