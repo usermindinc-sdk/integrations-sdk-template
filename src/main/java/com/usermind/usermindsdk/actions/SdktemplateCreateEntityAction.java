@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
     TODO: Make sure to change the names of this and all the other classes in this folder according
@@ -25,7 +23,23 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
 
     @Override
     public int getBatchSize() {
+        //If actions go out one at a time, leave this as 1. But if you can get a set of actions and combine them into a single call to the client,
+        //then make this number the maximum number of actions you want to be sent at a time.
+        //The runAction call below takes a collection. That collection will be no larger than the number specified here. If you specify 1, actions
+        //will not be batched, and you'll get a single item. If you specify 100, you'll get up to 100 actions in the collection that you can group together.
         return 1;
+    }
+
+    @Override
+    public Set<String> getGroupingFields() {
+
+        //If the batch size is 1, then this is ignored. But if the action size is larger than one, then you can optionally specify a field to take into account when grouping
+        //actions.
+        // For example, say the input has fields Name, state, and ID. You can group things together but only by state. So then you would return:
+        //return new HashSet<>(Arrays.asList("state"));
+        //The orchestration code will then check the fields and look for state. It will aggregate the actions by state, and send you batches in which all the states have the same value.
+        //The field not being found or being empty are treated as their own identical case and will also be batched together.
+        return new HashSet<>();
     }
 
     @Override
