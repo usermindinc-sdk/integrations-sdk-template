@@ -76,8 +76,8 @@ node {
                 }
             }
         } catch (error) {
-            util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!", "danger")
-            util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_general_rage: The sonar build failed!", "danger")
+            util.sendSlackMessage(slackMessageDestination, ":jenkins_rage: The sonar build failed!  ${env.BUILD_URL}consoleFull", "danger")
+            util.sendSlackMessage(slackTeamFailureMessageDestination, ":jenkins_general_rage: The sonar build failed! ${env.BUILD_URL}consoleFull", "danger")
         }
 
         //If this is a pull request or a branch other than master and develop - then stop here. Failsafe to keep from going though the deployment steps as
