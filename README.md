@@ -1,6 +1,25 @@
 # Integrations SDK
 
-# Overview
+# Process Overview
+This is a template to help you create an SDK. And SDK does several things:
+
+* Authentication - a call to confirm if the supplied connection information is valid
+* Metadata Fetch - this is data about the data. If you fetch a database table, for example, the metadata would list the data fields and their types (String, date, boolean, etc.) Most of the time you can get metadata from the integration itself, if not then you can specify it in the SDK.
+* Fetch - this pulls data from the third party integration. We refer to the data as entities where an entity is defined as a standalone set of records - for example, each table in the database would be an entity. So if an integration has an API that returns customer information that would be an entity, and if it had an API returning product data that would be a second entity.
+* Actions - this pushes data to the third party integration.
+
+# Documentation
+We have an internal wiki with information on every SDK:
+https://usermind.atlassian.net/wiki/spaces/LOH/pages/443940868/Third+Party+Integration+Information
+This SDK will not be considered complete without documentation. If you make REST calls, then using Postman export the calls as curl calls and put them in the wiki - that means other developers can make those calls in Postman if needed to diagnose issues. Document any oddities that would be good to know if something goes wrong, and if there is an non-intuitive setup process document that as well. Please use screenshots if they are useful!
+
+Document it as you go, NOT at the end. When you set things up is the right time to take screenshots, people do not tend to go back and do it. Similarly if you hit something odd add it to the documentation - if you leave everything to the very end, you'll forget all the little odd details which are the things most useful to have recorded.
+
+And finally - TEST ERROR CASES. Get useful error messages and return them - if something fails and we see an error message saying "this failed" we will not be very pleased with you. Most of the time you get an error response from the integration telling you exactly why something failed - make sure you pull that out and return it! 
+
+Unit tests are a minimum as error cases can be integration specific - so add some, and add failure cases!
+
+# Development Overview
 Simply get this template repository, and check out the develop branch. Then run sdkrename.sh to create a new worker, open that in IntelliJ, and fill out the TODOs. Do the Authentication ones first, then the Metadata ones, and finally the Fetch ones.
 
 ```sdkrename.sh integration_name```
