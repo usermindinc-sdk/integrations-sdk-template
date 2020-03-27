@@ -19,6 +19,13 @@ And finally - TEST ERROR CASES. Get useful error messages and return them - if s
 
 Unit tests are a minimum as error cases can be integration specific - so add some, and add failure cases!
 
+#Code Quality Metrics
+We use Sonar to check for unit test coverage and code quality. Try for 80% or higher unit test coverage - if it is close it may be acceptable (we do allow flexibility on a case by case basis) but when we make infrastructure changes this is how we ensure each SDK still works, so unit test coverage is key. If you run Sonar locally, you can run a scan and view the results with this command:
+```mvn -T C2.0 clean org.jacoco:jacoco-maven-plugin:prepare-agent package -Dse.eris.notnull.instrument=false -Dmaven.test.failure.ignore=true && mvn sonar:sonar```
+For internal developers, our build pipeline runs Sonar automatically and writes results internally to sonar.usermind.com.
+
+In addition to unit test metrics, we expect Sonar to report 0 bugs, 0 vulnerabilities, and we do expect a pass at code smells as well but don't have specific metric requirements for that.
+
 # Development Overview
 Simply get this template repository, and check out the develop branch. Then run sdkrename.sh to create a new worker, open that in IntelliJ, and fill out the TODOs. Do the Authentication ones first, then the Metadata ones, and finally the Fetch ones.
 
