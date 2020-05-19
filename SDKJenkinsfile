@@ -50,22 +50,30 @@ node {
 
         stage('build') {
             // Let people know a build has begun
-            if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
-                // Ensure that the application name is appropriate may need to include -application after artifactid
-                if(slackMessageDestination != "@Jenkins") {
+            try {
+                if(env.BRANCH_NAME == 'develop' || env.BRANCH_NAME == 'master') {
+                    // Ensure that the application name is appropriate may need to include -application after artifactid
+                    if(slackMessageDestination != "@Jenkins") {
                     util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+                    }
+                    // Ensure that the application name is appropriate may need to include -application after artifactid
+                    util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+                    // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
+                        sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
+                } else {
+                    // Ensure that the application name is appropriate may need to include -application after artifactid
+                    if(slackMessageDestination != "@Jenkins") {
+                        util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+                    }
+                    // Add test related commands as appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
+                    sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
                 }
-                // Ensure that the application name is appropriate may need to include -application after artifactid
-                util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
-                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
-                sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
-            } else {
-                // Ensure that the application name is appropriate may need to include -application after artifactid
-                if(slackMessageDestination != "@Jenkins") {
-                    util.sendSlackMessage(slackMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
+             }
+            catch (error) {
+                withSonarQubeEnv('sonar.usermind.com') {
+                    sh 'mvn -B sonar:sonar -Dsonar.host.url=https://sonar.usermind.com'
                 }
-                // Add test related commands ass appropriate eg -Dbasepom.test.timeout=0 -Dbasepom.failsafe.timeout=0
-                sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+                throw error
             }
         }
 
