@@ -24,9 +24,10 @@ public class ExtractDataFromSdktemplateResponse implements ExtractDataFromRespon
     @Override
     public ExtractedData extractData(SdktemplateConnectionData sdktemplateConnectionData, String entityName,
                                      BufferedReader bufferedReader, BufferedWriter bufferedWriter,
+                                     BufferedWriter bufferedWriterForInvalidRecords,
                                      TrackingLog trackingLog, String rideAlong) {
 
-        ExtractedData extractedData = new ExtractedData(bufferedWriter, trackingLog);
+        ExtractedData extractedData = new ExtractedData(bufferedWriter, bufferedWriterForInvalidRecords, trackingLog);
 
         //The given URL from FetchSetup was called. Something was fetched back. This method is here to get that
         //integration formatted data into a form that Usermind understands.

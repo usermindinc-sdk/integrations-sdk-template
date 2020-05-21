@@ -67,7 +67,7 @@ Now you're ready to write the authentication code.
 ## 3. Credential Classes 
 Fill in connection data information in the ConnectionData class in the authentication/credentials package as per the documentation in the Connection Data file.
 If this integration has a session, fill in the SessionCredentialContainer. This class keeps just a JSON node. So to get your fields easily, just make a helper get method for each field.
-If you do not have sessions, delete the Session Credential Container and the Session Credential Manager.
+If you do not have sessions, delete the SdktemplateSession and the SdktemplateSessionManager. If you remove the classes and rebuild, you'll find the references to them that you'll need to remove as well as unit test classes for the Session that you can delete.
 
 ## 4 Authentication Code
 In AuthenticationService, fill in the validate method. You'll be given the credentials. See if they work, use them to get a list of available entities to fetch, and return.
