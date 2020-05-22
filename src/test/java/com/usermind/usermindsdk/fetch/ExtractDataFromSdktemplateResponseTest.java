@@ -52,8 +52,10 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
         BufferedReader bufferedReader = TestUtils.stringToBufferedReader(entityString);
         StringWriter stringWriter = new StringWriter();
         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
+        StringWriter stringWriterForInvalidRecords = new StringWriter();
+        BufferedWriter bufferedWriterInvalidRecords = new BufferedWriter(stringWriterForInvalidRecords);
 
-        ExtractedData results = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), entityName, bufferedReader, bufferedWriter, trackingLog, "");
+        ExtractedData results = extractor.extractData(TestClassFactory.getCredentialContainerSdktemplate(), entityName, bufferedReader, bufferedWriter, bufferedWriterInvalidRecords, trackingLog, "");
         //Write some less generic tests! If your response has three records in it, for example, this should show three records.
         //Maybe check a few values.
         bufferedWriter.flush();

@@ -111,9 +111,11 @@ class FetchSetupSdktemplateIT extends TestBase {
                         BufferedReader bufferedReader = TestUtils.stringToBufferedReader( e.getValue());
                         StringWriter stringWriter = new StringWriter();
                         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
+                        StringWriter stringWriterForInvalidRecords = new StringWriter();
+                        BufferedWriter bufferedWriterInvalidRecords = new BufferedWriter(stringWriterForInvalidRecords);
 
                         ExtractedData extracted = extractor.extractData(connectionData, e.getKey(),
-                                bufferedReader, bufferedWriter, trackingLog, "");
+                                bufferedReader, bufferedWriter, bufferedWriterInvalidRecords, trackingLog, "");
 
                         //make sure we extracted data!
                         try {

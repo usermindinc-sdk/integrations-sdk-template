@@ -19,9 +19,11 @@ public class TestUtils {
         try (Reader entityReader = new StringReader(dataToNormalize);
              BufferedReader bufferedReader = new BufferedReader(entityReader);
              StringWriter stringWriter = new StringWriter();
-             BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);) {
+             BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
+             StringWriter stringWriterForInvalidRecords = new StringWriter();
+             BufferedWriter bufferedWriterInvalidRecords = new BufferedWriter(stringWriterForInvalidRecords);) {
 
-            normalizer.normalizeData(entityName, TrackingLog.builder().build(), bufferedReader, bufferedWriter);
+            normalizer.normalizeData(entityName, bufferedReader, bufferedWriter, bufferedWriterInvalidRecords);
             bufferedWriter.flush();
             flattenedData = stringWriter.toString();
         }
