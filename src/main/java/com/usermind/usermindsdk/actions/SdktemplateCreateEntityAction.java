@@ -67,6 +67,18 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
         //Throw new SDKActionFailedException if the action fails completely. That means no call succeeded, and there is no
         //return information from the API.
 
+        //ONLY CATCH ERRORS SPECIFIC TO THE INTEGRATION THAT YOU CAN ADD CONTEXT TO
+        //Rethrow anything you don't specifically handle. A lot of things, such as socket exceptions,
+        //come in and can be retried - but it is very easy to accidentally catch them and swallow them,
+        //and then they won't be retried.
+
+        //If you do want to catch everything - then add this block to your catch right before catching the general Exception:
+//        catch (RestClientException e) {
+//            throw e;
+//        }
+        //Those exceptions are handled by the higher level code in a generic fashion, which is why it's better to rethrow them.
+
+
         //This goes with SdktemplateCreateEntityInput - they are a pair, with the same names except that one ends in Action and one ends in Input.
 
         /*
