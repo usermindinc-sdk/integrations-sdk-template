@@ -1,6 +1,6 @@
 package com.usermind.usermindsdk.actions;
 
-import com.usermind.usermindsdk.actions.drivers.ActionFailureResult;
+import com.usermind.usermindsdk.actions.actionreturn.ActionResults;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateEntity;
 import com.usermind.usermindsdk.exceptions.SDKActionConfigurationFailedException;
@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /*
     TODO: Make sure to change the names of this and all the other classes in this folder according
@@ -43,9 +45,9 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
     }
 
     @Override
-    public Map<String, ActionFailureResult> runAction(SdktemplateConnectionData connectionData, String entityName, Map<String, SdktemplateCreateEntityInput> actions) throws Exception {
+    public ActionResults runAction(SdktemplateConnectionData connectionData, String entityName, Map<String, SdktemplateCreateEntityInput> actions) throws Exception {
 
-        Map<String, ActionFailureResult> failedActions = new HashMap<>();
+        ActionResults results = new ActionResults();
 
         //Find the entity in the connection -- if you don't need to find anything from the entity,
         //you can remove this (and the matching unit test.)
@@ -103,7 +105,7 @@ public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateC
 
          */
 
-        return failedActions;
+        return results;
 
     }
 }

@@ -2,11 +2,10 @@ package com.usermind.usermindsdk.actions;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.actions.drivers.ActionFailureResult;
+import com.usermind.usermindsdk.actions.actionreturn.ActionResults;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.exceptions.SDKActionConfigurationFailedException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,10 +18,10 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
-import static org.assertj.core.api.Assertions.assertThat;
 
 /*
     TODO: Make sure to change the names of this and all the other classes in this folder according
@@ -77,10 +76,10 @@ class SdktemplateCreateEntityActionTest extends TestBase {
                 .andExpect(method(HttpMethod.PATCH))
                 .andRespond(withSuccess(SUCCESS_BODY, MediaType.APPLICATION_JSON));
 */
-        Map<String, ActionFailureResult> failures = actionHandler.runAction(connectionData, entityName, getInput());
+        ActionResults results = actionHandler.runAction(connectionData, entityName, getInput());
         mockServer.verify();
-        assertThat(failures).isEmpty();
-
+        assertThat(results.getFailures()).isEmpty();
+        assertThat(results.getSuccesses()).hasSize(1);
     }
 
     @Test
@@ -91,13 +90,11 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         mockServer.expect(method(HttpMethod.PATCH))
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
-        Map<String, ActionFailureResult> failures = actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
+        ActionResults results = actionHandler.runAction(sdktemplateConnectionData, entityName, getInput());
 
         mockServer.verify();
-        assertThat(failures.size()).isEqualTo(1);
-        assertThat(failures).containsKey("key");
-        assertThat(failures.get("key").getErrorMessage()).contains("Unauthorized");
-
+        assertThat(results.getFailures()).hasSize(1);
+        assertThat(results.getFailureResult("key").getErrorMessage()).contains("Unauthorized");
     }
 
     @Test
@@ -109,7 +106,6 @@ class SdktemplateCreateEntityActionTest extends TestBase {
         Exception exception = assertThrows(SDKActionConfigurationFailedException.class,
                 ()->{
                     actionHandler.runAction(credentialContainer, entityName, gbqInput);
-
                 });
     }
 
