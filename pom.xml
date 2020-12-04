@@ -10,13 +10,14 @@
         <groupId>com.usermind</groupId>
         <artifactId>integrations-sdk-base-pom</artifactId>
         <version>2.0.20</version>
+        <relativePath></relativePath>
     </parent>
 
     <name>integrations-sdk-sdktemplate</name>
     <description>Integration for Sdktemplate</description>
 
     <properties>
-        <integrations.base.version>1.1.83</integrations.base.version>
+        <integrations.base.version>1.1.86</integrations.base.version>
     </properties>
 
     <dependencies>

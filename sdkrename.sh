@@ -39,7 +39,7 @@ cd ../$sdkname
 rm -rf .git
 rm sdkrename.sh
 
-rm Jenkinsfile
+rm -f Jenkinsfile
 mv SDKJenkinsfile Jenkinsfile
  
 find . -name '.DS_Store' -type f -delete
