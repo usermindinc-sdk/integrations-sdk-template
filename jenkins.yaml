@@ -10,8 +10,8 @@
 # Default settings shared for all builds (unless directly overridden)
 common: &common
     autoDeploy:         false
-    javaVersion:        'oraclejdk8'
-    mavenVersion:       'Maven_3.5.4'
+    javaVersion:        'jdk8'
+    mavenVersion:       'Maven_3.6.3'
     channel:            '#integration-build'
     failureChannel:     '#integration-build-failures'
 
