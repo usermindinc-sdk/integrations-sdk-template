@@ -7,6 +7,7 @@ import java.io.*;
 
 public class TestUtils {
 
+    private static TrackingLog.TrackingLogBuilder trackingLog = TrackingLog.builder();
     private TestUtils() {}
 
     public static BufferedReader stringToBufferedReader(String input) {
@@ -21,9 +22,9 @@ public class TestUtils {
              StringWriter stringWriter = new StringWriter();
              StringWriter stringWriterForInvalidRecords = new StringWriter();
              BufferedWriter bufferedWriterForInvalidRecords = new BufferedWriter(stringWriterForInvalidRecords);
-             BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);) {
+             BufferedWriter bufferedWriter = new BufferedWriter(stringWriter)) {
 
-            normalizer.normalizeData(entityName, bufferedReader, bufferedWriter, bufferedWriterForInvalidRecords);
+            normalizer.normalizeData(entityName, bufferedReader, bufferedWriter, bufferedWriterForInvalidRecords, trackingLog);
             bufferedWriter.flush();
             flattenedData = stringWriter.toString();
         }

@@ -42,4 +42,13 @@ public class SdktemplateInfo implements WorkerInfo {
         return "Misc";
     }
 
+
+    @Override
+    public boolean isConcurrent() {
+        //Once in a while there is an integration that can't allow multiple threads to hit it.
+        //If that is the case, then change this to false and only one thread will handle all actions
+        //for this integration type for a customer.
+        return true;
+    }
+
 }
