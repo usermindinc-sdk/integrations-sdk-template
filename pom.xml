@@ -17,7 +17,7 @@
     <description>Integration for Sdktemplate</description>
 
     <properties>
-        <integrations.base.version>1.1.86</integrations.base.version>
+        <integrations.base.version>1.1.87</integrations.base.version>
     </properties>
 
     <dependencies>
