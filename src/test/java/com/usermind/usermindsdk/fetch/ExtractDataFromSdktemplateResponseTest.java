@@ -3,7 +3,7 @@ package com.usermind.usermindsdk.fetch;
 import com.usermind.tracking.TrackingLog;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.TestUtils;
+import com.usermind.testlib.sdk.SDKTestUtils;
 import com.usermind.usermindsdk.fetch.structures.ExtractedData;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ class ExtractDataFromSdktemplateResponseTest extends TestBase {
     void testBasic(String entityName) throws Exception {
         String entityString = loadFileFixtureAsString(entityName + ".json");
 
-        BufferedReader bufferedReader = TestUtils.stringToBufferedReader(entityString);
+        BufferedReader bufferedReader = SDKTestUtils.stringToBufferedReader(entityString);
         StringWriter stringWriter = new StringWriter();
         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
         StringWriter stringWriterForInvalidRecords = new StringWriter();

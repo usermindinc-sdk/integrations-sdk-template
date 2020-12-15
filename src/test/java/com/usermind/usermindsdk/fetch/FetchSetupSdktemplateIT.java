@@ -3,7 +3,7 @@ package com.usermind.usermindsdk.fetch;
 import com.usermind.tracking.TrackingLog;
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
-import com.usermind.usermindsdk.TestUtils;
+import com.usermind.testlib.sdk.SDKTestUtils;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.fetch.structures.FetchSetupData;
 import com.usermind.usermindsdk.fetch.structures.ExtractedData;
@@ -108,7 +108,7 @@ class FetchSetupSdktemplateIT extends TestBase {
         if (checkExtraction) {
             allResults.entrySet().stream().
                     forEach(e -> {
-                        BufferedReader bufferedReader = TestUtils.stringToBufferedReader( e.getValue());
+                        BufferedReader bufferedReader = SDKTestUtils.stringToBufferedReader( e.getValue());
                         StringWriter stringWriter = new StringWriter();
                         BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
                         StringWriter stringWriterForInvalidRecords = new StringWriter();
@@ -124,10 +124,10 @@ class FetchSetupSdktemplateIT extends TestBase {
                             String results = stringWriter.toString();
                             assertThat(results.isEmpty()).isFalse();
 
-                            BufferedReader bufferedResults = TestUtils.stringToBufferedReader( results);
+                            BufferedReader bufferedResults = SDKTestUtils.stringToBufferedReader( results);
 
                             //Does it normalize OK?
-                            String flattenedData = TestUtils.normalize(e.getKey(), results, normalizer);
+                            String flattenedData = SDKTestUtils.normalize(e.getKey(), results, normalizer);
                             assertThat(flattenedData).isNotEmpty();
                         } catch (IOException e1) {
                             Fail.fail("Threw an exception trying to flush the buffered writer", e);
