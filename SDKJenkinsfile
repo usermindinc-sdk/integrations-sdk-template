@@ -13,7 +13,7 @@ node {
         stage('Update Pom') {
             // Update the parent library to the latest
             //Update the integrations base library to the latest (1.0 will go to the latest)
-            sh 'mvn versions:update-parent versions:update-property -Dproperty=integrations.base.version -DnewVersion=1.0'
+            sh 'mvn validate'
 
             if ( env.BRANCH_NAME == 'master' ) {
                 sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${env.BUILD_NUMBER} versions:commit'
