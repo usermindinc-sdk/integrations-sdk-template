@@ -1,6 +1,11 @@
 package com.usermind.usermindsdk.workerinformation;
 
+import com.usermind.usermindsdk.authentication.oauth.OAuthConfig;
+import com.usermind.usermindsdk.registration.Environment;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SdktemplateInfo implements WorkerInfo {
@@ -51,4 +56,35 @@ public class SdktemplateInfo implements WorkerInfo {
         return true;
     }
 
+    /* TODO -
+     * If this SDK implements AuthenticationType.OAUTH then keep this method else remove it.
+     * Third party integrations may have different environments like sandbox, test or production.
+     * this method will help register the number of environments that this SDK will support to Front End.
+     */
+    @Override
+    public List<Environment> getEnvironments() {
+        List<Environment> environments = new ArrayList<>();
+        //PROD Instance
+        //Use Environment.getDefaultInstance(); to create a prod environment.
+        Environment prodEnvironment = Environment.getDefaultInstance();
+        OAuthConfig prodConfig = new OAuthConfig(
+                "Authorization URI HERE",
+                "Access Token URI HERE");
+
+        prodEnvironment.setOauthConfig(prodConfig);
+
+        //Eg - Sandbox Instance
+        Environment sandBoxEnvironment = new Environment();
+        OAuthConfig sandboxConfig = new OAuthConfig(
+                "",
+                "");
+        sandBoxEnvironment.setId("sandbox");
+        sandBoxEnvironment.setDisplayName("sandbox");
+        sandBoxEnvironment.setIconsAvailable(true);
+        sandBoxEnvironment.setOauthConfig(sandboxConfig);
+
+        environments.add(prodEnvironment);
+        environments.add(sandBoxEnvironment);
+        return environments;
+    }
 }

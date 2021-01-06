@@ -1,0 +1,73 @@
+package com.usermind.usermindsdk.authentication;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData1;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateSessionManager;
+import com.usermind.usermindsdk.authentication.oauth.OAuthService;
+import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
+import com.usermind.usermindsdk.workerinformation.SdktemplateInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeAccessTokenProvider;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+/*TODO -
+ * This class should be used for integration which uses Authorization type: OAuth - Authorization Code grant
+ * if we are using this class then delete the class - AuthenticationServiceSdktemplate
+ * and rename this class to AuthenticationServiceSdktemplate
+ * Idea is , we need to have only one class which extends AuthenticationService class
+ */
+@Component
+public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateConnectionData1> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplate1.class);
+
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+
+    private final SdktemplateSessionManager sessionCredentialManager;
+    //Use this variable to fill in the URL of the path to authenticate - then the unit tests will work. If you change
+    //this, just change the tests to match.
+    public static final String AUTH_CHECKING_PATH = "https://example.com/authentication";
+
+    @Autowired
+    public AuthenticationServiceSdktemplate1(RestTemplate restTemplate,
+                                             ObjectMapper objectMapper,
+                                             SdktemplateSessionManager sessionManager,
+                                             WorkerConfiguration workerConfiguration,
+                                             SdktemplateInfo sdktemplateInfo) {
+        super(sdktemplateInfo, workerConfiguration);
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
+        this.sessionCredentialManager = sessionManager;
+    }
+
+    /*
+    * This method is already handled in the base class.
+    * If we want to alter it for any reason then we can override the method
+     */
+    @Override
+    public String initiateOAuthRequest(SdktemplateConnectionData1 connectionData, String environment) throws Exception {
+        return super.initiateOAuthRequest(connectionData, environment);
+    }
+
+    /*
+     * This method is already handled in the base class.
+     * If we want to alter it for any reason then we can override the method
+     */
+    @Override
+    public OAuth2AccessToken grantCode(SdktemplateConnectionData1 connectionData, String code, String environment) throws Exception {
+        return super.grantCode(connectionData, code, environment);
+    }
+
+    /*
+     * This method is already handled in the base class.
+     * If we want to alter it for any reason then we can override the method.
+     */
+    @Override
+    public AuthorizationCodeAccessTokenProvider getAccessTokenProvider() {
+        return super.getAccessTokenProvider();
+    }
+}
