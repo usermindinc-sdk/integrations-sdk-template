@@ -1,7 +1,7 @@
 # Integrations SDK
 
 # Process Overview
-This is a template to help you create an SDK. And SDK does several things:
+This is a template to help you create an SDK. The SDK does several things:
 
 * Authentication - a call to confirm if the supplied connection information is valid
 * Metadata Fetch - this is data about the data. If you fetch a database table, for example, the metadata would list the data fields and their types (String, date, boolean, etc.) Most of the time you can get metadata from the integration itself, if not then you can specify it in the SDK.
@@ -126,5 +126,21 @@ So all this does is take that response, pull out the piece that is the entity in
 
 Usually it's already JSON and it's simple. If it's XML, then you'll need to translate that XML to JSON.
 
+## 11 Actions
+
+These are how you send information to or trigger events on the third party system. Take a look in the "actions" package and you will see two files. One ends in "Action" and one ends in "Input". These work as pairs. If you have an action called "CreateEntity" then you must name the action with that name in Spring - see the "@Component("CreateEntity")" annotation in the sample file. The input file has the same name but with "Input" appended - so you can see "@Component("CreateEntityInput")" in the input file. 
+
+The input file is just a POJO that Jackson will use to deserialize data into. Whatever you specify in that POJO is what our infrastructure will send to that action.
+
+If the API you are calling supports batching (sending in a group of data in each call instead of one item for each call) then alter the call "getBatchSize" to specify how many actions at a time to send. If it returns 500, then the infrastruture will send you up to 500 messages at a time. If you set it to 1, you will only get one message at a time. 
+
+RunAction is the call that gets all the data. The data is sent in a map with the action ID as the key, and the payload as the value. Return a map of Action IDs to results - either failure or success results. Customers occasionally ask to see the payload for success results, that is why the ideal is to return both. The easiest way is to set each failure, then just call "registerRemainingAsSuccesses" to have the rest all filled out by the infrastructure.
+
+If an exception gets thrown, in most cases do NOT catch it. The infrastructure will catch it and do the appropriate thing. It may or may not retry the action depending on the failure, etc. It usually just does the right thing. But sometimes you will need special behavior - for example, some integrations don't return a failure result, they will return a 200 success message with a failure in the body. Or they will throw an unexpected exception that won't behave correctly. Those cases you will need to handle. But if there is no special handling needed then just let the exception go through.
+
+## 12 Action Configuration
+
+We will have this behavior improved soon (it will be in annotations like fetches) but for now there is a configuration file that is also needed for actions. This file is located in 
+```src/main/resources/com/usermind/usermindsdk/registration/IntegrationConfiguration.json```
 
 
