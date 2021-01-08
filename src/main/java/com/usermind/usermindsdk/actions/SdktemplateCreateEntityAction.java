@@ -17,8 +17,18 @@ import java.util.Set;
         to the type of Action you are performing instead of the generic CreateEntity
  */
 
-
-@Component("CreateEntity")
+/*
+   * TODO: We need to put the action config section into IntegrationConfiguration.json file which is located at src/main/resources/com/usermind/usermindsdk/registration/
+   * It's an very important step as Front end looks at the above mentioned config file for action metadata.
+   * If we have implemented action but haven't configured in the above json file, then the action won't be visible for the users.
+   *
+   * We want to use the standard action format as mentioned in this doc- https://usermind.atlassian.net/wiki/spaces/LOH/pages/1752137787/Standard+Action+Config+for+SDK
+   * As per this standard, all the action inputs which needs to be shown on the UI are coming from the Entity Metadata.
+   * So we need to create action specific entities in the metadata section of this SDK.
+   * - For More details go to - MetadataFetchSetupSdktemplate.java and look for "SUPPORT METHOD FOR 1.a - Write action entity directly" section
+   *
+ */
+@Component("CreateEntity") /* TODO: This is the action name. Change the action name as desired */
 public class SdktemplateCreateEntityAction implements ActionHandler<SdktemplateConnectionData, SdktemplateCreateEntityInput> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateCreateEntityAction.class);
 
