@@ -19,7 +19,7 @@ import java.util.Set;
 
 /*
    * TODO: We need to put the action config section into IntegrationConfiguration.json file which is located at src/main/resources/com/usermind/usermindsdk/registration/
-   * It's an very important step as Front end looks at the above mentioned config file for action metadata.
+   * It's a very important step as Front end looks at the above mentioned config file for action metadata.
    * If we have implemented action but haven't configured in the above json file, then the action won't be visible for the users.
    *
    * We want to use the standard action format as mentioned in this doc- https://usermind.atlassian.net/wiki/spaces/LOH/pages/1752137787/Standard+Action+Config+for+SDK
