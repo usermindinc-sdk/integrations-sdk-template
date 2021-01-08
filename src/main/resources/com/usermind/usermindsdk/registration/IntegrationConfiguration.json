@@ -7,6 +7,13 @@
     "fetch": {
       "description": "Sdktemplate entity fetch",
       "timeout_in_seconds": 600
+    },
+    "CreateEntity":{
+      "description":"Create Entity",
+      "displayName":"Create Action",
+      "forEntity":"ActionEntity",
+      "hasActions":false,
+      "hasVariables":true
     }
   },
   "dispatch": {
