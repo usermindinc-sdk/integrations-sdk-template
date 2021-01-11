@@ -25,6 +25,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 class AuthenticationServiceSdktemplateTest extends TestBase {
 
     private AuthenticationServiceSdktemplate authenticationService;
+    //MockRestServiceServer allows you to catch and mock restTemplate calls, meaning you can
+    //unit test web APIs without actually going out to the web.
     private MockRestServiceServer mockServer;
 
     @Mock
