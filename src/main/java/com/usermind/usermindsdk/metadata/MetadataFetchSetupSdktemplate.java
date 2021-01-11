@@ -25,6 +25,7 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
     //TODO: Put the entity names here for common use
     //Examples:
     //  public static final String DIRECT_WRITE_ENTITY = "DirectWrite";
+    //  public static final String ACTION_ENTITY = "ActionEntity";
     //  public static final String WEB_REQUEST_ENTITY = "WebRequest";
 
     @Autowired
@@ -57,6 +58,10 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
         //MetadataRecords directWriteMetadata = getDirectWriteMetadata();
         //fetchSetupData.addWriteRequest(DIRECT_WRITE_ENTITY, objectMapper.writer().writeValueAsString(directWriteMetadata));
 
+        //1.a - Write action entity directly
+        //MetadataRecords directActionEntityMetadata = getDirectActionEntityMetadata();
+        //fetchSetupData.addWriteRequest(ACTION_ENTITY, objectMapper.writer().writeValueAsString(directActionEntityMetadata));
+
         //2 - Call a Rest Api
         //URI uri = generateURI(see the call below)
         //HttpHeaders headers =  new HttpHeaders();
@@ -77,6 +82,27 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
 //        metaDataRecords.setAccessible(true);
 //
 //          Add a record for each field in the entity so we know how to display it, etc.
+//          Arguments are the field name, the string to display for it, if it is required (ie, can't be empty),
+//             if it's readonly or not, and the type - string, number, etc (as controlled by the enum)
+//        metaDataRecords.addRecord(new MetadataRecordItem("UserId", "User Id", true, false,
+//                MetadataTypes.NUMBER));
+//        metaDataRecords.addRecord(new MetadataRecordItem("EmailAddress", "Email Address",true, false,
+//                MetadataTypes.STRING));
+//
+//
+//        return metaDataRecords;
+//    }
+
+//      SUPPORT METHOD FOR 1.a - Write action entity directly
+//    private MetadataRecords getDirectActionEntityMetadata() {
+//        MetadataRecords metaDataRecords = new MetadataRecords();
+//        metaDataRecords.setEntity(ACTION_ENTITY);
+//        metaDataRecords.setPrimaryKey("UserId");
+//        metaDataRecords.setAccessible(true);
+//        metaDataRecords.setEntityType(EntityType.ACTION_ENTITY); //- SDK base library will understand that this is an entity for action config
+//                                                                 // and will not consider this entity when a fetch issued.
+//
+//          Add a record for each field in the entity which are needed for the action
 //          Arguments are the field name, the string to display for it, if it is required (ie, can't be empty),
 //             if it's readonly or not, and the type - string, number, etc (as controlled by the enum)
 //        metaDataRecords.addRecord(new MetadataRecordItem("UserId", "User Id", true, false,
