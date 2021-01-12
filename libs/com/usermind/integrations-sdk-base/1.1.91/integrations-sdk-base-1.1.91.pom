@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.usermind</groupId>
+    <artifactId>integrations-sdk-base</artifactId>
+    <version>1.1.91</version>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>com.usermind</groupId>
+        <artifactId>integrations-sdk-base-pom</artifactId>
+        <version>2.0.27</version>
+        <relativePath />
+    </parent>
+
+    <name>integrations-sdk-base</name>
+    <description>Integration Base Library</description>
+
+    <properties>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.host.url>http://localhost:9000/</sonar.host.url>
+                <sonar.exclusions>**com/usermind/usermindsdk/swagger/*</sonar.exclusions>
+                <sonar.coverage.exclusions>**/AppMain.java,**/DropWizardService.java,**/fetch/structures/*Request.java,**/ExtractedData.java, **/*Stub.java, **/*Item.java, **/*SdkConfiguration.java</sonar.coverage.exclusions>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bugsnag</groupId>
+            <version>[3.0,4.0)</version>
+            <artifactId>bugsnag</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-expression-language -->
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-expression-language</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/AppMain.class</exclude>
+                        <exclude>**/fetch/structures/*Request.class</exclude>
+                        <exclude>**/ExtractedData.class</exclude>
+                        <exclude>**/*Stub.class</exclude>
+                        <exclude>**/*Item.class</exclude>
+                        <exclude>**/*SdkConfiguration.class</exclude>
+                        <exclude>**/swagger/*.class</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+        </plugins>
+    </build>
+
+</project>

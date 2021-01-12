@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Mon Jan 11 21:02:22 PST 2021
+integrations-sdk-base-1.1.91.jar>=
+integrations-sdk-base-1.1.91.jar>usermind=
+integrations-sdk-base-1.1.91.pom>usermind=
+integrations-sdk-base-1.1.91.pom>apache.releases.https=

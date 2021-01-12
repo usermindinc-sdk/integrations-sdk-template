@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Mon Jan 11 21:02:26 PST 2021
+testlib-1.0.3.jar>=
+testlib-1.0.3.jar>usermind=
+testlib-1.0.3.pom>usermind=
+testlib-1.0.3.pom>apache.releases.https=
