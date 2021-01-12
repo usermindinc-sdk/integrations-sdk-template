@@ -1,0 +1,9 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Mon Jan 11 22:02:30 PST 2021
+file\://${project.basedir}/libs/.error=Could not transfer artifact com.usermind\:usermind-base-pom\:pom\:1.0.43 from/to in-project (file\://${project.basedir}/libs)\: Repository path /libs does not exist, and cannot be created.
+http\://nexus.internal.usermind.com\:8081/nexus/content/groups/public/.lastUpdated=1610431218282
+https\://repo.maven.apache.org/maven2/.lastUpdated=1610431350231
+file\:///Users/evan/projects/sdk/integrations-sdk-template/libs/.lastUpdated=1610431350239
+file\:///Users/evan/projects/sdk/integrations-sdk-template/libs/.error=
+@default-in-project-file\://${project.basedir}/libs/.lastUpdated=1610431293894
+https\://repo.maven.apache.org/maven2/.error=
