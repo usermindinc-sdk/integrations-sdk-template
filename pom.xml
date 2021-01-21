@@ -41,17 +41,15 @@
         </plugins>
     </build>
 
-    <repositories>
-
+<!--    <repositories>-->
         <!-- In Project repository -->
-        <repository>
-            <id>in-project</id>
-            <name>In Project Repo</name>
-            <url>file:///Users/evan/projects/sdk/integrations-sdk-template/libs</url>
+<!--        <repository>-->
+<!--            <id>in-project</id>-->
+<!--            <name>In Project Repo</name>-->
+<!--            <url>file:///Users/evan/projects/sdk/integrations-sdk-template/libs</url>-->
 <!--            <url>file://${project.basedir}/libs</url>-->
-        </repository>
-
-    </repositories>
+<!--        </repository>-->
+<!--    </repositories>-->
 
 </project>
 
