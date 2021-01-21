@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.actions;
 
 import com.usermind.usermindsdk.TestBase;
 import com.usermind.usermindsdk.TestClassFactory;
+import com.usermind.usermindsdk.actions.actionreturn.ActionResults;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,7 +40,7 @@ class SdktemplateCreateEntityActionIT extends TestBase {
         ActionHandler actionHandler = ctx.getBean(ActionHandler.class);
 
         String entityName = "entity name here";
-        actionHandler.runAction(TestClassFactory.getCredentialContainerSdktemplate(),
+        ActionResults actionResults = actionHandler.runAction(TestClassFactory.getCredentialContainerSdktemplate(),
                 entityName, getInput());
 
         return;
