@@ -13,7 +13,9 @@ node {
         stage('Update Pom') {
             // Update the parent library to the latest
             //Update the integrations base library to the latest (1.0 will go to the latest)
-            sh 'mvn validate'
+            lock('mavenUpdate') {
+                sh 'mvn -U validate'
+            }
 
             if ( env.BRANCH_NAME == 'master' ) {
                 sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${env.BUILD_NUMBER} versions:commit'
@@ -107,7 +109,11 @@ node {
 
         stage('Copy files to NiFi') {
              if (env.BRANCH_NAME == 'master' && build_config.autoDeploy == true) {
-                sh "git --no-pager log --oneline -20 > ${pom.artifactId}_changes.txt"
+                 sh "git --no-pager log --oneline -10 > ${pom.artifactId}_changes.txt"
+                 sh "echo '\nSDK Base Pom Version' >> ${pom.artifactId}_changes.txt"
+                 sh "grep -A1 integrations-sdk-base-pom pom.xml | tail -n 1 >> ${pom.artifactId}_changes.txt"
+                 sh "echo '\nSDK Base Library Version' >> ${pom.artifactId}_changes.txt"
+                 sh "grep '<integrations.base.version>' pom.xml >> ${pom.artifactId}_changes.txt"
                 sshPublisher(publishers:[
                     sshPublisherDesc(configName: 'NiFi 0 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
                     sshPublisherDesc(configName: 'NiFi 1 Staging', transfers: [sshTransfer(cleanRemote: false, excludes: 'target/*docker-info*', execCommand: '', execTimeout: 120000, flatten: true, patternSeparator: '[, ]+', remoteDirectory: "${build_config.deploymentDirectory}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'target/integrations-sdk*.jar,*changes.txt')]),
