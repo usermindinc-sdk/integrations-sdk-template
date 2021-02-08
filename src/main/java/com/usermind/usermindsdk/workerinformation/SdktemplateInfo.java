@@ -2,6 +2,7 @@ package com.usermind.usermindsdk.workerinformation;
 
 import com.usermind.usermindsdk.authentication.oauth.OAuthConfig;
 import com.usermind.usermindsdk.registration.Environment;
+import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -71,6 +72,11 @@ public class SdktemplateInfo implements WorkerInfo {
                 "Authorization URI HERE",
                 "Access Token URI HERE");
 
+        //By Default,  AuthenticationScheme of type form is configured in the OAuthConfig
+        //Many integrations uses form AuthenticationScheme.
+        //If we want to change it to something else, then set the appropriate scheme here! Otherwise remove it
+        prodConfig.setAuthenticationScheme(AuthenticationScheme.header);
+
         prodEnvironment.setOauthConfig(prodConfig);
 
         //Eg - Sandbox Instance
@@ -78,6 +84,11 @@ public class SdktemplateInfo implements WorkerInfo {
         OAuthConfig sandboxConfig = new OAuthConfig(
                 "",
                 "");
+        //By Default,  AuthenticationScheme of type "form" is configured in the OAuthConfig
+        //Many integrations uses form AuthenticationScheme.
+        //If we want to change it to something else, then set the appropriate scheme here. Otherwise remove it
+        sandboxConfig.setAuthenticationScheme(AuthenticationScheme.query);
+
         sandBoxEnvironment.setId("sandbox");
         sandBoxEnvironment.setDisplayName("sandbox");
         sandBoxEnvironment.setIconsAvailable(true);

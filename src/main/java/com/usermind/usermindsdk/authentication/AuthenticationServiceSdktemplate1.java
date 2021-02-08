@@ -1,6 +1,5 @@
 package com.usermind.usermindsdk.authentication;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData1;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateSessionManager;
 import com.usermind.usermindsdk.authentication.oauth.OAuthService;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeAccessTokenProvider;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 /*TODO -
  * This class should be used for integration which uses Authorization type: OAuth - Authorization Code grant
@@ -24,29 +22,21 @@ import org.springframework.web.client.RestTemplate;
 public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateConnectionData1> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplate1.class);
 
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
-
     private final SdktemplateSessionManager sessionCredentialManager;
     //Use this variable to fill in the URL of the path to authenticate - then the unit tests will work. If you change
     //this, just change the tests to match.
     public static final String AUTH_CHECKING_PATH = "https://example.com/authentication";
 
     @Autowired
-    public AuthenticationServiceSdktemplate1(RestTemplate restTemplate,
-                                             ObjectMapper objectMapper,
-                                             SdktemplateSessionManager sessionManager,
+    public AuthenticationServiceSdktemplate1(SdktemplateSessionManager sessionManager,
                                              WorkerConfiguration workerConfiguration,
                                              SdktemplateInfo sdktemplateInfo) {
         super(sdktemplateInfo, workerConfiguration);
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
         this.sessionCredentialManager = sessionManager;
     }
 
     /*
-    * This method is already handled in the base class.
-    * If we want to alter it for any reason then we can override the method
+     * These methods are already handled in the base class. You can override them if desired, otherwise delete this.
      */
     @Override
     public String initiateOAuthRequest(SdktemplateConnectionData1 connectionData, String environment) throws Exception {
@@ -54,8 +44,7 @@ public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateC
     }
 
     /*
-     * This method is already handled in the base class.
-     * If we want to alter it for any reason then we can override the method
+     * These methods are already handled in the base class. You can override them if desired, otherwise delete this.
      */
     @Override
     public OAuth2AccessToken grantCode(SdktemplateConnectionData1 connectionData, String code, String environment) throws Exception {
@@ -63,8 +52,7 @@ public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateC
     }
 
     /*
-     * This method is already handled in the base class.
-     * If we want to alter it for any reason then we can override the method.
+     * These methods are already handled in the base class. You can override them if desired, otherwise delete this.
      */
     @Override
     public AuthorizationCodeAccessTokenProvider getAccessTokenProvider() {
