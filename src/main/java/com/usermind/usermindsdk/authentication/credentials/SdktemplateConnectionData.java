@@ -5,6 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/*TODO -
+ * This class should be used for integration which uses Authorization type: Key Value Pair
+ * if we are using this class then delete the class - SdktemplateConnectionData1
+ */
 @Component
 @Scope("prototype")
 public class SdktemplateConnectionData extends ConnectionData<SdktemplateEntity> {

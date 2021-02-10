@@ -3,7 +3,7 @@
 # Process Overview
 This is a template to help you create an SDK. The SDK does several things:
 
-* Authentication - a call to confirm if the supplied connection information is valid
+* Authentication - a call to confirm if the supplied connection information is valid and to generate the credentials for oauth type of integrations.
 * Metadata Fetch - this is data about the data. If you fetch a database table, for example, the metadata would list the data fields and their types (String, date, boolean, etc.) Most of the time you can get metadata from the integration itself, if not then you can specify it in the SDK.
 * Fetch - this pulls data from the third party integration. We refer to the data as entities where an entity is defined as a standalone set of records - for example, each table in the database would be an entity. So if an integration has an API that returns customer information that would be an entity, and if it had an API returning product data that would be a second entity.
 * Actions - this pushes data to the third party integration.
@@ -50,11 +50,46 @@ To run this as a web server use these arguments `server src/main/resources/confi
 You can then test your code using Swagger or the built in unit and integration tests.
 
 ## 1. Test Credentials
-In the file TestClassFactory, fill in the methods getWorkingTestCredentials and getNonWorkingTestCredentials with a valid credential structure that will validate and fail validation respectively. This will be of the format:
+In the file TestClassFactory, fill in the methods getWork ingTestCredentials and getNonWorkingTestCredentials with a valid credential structure that will validate and fail validation respectively. This will be of the format:
 
 `{"credentials":{"appId":"aaa","appSecret":"aaa"}}`
 
 For now, a different Usermind service will authenticate and will give you that credential block. That should contain the results of your authentication as fields inside the credential block. Those are the fields you'll need to know in order to make and authenticate calls. Putting them in this class will enable the unit and integration tests to work.
+
+### 1.1 OAuth Authentication/Generate Credentials
+Any integration which supports OAuth authentication with Authorization Code grant, then we need to extend couple of Classes from base library.
+OAuth with Authorization code grant is a 3 legged dance and most of the methods are written in SDK base library.
+
+There are 2 classes which needs to updated to avail the OAuth functionality written in SDK base library.
+
+#### a. SdktemplateConnectionData class should extend the class OAuthConnectionData.
+
+OAuthConnectionData has few abstract methods which needs to be implemented in SdktemplateConnectionData class
+- **Method 1 - getClientId()**
+- **Method 2 - getClientSecret()**
+- **Method 3 - setClientId(String clientId)**
+- **Method 4 - setClientSecret(String clientSecret)**
+
+OAuth process involves clientId and clientSecret. More details of this can be found here - https://tools.ietf.org/html/rfc6749#section-2.2
+We need to supply these details to Orchestration layer. So implementation of these getters and setters helps Orchestration classes to access these details.  
+
+- **Method 5 - parseAccessToken(ObjectNode tokenResponse)**
+
+This method will be used in Connection Creation process from UI.
+When OAuth grant call succeeds, we need to parse the response body as it might be different for each integration.
+We need to convert the response body to ConnectionData class.
+Objective of this method is to parse the response body and assign the values to its class variables.
+
+
+#### b. AuthenticationServiceSdktemplate class should extend the class OAuthService.
+
+OAuthService has 2 methods with default implementation. Override these methods if required.
+
+- **Method 1: initiateOAuthRequest** -
+This method generates the request uri which will be used to launch the login page to grant the access. 
+- **Method 2: grantCode** -
+This method is used to request a grant access to OAuth server with an authorization code received from previous step.
+
 
 ## 2. Resource Files in the test package
 When you authenticate, you will get a token back of some sort. Put that token in authentication/credentials/token.json.

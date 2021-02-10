@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+/*TODO -
+ * This class should be used for integration which uses Authorization type: Key Value Pair
+ * if we are using this class then delete the class - AuthenticationServiceSdktemplate1
+ * Idea is , we need to have only one class which extends AuthenticationService class
+ */
 @Component
 public class AuthenticationServiceSdktemplate implements AuthenticationService<SdktemplateConnectionData> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplate.class);
