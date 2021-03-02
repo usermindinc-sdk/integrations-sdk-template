@@ -2,7 +2,6 @@ package com.usermind.usermindsdk.authentication.credentials;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.Example;
 
 import java.time.OffsetDateTime;
 
