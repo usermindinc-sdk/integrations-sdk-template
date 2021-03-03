@@ -9,7 +9,7 @@
     <parent>
         <groupId>com.usermind</groupId>
         <artifactId>integrations-sdk-base-pom</artifactId>
-        <version>2.0.32</version>
+        <version>2.0.33</version>
         <relativePath></relativePath>
     </parent>
 
@@ -17,8 +17,8 @@
     <description>Integration for Sdktemplate</description>
 
     <properties>
-        <integrations.base.version>1.1.100</integrations.base.version>
-        <usermind.testlib.version>1.0.8</usermind.testlib.version>
+        <integrations.base.version>1.1.102</integrations.base.version>
+        <usermind.testlib.version>1.0.12</usermind.testlib.version>
     </properties>
 
     <dependencies>
