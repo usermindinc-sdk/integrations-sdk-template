@@ -53,9 +53,6 @@ node {
                     // Ensure that the application name is appropriate may need to include -application after artifactid
                     util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
 
-                    // Ensure that the application name is appropriate may need to include -application after artifactid
-                    util.sendSlackMessage(slackTeamMessageDestination, ":jenkins: ${pom.artifactId} ${pom.version} build started: <${env.BUILD_URL}|${env.JOB_NAME}#${env.BUILD_NUMBER}> \n ${changeLogMessage}")
-
                     sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent deploy'
                 } else {
                     sh 'mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
