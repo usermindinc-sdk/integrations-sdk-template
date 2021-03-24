@@ -28,5 +28,5 @@ hotfix:  # Configuration for hotfix branch
     << : *common # this pulls in everything from 'common'
     autoDeploy:         true
     deploymentSlackRoom: staging
-    deploymentDirectory: uploads/staging
+    deploymentDirectory: uploads/hotfix
 
