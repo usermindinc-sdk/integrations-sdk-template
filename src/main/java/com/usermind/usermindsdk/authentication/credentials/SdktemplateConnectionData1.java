@@ -1,9 +1,13 @@
 package com.usermind.usermindsdk.authentication.credentials;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.usermind.usermindsdk.authentication.oauth.OAuthConfig;
+import com.usermind.usermindsdk.registration.Environment;
+import com.usermind.usermindsdk.registration.Environments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.stereotype.Component;
 
 /*TODO -
@@ -12,6 +16,32 @@ import org.springframework.stereotype.Component;
  * and rename this class to SdktemplateConnectionData
  * Idea is , we need to have only one class which extends ConnectionData class
  */
+
+/* TODO -
+ * Third party integrations may have different environments like sandbox, test or production.
+ * this method will help register the number of environments that this SDK will support to Front End.
+ */
+@Environments({
+        @Environment(
+                oauthConfig = @OAuthConfig(
+                        userAuthorizationUri = "Authorization URI HERE",
+                        accessTokenUri = "Access Token URI HERE",
+                        scopes = {
+                                "chat:write:bot",
+                                "channels:read",
+                                "groups:read",
+                                "users:read"}
+                                )),
+
+        @Environment(
+                id = "sandbox",
+                displayName = "Sandbox",
+                oauthConfig = @OAuthConfig(
+                        userAuthorizationUri = "Authorization URI HERE",
+                        accessTokenUri = "Access Token URI HERE",
+                        authenticationScheme = AuthenticationScheme.header
+                ))
+})
 @Component
 @Scope("prototype")
 public class SdktemplateConnectionData1 extends OAuthConnectionData<SdktemplateEntity> {
