@@ -3,7 +3,7 @@ package com.usermind.usermindsdk.authentication;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData1;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateSessionManager;
 import com.usermind.usermindsdk.authentication.oauth.OAuthService;
-import com.usermind.usermindsdk.dropwizard.WorkerConfiguration;
+import com.usermind.usermindsdk.spring.WorkerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
