@@ -29,11 +29,6 @@ class SdktemplateCreateEntityActionIT extends TestBase {
         inputData.setField("name", "name_" + uuid);
         inputData.setField("data", "field" + uuid);
 
-        // TODO: verify each input data that is created
-        // make test cases seeing no exceptions being thrown
-        // as well as test cases that do not pass verification and exception is thrown
-        inputData.verify();
-
         Map<String, SdktemplateCreateEntityInput> inputMap = new HashMap<>();
         inputMap.put("key", inputData);
         return inputMap;
