@@ -39,6 +39,8 @@ cd ../$sdkname
 rm -rf .git
 rm sdkrename.sh
 
+rm -f -r libs
+
 rm -f Jenkinsfile
 mv SDKJenkinsfile Jenkinsfile
  
