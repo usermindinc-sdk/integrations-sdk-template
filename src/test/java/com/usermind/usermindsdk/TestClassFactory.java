@@ -26,6 +26,7 @@ public class TestClassFactory {
 
     //TODO: Put proper credentials into the next two methods. One should be valid, and one should be a valid format but not authenticate against the test system.
     //Fill in your information inside the credentials block.
+    //Note that you will need a defined entity for the unit test that checks the incremental data field to work.
     public static String getWorkingTestCredentials() {
         return "{\n" +
                 "  \"encrypted\": {\n" +
@@ -34,7 +35,12 @@ public class TestClassFactory {
                 "      \"password\": \"pwd\"\n" +
                 "    }\n" +
                 "  },\n" +
-                "  \"entities\": [],\n" +
+                "  \"entities\": [\n" +
+                "{\n" +
+                "    \"entityName\": \"user\",\n" +
+                "    \"primaryKey\": \"user_id\",\n" +
+                "    \"incrementalField\": \"last_update_date\"\n" +
+                "}],\n" +
                 "  \"misc\": {},\n" +
                 "  \"version\": \"2.0\"\n" +
                 "}";

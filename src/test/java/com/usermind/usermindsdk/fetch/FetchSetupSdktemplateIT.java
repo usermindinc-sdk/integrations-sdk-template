@@ -54,7 +54,7 @@ class FetchSetupSdktemplateIT extends TestBase {
         FetchData fetchData = fullFetchSdktemplate.runFullFetch(connectionData,
                 connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
-        checkResults(fetchData, true, false);
+        checkResults(fetchData, true, false, true);
     }
 
     @Test
@@ -65,7 +65,7 @@ class FetchSetupSdktemplateIT extends TestBase {
 
         //Incremental fetch will sometimes fetch data, but if run a second time there might not be new data.
         //So don't test the extraction except to make sure it doesn't throw an exception
-        checkResults(fetchData, false, false);
+        checkResults(fetchData, false, false, true);
     }
 
     @Test
@@ -74,7 +74,7 @@ class FetchSetupSdktemplateIT extends TestBase {
         FetchData fetchData = sampleFetchSdktemplate.runSampleFetch(connectionData, 10,
                 connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet()));
 
-        checkResults(fetchData, true, false);
+        checkResults(fetchData, true, false, true);
     }
 
     @Test
@@ -86,10 +86,10 @@ class FetchSetupSdktemplateIT extends TestBase {
 
         //Time limited fetch may or may not get data depending on the times chosen.
         //So don't test the extraction except to make sure it doesn't throw an exception
-        checkResults(fetchData, false, false);
+        checkResults(fetchData, false, false, true);
     }
 
-    private void checkResults(FetchData fetchData, boolean checkExtraction, boolean metadata) {
+    private void checkResults(FetchData fetchData, boolean checkExtraction, boolean metadata, boolean checkSavePoint) {
         //If the factory returns nothing then this test isn't helpful.
         assertThat(connectionData.getEntities().stream().map(e->e.getEntityName()).collect(Collectors.toSet())).isNotEmpty();
         //It should have run through the entire process and gotten actual data back
@@ -117,6 +117,12 @@ class FetchSetupSdktemplateIT extends TestBase {
                         ExtractedData extracted = extractor.extractData(connectionData, e.getKey(),
                                 bufferedReader, bufferedWriter, bufferedWriterInvalidRecords, trackingLog, "");
 
+                        //An entity savepoint should be present so that incremental fetches will work.
+                        //This means making sure the test entity is set up correctly with a field to use for this.
+                        //If this isn't applicable then set checkSavePoint to false, but needs to work in order for incremental fetches to work.
+                        if (checkSavePoint) {
+                            assertThat(extracted.getEntitySavepoint()).withFailMessage("No entity save point was set. Make sure your connection object in TestClassFactory defines a field for it!").isNotBlank();
+                        }
                         //make sure we extracted data!
                         try {
                             bufferedWriter.close();
