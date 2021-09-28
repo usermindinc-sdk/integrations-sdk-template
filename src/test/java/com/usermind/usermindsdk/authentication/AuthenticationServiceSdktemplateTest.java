@@ -28,6 +28,7 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     //MockRestServiceServer allows you to catch and mock restTemplate calls, meaning you can
     //unit test web APIs without actually going out to the web.
     private MockRestServiceServer mockServer;
+    private AddAuthenticationInformationSdktemplate addAuthInfo = new AddAuthenticationInformationSdktemplate();
 
     @Mock
     SdktemplateSessionManager sessionCredentialManager;
@@ -35,7 +36,7 @@ class AuthenticationServiceSdktemplateTest extends TestBase {
     @BeforeEach
     void setUp() throws Exception {
         mockServer = MockRestServiceServer.bindTo(restTemplate).ignoreExpectOrder(true).build();
-        authenticationService = new AuthenticationServiceSdktemplate(restTemplate, objectMapper, sessionCredentialManager);
+        authenticationService = new AuthenticationServiceSdktemplate(restTemplate, objectMapper, addAuthInfo, sessionCredentialManager);
     }
 
     @Test
