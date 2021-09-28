@@ -3,10 +3,15 @@ package com.usermind.usermindsdk.authentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateSessionManager;
+import com.usermind.usermindsdk.authentication.exceptions.InvalidCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /*TODO -
@@ -20,6 +25,7 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<S
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final AddAuthenticationInformationSdktemplate addAuthInfo;
 
     private final SdktemplateSessionManager sessionCredentialManager;
     //Use this variable to fill in the URL of the path to authenticate - then the unit tests will work. If you change
@@ -28,22 +34,35 @@ public class AuthenticationServiceSdktemplate implements AuthenticationService<S
 
     @Autowired
     public AuthenticationServiceSdktemplate(RestTemplate restTemplate, ObjectMapper objectMapper,
+                                            AddAuthenticationInformationSdktemplate addAuthInfo,
                                             SdktemplateSessionManager sessionManager) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+        this.addAuthInfo = addAuthInfo;
         this.sessionCredentialManager = sessionManager;
     }
 
-    public AuthenticatorResponse validate(SdktemplateConnectionData sdktemplateConnectionData) throws NoSuchMethodException {
+    public AuthenticatorResponse validate(SdktemplateConnectionData connectionData) throws Exception {
         LOGGER.info("Sdktemplate authentication started.");
         //TODO - implement Authenticator
         //  If there is a session - this call is all you need here to validate. But ideally you'll then
         //  get an entity list.
         //SdktemplateSession session = SdktemplateSessionManager.getSession(sdktemplateConnectionData);
-
         //TODO - If there is not a session, then just make a rest call using the credentials and see if it succeeds or not.
         //  And ideally make that call one that gets a list of available entities.
         //List<String> entities;
+
+        HttpHeaders headers = new HttpHeaders();
+        addAuthInfo.putAuthIntoWebRequest(connectionData, "", headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+            restTemplate.exchange(AUTH_CHECKING_PATH, HttpMethod.GET, entity, String.class);
+        } catch (HttpClientErrorException ex) {
+            throw new InvalidCredentialsException(ex.getMessage() + " -- " + ex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            throw new InvalidCredentialsException(ex.getMessage());
+        }
         //Fill in entities with the list of everything we have access to read.
         //return AuthenticatorResponse.success(ENTITIES);
         //or

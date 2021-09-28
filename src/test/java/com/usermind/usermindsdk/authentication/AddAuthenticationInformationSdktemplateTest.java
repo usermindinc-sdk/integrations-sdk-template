@@ -37,6 +37,6 @@ class AddAuthenticationInformationSdktemplateTest extends TestBase {
     void nullMap() throws Exception {
         String testLink = "https://example.com";
         assertThrows(NullPointerException.class, ()->new AddAuthenticationInformationSdktemplate()
-                .putAuthIntoWebRequest(TestClassFactory.getCredentialContainerSdktemplate(), testLink, null));
+                .putAuthIntoWebRequest(TestClassFactory.getCredentialContainerSdktemplate(), testLink, (Map<String, String>)null));
     }
 }
