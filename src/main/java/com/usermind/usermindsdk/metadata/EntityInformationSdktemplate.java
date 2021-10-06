@@ -21,6 +21,9 @@ public class EntityInformationSdktemplate extends EntityInformation {
         //for only the new entries (ie, record the time of the last fetch, and then use this field to filter on that timestamp.)
         //If this entity doesn't support incremental fetches, leave it blank.
 
+        //If the integration doesn't have predefined tables you can configure this for, then it needs to be configured in the
+        //connection object in "incrementalField".
+
         //This then will consist of one line for each entity. It is of this format:
         //entityKeys.put("Entity Name", new EntityInformationItem("Primary Key", "Field to use for incremental fetch"));
 

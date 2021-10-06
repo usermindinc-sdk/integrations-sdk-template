@@ -1,6 +1,6 @@
 package com.usermind.usermindsdk.authentication;
 
-import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionData1;
+import com.usermind.usermindsdk.authentication.credentials.SdktemplateConnectionDataOauth;
 import com.usermind.usermindsdk.authentication.credentials.SdktemplateSessionManager;
 import com.usermind.usermindsdk.authentication.oauth.OAuthService;
 import com.usermind.usermindsdk.spring.WorkerConfiguration;
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
  * Idea is , we need to have only one class which extends AuthenticationService class
  */
 @Component
-public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateConnectionData1> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplate1.class);
+public class AuthenticationServiceSdktemplateOauth extends OAuthService<SdktemplateConnectionDataOauth> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceSdktemplateOauth.class);
 
     private final SdktemplateSessionManager sessionCredentialManager;
     //Use this variable to fill in the URL of the path to authenticate - then the unit tests will work. If you change
@@ -27,8 +27,8 @@ public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateC
     public static final String AUTH_CHECKING_PATH = "https://example.com/authentication";
 
     @Autowired
-    public AuthenticationServiceSdktemplate1(SdktemplateSessionManager sessionManager,
-                                             WorkerConfiguration workerConfiguration) {
+    public AuthenticationServiceSdktemplateOauth(SdktemplateSessionManager sessionManager,
+                                                 WorkerConfiguration workerConfiguration) {
         super(workerConfiguration);
         this.sessionCredentialManager = sessionManager;
     }
@@ -37,7 +37,7 @@ public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateC
      * These methods are already handled in the base class. You can override them if desired, otherwise delete this.
      */
     @Override
-    public String initiateOAuthRequest(SdktemplateConnectionData1 connectionData, String environment) throws Exception {
+    public String initiateOAuthRequest(SdktemplateConnectionDataOauth connectionData, String environment) throws Exception {
         return super.initiateOAuthRequest(connectionData, environment);
     }
 
@@ -45,7 +45,7 @@ public class AuthenticationServiceSdktemplate1 extends OAuthService<SdktemplateC
      * These methods are already handled in the base class. You can override them if desired, otherwise delete this.
      */
     @Override
-    public OAuth2AccessToken grantCode(SdktemplateConnectionData1 connectionData, String code, String environment) throws Exception {
+    public OAuth2AccessToken grantCode(SdktemplateConnectionDataOauth connectionData, String code, String environment) throws Exception {
         return super.grantCode(connectionData, code, environment);
     }
 

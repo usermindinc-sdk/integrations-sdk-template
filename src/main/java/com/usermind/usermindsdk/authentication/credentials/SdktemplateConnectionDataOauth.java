@@ -44,8 +44,8 @@ import org.springframework.stereotype.Component;
 })
 @Component
 @Scope("prototype")
-public class SdktemplateConnectionData1 extends OAuthConnectionData<SdktemplateEntity> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateConnectionData1.class);
+public class SdktemplateConnectionDataOauth extends OAuthConnectionData<SdktemplateEntity> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SdktemplateConnectionDataOauth.class);
 
     /* TODO - add properties of the connection with appropriate annotations -
     * if we need username and password to make a http call to get any required data, then add both the properties here.

@@ -54,22 +54,22 @@ public class MetadataFetchSetupSdktemplate implements MetadataFetchSetup<Sdktemp
         FetchSetupData fetchSetupData = new FetchSetupData();
 
         //TODO: choose one or multiple implementation and use it/them
-        //1 - Write data directly
+        //1 - Write fetch entity metadata directly
         //MetadataRecords directWriteMetadata = getDirectWriteMetadata();
         //fetchSetupData.addWriteRequest(DIRECT_WRITE_ENTITY, objectMapper.writer().writeValueAsString(directWriteMetadata));
 
-        //1.a - Write action entity directly
+        //1.a - Write action entity metadata directly
         //MetadataRecords directActionEntityMetadata = getDirectActionEntityMetadata();
         //fetchSetupData.addWriteRequest(ACTION_ENTITY, objectMapper.writer().writeValueAsString(directActionEntityMetadata));
 
-        //2 - Call a Rest Api
+        //2 - Call a Rest Api to get metadata
         //URI uri = generateURI(see the call below)
         //HttpHeaders headers =  new HttpHeaders();
         //Add any headers needed, of course.
         //fetchSetupData.addWebRequest(WEB_REQUEST_ENTITY, uri.toString(), headers);
 
-        //3 - Call a client library
-        //Example coming
+        //3 - Call a client library.
+        //This will actually go get the metadata, then you can write it as in option 1.
 
         return fetchSetupData;
     }
