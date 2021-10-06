@@ -1,7 +1,0 @@
-#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Mon Jan 11 21:49:43 PST 2021
-http\://nexus.internal.usermind.com\:8081/nexus/content/groups/public/.lastUpdated=1610429857806
-https\://repo.maven.apache.org/maven2/.lastUpdated=1610430583833
-file\:///Users/evan/projects/sdk/integrations-sdk-template/libs/.lastUpdated=1610430583835
-file\:///Users/evan/projects/sdk/integrations-sdk-template/libs/.error=
-https\://repo.maven.apache.org/maven2/.error=
