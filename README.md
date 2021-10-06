@@ -35,11 +35,11 @@ You then need to adjust the code to use Oauth or not, and whether or not you hav
 
 ```setup.sh```
 
-and that tool will set up the classes for you based on your input.
+and that tool will set up the classes for you based on your input. It will also prompt you for the curl call to successully authenticate, and one that will fail authentication, and records the responses for unit tests to replay. This gives you an example to copy for the remaining unit tests.
 
-And then to pull out something that is hidden below - once you write some code, you can test it with the integration tests. You can find the integration tests in
+You can test your code with the integration tests. The integration test for a fetch (for example) is in
  ```src/test/java/com/usermind/usermindsdk/fetch/fetchsetup/FetchSetupSdktemplateIT.java```
-Those integration tests run a full fetch and extract the data, thus exercising a lot of the code. The integration and unit tests built into the code make this much easier to develop - and when they work, you have most likely done this correctly.
+That integration tests run a full fetch and extract the data, thus exercising a lot of the code. The integration and unit tests built into the code make this much easier to develop - and when they work, you have most likely done this correctly. So when you develop each piece, find the matching integration test and run it.
 
 Most other structures are designed to have the compiler help you get things correct. 
 
@@ -100,9 +100,9 @@ This method is used to request a grant access to OAuth server with an authorizat
 
 
 ## 2. Resource Files in the test package
-When you authenticate in postman, you will get a body back in the response. Put that token in src/test/resources/com/usermind/usermindsdk/authentication/credentials/token.json.
+When you run an authentication in postman, you will get a body back in the response. Put that token in src/test/resources/com/usermind/usermindsdk/authentication/credentials/token.json.
 Try bad credentials, and put that response in src/test/resources/com/usermind/usermindsdk/authentication/credentials/invalidtoken.json.
-Those two file will be used by the unit tests to verify the authentication code in both success and failure cases.
+Those two file will be used by the unit tests to verify the authentication code in both success and failure cases. (This is what the setup.sh script does.)
 
 If you can fetch Metadata from this integration, put the result of that call in metadata/MetadataFromIntegration.json and delete MetadataCreatedInCode.json. If you can't, then delete MetadataFromIntegration.json.
 Fetch an entity, and put that result in fetch/entity.json. You might want to rename that file to the name of the entity, but then make sure you change the test classes to match.

@@ -37,3 +37,14 @@ else
     echo Leaving session management files
   fi
 fi
+
+echo -ne "${BLUE}Paste a curl call for a successful authentication: ${NC}"
+read AUTHCALL
+echo # move to a new line
+eval $AUTHCALL > src/test/resources/com/usermind/usermindsdk/authentication/credentials/token.json
+
+echo -ne "${BLUE}Paste a curl call for a failed authentication: ${NC}"
+read FAILAUTHCALL
+echo # move to a new line
+eval $FAILAUTHCALL > src/test/resources/com/usermind/usermindsdk/authentication/credentials/invalidtoken.json
+
