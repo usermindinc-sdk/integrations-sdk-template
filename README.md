@@ -31,9 +31,13 @@ Simply get this template repository, and check out the develop branch. Then run 
 
 ```sdkrename.sh integration_name```
 
-And then to pull out something that is hidden below - once you write some code, you can test it with the Swagger API or else an integration test. You can find the Swagger interface at
- ```http://localhost:8089``` 
- and look at the integration tests in 
+You then need to adjust the code to use Oauth or not, and whether or not you have sessions - run
+
+```setup.sh```
+
+and that tool will set up the classes for you based on your input.
+
+And then to pull out something that is hidden below - once you write some code, you can test it with the integration tests. You can find the integration tests in
  ```src/test/java/com/usermind/usermindsdk/fetch/fetchsetup/FetchSetupSdktemplateIT.java```
 Those integration tests run a full fetch and extract the data, thus exercising a lot of the code. The integration and unit tests built into the code make this much easier to develop - and when they work, you have most likely done this correctly.
 
@@ -106,13 +110,16 @@ Fetch an entity, and put that result in fetch/entity.json. You might want to ren
 Now you're ready to write the authentication code.
 
 ## 3. Credential Classes 
-If the integration uses OAuth, then delete the theSdktemplateConnectionData and AuthenticationServiceSdktemplate classes and use the SdktemplateConnectionDataOauth and AuthenticationServiceSdktemplateOauth classes.
+If the integration uses OAuth, then delete the theSdktemplateConnectionData and AuthenticationServiceSdktemplate classes and rename SdktemplateConnectionDataOauth and AuthenticationServiceSdktemplateOauth to remove Oauth from the name.
 If the integration does not use OAuth, then delete the delete theSdktemplateConnectionDataOauth and AuthenticationServiceSdktemplateOauth classes and use the SdktemplateConnectionData and AuthenticationServiceSdktemplate classes.
+
+Remember that the setup.sh script adjusts those classes for you.
 
 Fill in connection data information in the ConnectionData class in the authentication/credentials package as per the documentation in the Connection Data file.
 
 If this integration has a session, fill in the SessionCredentialContainer. This class keeps just a JSON node. So to get your fields easily, just make a helper get method for each field.
 If you do not have sessions, delete the SdktemplateSession and the SdktemplateSessionManager. If you remove the classes and rebuild, you'll find the references to them that you'll need to remove as well as unit test classes for the Session that you can delete.
+
 
 ## 4 Authentication Code
 In AuthenticationService, fill in the validate method. You'll be given the credentials. See if they work, use them to get a list of available entities to fetch, and return.
