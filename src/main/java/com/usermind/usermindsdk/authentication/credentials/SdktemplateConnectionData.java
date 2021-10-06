@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /*TODO -
  * This class should be used for integration which uses Authorization type: Key Value Pair
- * if we are using this class then delete the class - SdktemplateConnectionData1
+ * if we are using this class then delete the class - SdktemplateConnectionDataOauth
  */
 @Component
 @Scope("prototype")

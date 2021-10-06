@@ -47,16 +47,20 @@ Then before you begin coding, put the results of those calls inside your starter
 
 To run this as a web server use these arguments `server src/main/resources/config-prod.yaml` and go to http://localhost:8089/swagger
 
-You can then test your code using Swagger or the built in unit and integration tests.
+You can then test your code using the built in unit and integration tests.
 
-## 1. Test Credentials
-In the file TestClassFactory, fill in the methods getWork ingTestCredentials and getNonWorkingTestCredentials with a valid credential structure that will validate and fail validation respectively. This will be of the format:
+#Implement Authentication
+## 1. Run Integration Test
+Open AuthenticationServiceSdktemplateIT and run the "basicTest" integration test. It will fail as nothing is implemented yet - but it will call the methods you are implementing, making it easier to develop and test them.
+
+## 2. Test Credentials
+In the file TestClassFactory, fill in the methods getWorkingTestCredentials and getNonWorkingTestCredentials with a valid credential structure that will validate and fail validation respectively. This will be of the format:
 
 `{"credentials":{"appId":"aaa","appSecret":"aaa"}}`
 
 For now, a different Usermind service will authenticate and will give you that credential block. That should contain the results of your authentication as fields inside the credential block. Those are the fields you'll need to know in order to make and authenticate calls. Putting them in this class will enable the unit and integration tests to work.
 
-### 1.1 OAuth Authentication/Generate Credentials
+### 2.1 OAuth Authentication/Generate Credentials
 Any integration which supports OAuth authentication with Authorization Code grant, then we need to extend couple of Classes from base library.
 OAuth with Authorization code grant is a 3 legged dance and most of the methods are written in SDK base library.
 
@@ -92,15 +96,21 @@ This method is used to request a grant access to OAuth server with an authorizat
 
 
 ## 2. Resource Files in the test package
-When you authenticate, you will get a token back of some sort. Put that token in authentication/credentials/token.json.
-Try bad credentials, and put that response in authentication/credentials/invalidtoken.json.
+When you authenticate in postman, you will get a body back in the response. Put that token in src/test/resources/com/usermind/usermindsdk/authentication/credentials/token.json.
+Try bad credentials, and put that response in src/test/resources/com/usermind/usermindsdk/authentication/credentials/invalidtoken.json.
+Those two file will be used by the unit tests to verify the authentication code in both success and failure cases.
+
 If you can fetch Metadata from this integration, put the result of that call in metadata/MetadataFromIntegration.json and delete MetadataCreatedInCode.json. If you can't, then delete MetadataFromIntegration.json.
 Fetch an entity, and put that result in fetch/entity.json. You might want to rename that file to the name of the entity, but then make sure you change the test classes to match.
 
 Now you're ready to write the authentication code.
 
 ## 3. Credential Classes 
+If the integration uses OAuth, then delete the theSdktemplateConnectionData and AuthenticationServiceSdktemplate classes and use the SdktemplateConnectionDataOauth and AuthenticationServiceSdktemplateOauth classes.
+If the integration does not use OAuth, then delete the delete theSdktemplateConnectionDataOauth and AuthenticationServiceSdktemplateOauth classes and use the SdktemplateConnectionData and AuthenticationServiceSdktemplate classes.
+
 Fill in connection data information in the ConnectionData class in the authentication/credentials package as per the documentation in the Connection Data file.
+
 If this integration has a session, fill in the SessionCredentialContainer. This class keeps just a JSON node. So to get your fields easily, just make a helper get method for each field.
 If you do not have sessions, delete the SdktemplateSession and the SdktemplateSessionManager. If you remove the classes and rebuild, you'll find the references to them that you'll need to remove as well as unit test classes for the Session that you can delete.
 
@@ -111,20 +121,23 @@ If there is a session, you'll need to fill in the Session Credential Manager cla
 To test this, there are built in unit and integration tests for the Authentication Service. The Integration Test will just work and let you walk through your code as it calls the Integration and understand the behaviour. The unit test will work once you've adjusted the mock rest server so it fields your calls. I find it easiest to use the integration test at first, and then fix up the unit tests to work appropriately afterwards. Credentials expire - making the unit test work is WELL worth the effort when the Integration Test stops working later.
 
 
-DO NOT CONTINUE UNTIL THE AUTHENTICATION CODE WORKS.
+DO NOT CONTINUE UNTIL THE AUTHENTICATION CODE WORKS AND ALL AUTHENTICATION UNIT TESTS PASS.
+Also add more unit tests, and flesh out the skeletal ones in the template!
+
+## 5 Add Authentication Information
+Sessions expire. So putting the information in when you write the fetch causes a problem - what happens in the orchestration layer if it has expired? So the authentication information is NOT added in the step above. The orchestration layer waits until it's about to call for the data, and then it passes the link and headers into the Add Authentication Information class. So in that class, add the token to the headers or to the API, and return them. (See examples in the class.) Move the relevant code from the authenication class to the AddAuthenticationInformation class so other systems can use it. Again, this should only add the information needed to Rest API calls for authentication, nothing else! 
 
 The next thing that is needed is fetching the metadata. And to fetch it, there is one more authentication piece.
 
-## 5 Entity Information
-Fill in the Entity Information class as shown in the template. This simply lists the entities, and the primary key for each one as well as the field to use when fetching only recently updated data.
+## 6 Default Entity Information
+Fill in the Entity Information class as shown in the template. This simply lists the entities, and the primary key for each one as well as the field to use when fetching only recently updated data. If the entity fields are being dynamically fetched and you can figure out what key to use for incremental fetches, or if entities are defined per connection this can return an empty map.
 
-## 6 Fetch Metadata
+## 7 Fetch Metadata
 You don't actually fetch the metadata - the orchestration layer does. This code simply gives the orchestration layer the information on how to do that. Then the orchestration layer can handle errors and retry them, alerting, etc. See the documentation in the class for how to do this.
 
 OR - maybe the integration doesn't supply metadata. In that case, you will have to describe it here yourself. See the examples in the code.
 
-## 7 Add Authentication Information
-Sessions expire. So putting the information in when you write the fetch causes a problem - what happens in the orchestration layer if it has expired? So the authentication information is NOT added in the step above. The orchestration layer waits until it's about to call for the data, and then it passes the link and headers into the Add Authentication Information class. So in that class, add the token to the headers or to the API, and return them. See examples in the class.
+As in authentication, just run find the integration test for Metadata and run the main test. It will run this code for you making it easier to develop.
 
 ## 8 Translate the response 
 So coming back is SOMETHING. Maybe Json. Maybe XML. So in the class Convert Metadata To Standard Format, take that blob and parse it into classes that the SDK can understand. See examples in the file.

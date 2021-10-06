@@ -65,7 +65,7 @@ class FetchSetupSdktemplateIT extends TestBase {
 
         //Incremental fetch will sometimes fetch data, but if run a second time there might not be new data.
         //So don't test the extraction except to make sure it doesn't throw an exception
-        checkResults(fetchData, false, false, true);
+        checkResults(fetchData, true, false, true);
     }
 
     @Test

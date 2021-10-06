@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Aug 18 16:34:36 PDT 2021
+http\://nexus.internal.usermind.com\:8081/nexus/content/groups/public/.lastUpdated=1629329676961
+https\://repo.maven.apache.org/maven2/.lastUpdated=1629329676762
+https\://repo.maven.apache.org/maven2/.error=
