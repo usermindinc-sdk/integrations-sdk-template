@@ -38,7 +38,7 @@ else
   fi
 fi
 
-echo -ne "${BLUE}Paste a curl call for a successful authentication: ${NC}"
+echo -ne "${BLUE}Paste a curl call for a successful authentication. This will run the call and put the resulting body in place for the unit tests to use. Alternately hit control-c to stop here: ${NC}"
 read AUTHCALL
 echo # move to a new line
 eval $AUTHCALL > src/test/resources/com/usermind/usermindsdk/authentication/credentials/token.json

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+RED="\033[0;31m"
+BOLD="\033[1m"
+NC='\033[0m'
+BLINKING="\x1b[5m"
+
 if test "$#" -ne 1; then
     echo "Illegal number of parameters"
     exit 1
@@ -55,3 +60,6 @@ find . -name '*SDKTEMPLATE*' | while read f; do mv "$f" "${f//SDKTEMPLATE/$upper
 grep -rl 'Sdktemplate' . * | grep -v sdkrename.sh | xargs -I@ sed -i "" "s/Sdktemplate/$capitolizedName/g" @
 grep -rl 'sdktemplate' . * | grep -v sdkrename.sh | xargs -I@ sed -i "" "s/sdktemplate/$lowercaseName/g" @
 grep -rl 'SDKTEMPLATE' . * | grep -v sdkrename.sh | xargs -I@ sed -i "" "s/SDKTEMPLATE/$uppercaseName/g" @
+
+echo -e "${RED}${BOLD}${BLINKING}IMPORTANT${NC}"
+echo -e "${RED}${BOLD}Run the setup.sh script in the ${sdkname} directory before trying to compile, or manually remove either the OAuth or nonOAuth authentication classes. The SDK will not compile successfully until you do. ${NC}"

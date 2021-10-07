@@ -8,6 +8,13 @@ This is a template to help you create an SDK. The SDK does several things:
 * Fetch - this pulls data from the third party integration. We refer to the data as entities where an entity is defined as a standalone set of records - for example, each table in the database would be an entity. So if an integration has an API that returns customer information that would be an entity, and if it had an API returning product data that would be a second entity.
 * Actions - this pushes data to the third party integration.
 
+#TLDR
+Run the sdkrename script:
+```./sdkrename.sh integrationName```
+Then go to the newly created integration and run the setup script:
+```setup.sh```
+Then implement the Authentication, Metadata Fetch, Fetch, and any Actions. Run the integration tests to test and develop your code.
+
 # Documentation
 We have an internal wiki with information on every SDK:
 https://usermind.atlassian.net/wiki/spaces/LOH/pages/443940868/Third+Party+Integration+Information
