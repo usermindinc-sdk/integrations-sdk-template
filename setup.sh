@@ -30,11 +30,11 @@ else
   read -p "" -n 1 -r
   echo # move to a new line
   if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo Leaving session management files
+  else
     echo Removing session management files
     rm src/main/java/com/usermind/usermindsdk/authentication/credentials/SdktemplateSessionManager.java
     rm src/main/java/com/usermind/usermindsdk/authentication/credentials/SdktemplateSession.java
-  else
-    echo Leaving session management files
   fi
 fi
 
