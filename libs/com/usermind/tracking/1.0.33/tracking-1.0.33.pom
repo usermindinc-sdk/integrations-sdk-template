@@ -3,13 +3,13 @@
 
     <groupId>com.usermind</groupId>
     <artifactId>tracking</artifactId>
-    <version>1.0.32</version>
+    <version>1.0.33</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>com.usermind</groupId>
         <artifactId>usermind-base-pom</artifactId>
-        <version>1.0.66</version>
+        <version>1.0.67</version>
         <relativePath />
     </parent>
 

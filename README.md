@@ -56,8 +56,6 @@ Start by testing the Rest API calls (or other calls) in Curl or Postman. Before 
 
 Then before you begin coding, put the results of those calls inside your starter project.
 
-To run this as a web server use these arguments `server src/main/resources/config-prod.yaml` and go to http://localhost:8089/swagger
-
 You can then test your code using the built in unit and integration tests.
 
 #Implement Authentication
