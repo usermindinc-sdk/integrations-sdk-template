@@ -115,7 +115,7 @@ class FetchSetupSdktemplateIT extends TestBase {
                         BufferedWriter bufferedWriterInvalidRecords = new BufferedWriter(stringWriterForInvalidRecords);
 
                         ExtractedData extracted = extractor.extractData(connectionData, e.getKey(),
-                                bufferedReader, bufferedWriter, bufferedWriterInvalidRecords, trackingLog, "");
+                                bufferedReader, bufferedWriter, bufferedWriterInvalidRecords, trackingLog, rideAlongs.getOrDefault(e.getKey(), "{}"));
 
                         //An entity savepoint should be present so that incremental fetches will work.
                         //This means making sure the test entity is set up correctly with a field to use for this.
