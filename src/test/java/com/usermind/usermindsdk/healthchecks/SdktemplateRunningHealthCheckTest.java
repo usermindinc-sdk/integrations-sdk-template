@@ -25,7 +25,7 @@ class SdktemplateRunningHealthCheckTest extends TestBase {
 
     @Test
     void runHealthCheck() throws Exception {
-        assertThat(healthCheck.check().isHealthy());
+        assertThat(healthCheck.check().isHealthy()).isTrue();
     }
 
 }
