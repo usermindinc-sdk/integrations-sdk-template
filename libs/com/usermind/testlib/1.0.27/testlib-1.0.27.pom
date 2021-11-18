@@ -3,7 +3,7 @@
 
     <groupId>com.usermind</groupId>
     <artifactId>testlib</artifactId>
-    <version>1.0.25</version>
+    <version>1.0.27</version>
     <packaging>jar</packaging>
 
   <parent>
@@ -16,8 +16,8 @@
     <description>Testlib</description>
 
     <properties>
-        <integrations.base.version>1.1.135</integrations.base.version>
-        <integrations.tracking.version>1.0.32</integrations.tracking.version>
+        <integrations.base.version>1.1.142</integrations.base.version>
+        <integrations.tracking.version>1.0.33</integrations.tracking.version>
     </properties>
 
     <dependencies>
